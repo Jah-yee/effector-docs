@@ -31,6 +31,49 @@
 
   --font-mono:   'JetBrains Mono', 'Fira Code', 'SF Mono', monospace;
   --font-sans:   'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-display: 'Instrument Serif', Georgia, 'Times New Roman', serif;
+
+  /*
+   * Letterpress on near-black / gray (#0F0F0F, #141414, #1A1A1A):
+   * - 字色：统一暗红（低明度、带色相），忌灰褐 —— 灰了会像浮灰，不像印泥。
+   * - 「下面那条线」在暗底上是凹槽底：用纯黑/近黑影叠在字下方（em 缩放），才压得下去；
+   *   顶沿只用极弱暖红高光，不用大白，避免发灰、发浮。
+   */
+  --letterpress-shadow:
+    /* 上沿：暗锈红微光（与字同色系统，非灰白） */
+    0 -0.025em 0 rgba(180, 70, 65, 0.22),
+    /* 下沿：槽底 —— 明显的一条「沉下去」的暗（关键） */
+    0 0.04em 0 rgba(0, 0, 0, 0.92),
+    0 0.07em 0.12em rgba(0, 0, 0, 0.78),
+    0 0.12em 0.22em rgba(0, 0, 0, 0.45),
+    /* 对角咬边，略加深 */
+    0.025em 0.04em 0 rgba(0, 0, 0, 0.35),
+    -0.02em -0.02em 0 rgba(120, 40, 36, 0.35);
+  /* 暗红印泥：utility / 非渐变字用 */
+  --letterpress-ink: #3e1614;
+  /* 区块标签：同向渐变，整体压暗；色相偏红、少橙（与 hero 亮橙红可区分） */
+  --label-gradient: linear-gradient(135deg, #8a2228 0%, #621a1f 100%);
+  /*
+   * 渐变字浮雕：明暗结构不变；高光/咬边与字身同为偏暗酒红，避免桃橙感。
+   */
+  --letterpress-shadow-label:
+    /* 上沿：主层 —— 暗红高光（压暗、偏红） */
+    0 -0.03em 0 rgba(165, 58, 64, 0.4),
+    0 -0.02em 0 rgba(120, 38, 42, 0.32),
+    /* 下沿：浅槽 */
+    0 0.04em 0 rgba(0, 0, 0, 0.4),
+    0 0.07em 0.12em rgba(0, 0, 0, 0.28),
+    0 0.12em 0.22em rgba(0, 0, 0, 0.18),
+    /* 对角：深红褐咬边 */
+    0.02em 0.035em 0 rgba(28, 10, 12, 0.26),
+    -0.025em -0.025em 0 rgba(140, 48, 52, 0.36);
+
+  /* Landing — 各区块水平留白（Problem / How It Works / …） */
+  --landing-pad-x: 56px;
+  --landing-pad-x-sm: 28px;
+  /* How It Works — 竖线位置 + 左侧文案缩进 */
+  --steps-line-x: 0;
+  --steps-copy-pl: 40px;
 
   --sidebar-w:   260px;
   --topnav-h:    56px;
@@ -68,7 +111,8 @@ code, pre { font-family: var(--font-mono); }
 }
 .topnav-logo {
   font-size: 18px; font-weight: 700; color: var(--text);
-  display: flex; align-items: center; gap: 8px;
+  display: flex; align-items: center;
+  /* no gap — logo reads as effectorHQ */
   margin-right: 32px;
 }
 .topnav-logo span { color: var(--red); }
@@ -290,6 +334,9 @@ code, pre { font-family: var(--font-mono); }
   font-size: 48px; font-weight: 800; letter-spacing: -0.03em;
   margin-bottom: 16px; border: none;
 }
+.home-hero h1 .gradient {
+  font-style: italic;
+}
 .home-hero h1 .accent { color: var(--red); }
 .home-hero .tagline {
   font-size: 20px; color: var(--text2); line-height: 1.6;
@@ -357,17 +404,33 @@ code, pre { font-family: var(--font-mono); }
    LANDING PAGE — SECTIONS (from effector-landing)
 ═══════════════════════════════════════════════════════ */
 .landing-section {
-  padding: 120px 0; max-width: 1400px; margin: 0 auto; padding-left: 40px; padding-right: 40px;
+  padding: 120px 0; max-width: 1400px; margin: 0 auto;
+  padding-left: var(--landing-pad-x); padding-right: var(--landing-pad-x);
 }
 .landing-section.alt-bg {
   background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
   max-width: none; padding-left: 0; padding-right: 0;
 }
-.landing-section.alt-bg > .landing-inner { max-width: 1400px; margin: 0 auto; padding: 0 40px; }
+.landing-section.alt-bg > .landing-inner { max-width: 1400px; margin: 0 auto; padding: 0 var(--landing-pad-x); }
+/* 与 hero h1 同族：Inter 800 斜体；字身用红→橙渐变，浮雕用多层 text-shadow（勿用 filter 替代） */
 .section-label {
-  display: inline-block; font-size: 11px; font-weight: 600;
-  letter-spacing: 0.1em; text-transform: uppercase; color: var(--red); margin-bottom: 12px;
-  background: var(--red-dim); padding: 4px 12px; border-radius: 100px;
+  display: block;
+  font-family: var(--font-sans);
+  font-style: italic;
+  font-weight: 800;
+  font-size: clamp(26px, 3.2vw, 44px);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  margin: 0 0 16px;
+  padding: 0;
+  border-radius: 0;
+  background: var(--label-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  text-shadow: var(--letterpress-shadow-label);
 }
 .section-title {
   font-size: clamp(28px, 4vw, 38px); font-weight: 700;
@@ -378,18 +441,46 @@ code, pre { font-family: var(--font-mono); }
   font-size: 16px; color: var(--text2); max-width: 620px; line-height: 1.75; margin-bottom: 56px;
 }
 
-/* Hero badge */
+/* Utility — same physics as --letterpress-shadow */
+.letterpress-soft {
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-shadow: var(--letterpress-shadow);
+}
+.letterpress-soft,
+.letterpress-soft.italic {
+  font-style: italic;
+}
+
+/* Hero pill — original capsule (not letterpress); text in home.html */
 .hero-badge {
-  display: inline-flex; align-items: center; gap: 8px;
-  background: var(--red-dim); border: 1px solid rgba(224,62,62,0.2);
-  border-radius: 100px; padding: 6px 16px; font-size: 13px;
-  color: var(--red); font-weight: 500; margin-bottom: 28px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--red-dim);
+  border: 1px solid rgba(224, 62, 62, 0.2);
+  border-radius: 100px;
+  padding: 6px 16px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--red);
+  margin: 0 auto 28px;
+  text-shadow: none;
 }
 .hero-badge::before {
-  content: ''; width: 6px; height: 6px; background: var(--red);
-  border-radius: 50%; animation: pulse 2s ease-in-out infinite;
+  content: '';
+  width: 6px;
+  height: 6px;
+  background: var(--red);
+  border-radius: 50%;
+  animation: heroBadgePulse 2s ease-in-out infinite;
+  flex-shrink: 0;
 }
-@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+@keyframes heroBadgePulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
 
 /* Hero gradient text */
 .gradient {
@@ -411,7 +502,12 @@ code, pre { font-family: var(--font-mono); }
 .hero-install .copy-btn {
   background: none; border: none; color: var(--text3); cursor: pointer;
   padding: 2px; transition: color 0.2s; font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(-1px);
 }
+.hero-install .copy-btn svg { display: block; }
 .hero-install .copy-btn:hover { color: var(--text); }
 
 .hero-stats {
@@ -445,13 +541,32 @@ code, pre { font-family: var(--font-mono); }
 .problem-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 8px; color: var(--text); }
 .problem-card p { font-size: 13.5px; color: var(--text2); line-height: 1.65; }
 
-/* Steps */
-.steps { display: flex; flex-direction: column; gap: 0; }
+/* Steps — minmax(0) + min-width:0 avoids text column overflowing into code column */
+.steps { display: flex; flex-direction: column; gap: 0; position: relative; }
 .step {
-  display: grid; grid-template-columns: 1fr 1.15fr; gap: 56px;
-  align-items: center; padding: 56px 0; border-bottom: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  gap: 64px;
+  align-items: start;
+  padding: 72px 0 104px;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  z-index: 1;
 }
-.step:last-child { border-bottom: none; }
+.step > * {
+  min-width: 0;
+}
+.step:last-child {
+  border-bottom: none;
+  padding-bottom: 72px;
+}
+/* First .step is nth-child(2) — after .steps-line */
+.steps > .step:nth-child(2) {
+  padding-top: 48px;
+}
+.step > div:not(.step-code) {
+  padding-left: var(--steps-copy-pl);
+}
 .step-num {
   font-size: 12px; font-weight: 700;
   font-family: var(--font-mono); margin-bottom: 12px;
@@ -467,6 +582,7 @@ code, pre { font-family: var(--font-mono); }
   border-radius: var(--radius); overflow: hidden;
   box-shadow: 0 2px 12px rgba(0,0,0,0.1);
   transition: box-shadow 0.3s, border-color 0.3s;
+  isolation: isolate;
 }
 .step:hover .step-code {
   box-shadow: 0 8px 32px rgba(0,0,0,0.2);
@@ -481,6 +597,7 @@ code, pre { font-family: var(--font-mono); }
 .step-code pre {
   padding: 18px; font-size: 12.5px; line-height: 1.7; overflow-x: auto;
   color: var(--text2); margin: 0; border: none; border-radius: 0; background: var(--surface);
+  position: static;
 }
 .step-code pre .kw { color: var(--red); }
 .step-code pre .str { color: var(--orange); }
@@ -681,15 +798,21 @@ code, pre { font-family: var(--font-mono); }
   padding: 12px 20px; font-size: 13px; color: var(--text2); line-height: 1.5;
 }
 .eco-tier { padding: 12px 20px; display: flex; align-items: center; }
-.eco-badge {
-  display: inline-block; font-size: 10px; font-weight: 600;
-  letter-spacing: 0.04em; text-transform: uppercase;
-  padding: 2px 8px; border-radius: 100px;
+/* Compact pill badges — only if .eco-badge appears inside legacy table rows */
+.eco-tier .eco-badge {
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 100px;
 }
-.eco-badge.eco-core { background: var(--red-dim); color: var(--red); }
-.eco-badge.eco-tool { background: var(--orange-dim); color: var(--orange); }
-.eco-badge.eco-infra { background: var(--green-dim); color: var(--green); }
-.eco-badge.eco-dist { background: var(--blue-dim); color: var(--blue); }
+.eco-tier .eco-badge.eco-core { background: var(--red-dim); color: var(--red); }
+.eco-tier .eco-badge.eco-tool { background: var(--orange-dim); color: var(--orange); }
+.eco-tier .eco-badge.eco-infra { background: var(--green-dim); color: var(--green); }
+.eco-tier .eco-badge.eco-dist { background: var(--blue-dim); color: var(--blue); }
 
 /* ═══════════════════════════════════════════════════════
    TRY IT GRID
@@ -713,8 +836,18 @@ code, pre { font-family: var(--font-mono); }
   transform: translateY(-3px); color: var(--text);
 }
 .try-card:hover::after { opacity: 1; transform: translateX(0); }
-.try-icon { margin-bottom: 18px; transition: transform 0.3s; }
-.try-card:hover .try-icon { transform: scale(1.1); }
+.try-icon {
+  display: inline-block;
+  margin-bottom: 18px;
+  transform-origin: left top;
+  transition: transform 0.3s ease;
+}
+.try-icon svg {
+  display: block;
+  width: 48px;
+  height: 48px;
+}
+.try-card:hover .try-icon { transform: scale(1.28); }
 .try-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 8px; border: none; }
 .try-card p { font-size: 13px; color: var(--text2); line-height: 1.6; }
 
@@ -764,14 +897,12 @@ code, pre { font-family: var(--font-mono); }
 /* ═══════════════════════════════════════════════════════
    STEPS — vertical connecting line + step dots
 ═══════════════════════════════════════════════════════ */
-.steps {
-  display: flex; flex-direction: column; gap: 0;
-  position: relative;
-}
 .steps-line {
-  position: absolute; left: 7px; top: 70px; bottom: 70px; width: 1px;
+  position: absolute; left: var(--steps-line-x); top: 56px; bottom: 56px; width: 1px;
   background: linear-gradient(180deg, var(--red), var(--orange), var(--green), var(--blue));
   opacity: 0.2;
+  z-index: 0;
+  pointer-events: none;
 }
 .step-dot {
   display: inline-block; width: 6px; height: 6px; border-radius: 50%;
@@ -808,7 +939,7 @@ code, pre { font-family: var(--font-mono); }
 }
 .eco-card {
   background: var(--surface); border: 1px solid var(--border);
-  border-radius: var(--radius); padding: 20px 24px;
+  border-radius: var(--radius); padding: 24px 24px 20px;
   transition: all 0.25s; position: relative; overflow: hidden;
 }
 .eco-card::before {
@@ -833,7 +964,28 @@ code, pre { font-family: var(--font-mono); }
   font-size: 13px; color: var(--text2); line-height: 1.5; margin: 0;
 }
 .eco-card-tier {
-  float: right; margin-left: 12px;
+  float: none;
+  width: 100%;
+  margin: 0 0 12px;
+}
+.eco-card .eco-badge {
+  display: block;
+  width: 100%;
+  font-family: var(--font-sans);
+  font-style: italic;
+  font-weight: 800;
+  font-size: clamp(22px, 2.8vw, 36px);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  text-transform: none;
+  padding: 0;
+  border-radius: 0;
+  background: var(--label-gradient) !important;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  text-shadow: var(--letterpress-shadow-label);
 }
 .eco-card-meta {
   font-size: 11px; color: var(--text3); margin-top: 8px;
@@ -893,8 +1045,18 @@ code, pre { font-family: var(--font-mono); }
   .adopt-grid { grid-template-columns: 1fr; }
   .try-grid { grid-template-columns: 1fr; }
   .eco-cards { grid-template-columns: 1fr; }
+  .section-label {
+    font-size: clamp(22px, 5vw, 34px);
+    letter-spacing: -0.03em;
+  }
+  .eco-card .eco-badge {
+    font-size: clamp(20px, 4.5vw, 30px);
+  }
   .steps-line { display: none; }
   .hero-glow { display: none; }
+  .step > div:not(.step-code) {
+    padding-left: 12px;
+  }
 }
 
 /* Embedded app iframe */
@@ -906,13 +1068,23 @@ code, pre { font-family: var(--font-mono); }
 /* Landing responsive */
 @media (max-width: 768px) {
   .problem-grid { grid-template-columns: 1fr; }
-  .step { grid-template-columns: 1fr; gap: 24px; }
+  .step {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding: 48px 0 72px;
+  }
+  .steps > .step:nth-child(2) {
+    padding-top: 32px;
+  }
+  .step:last-child {
+    padding-bottom: 48px;
+  }
   .step:nth-child(even) .step-code { order: -1; }
   .cap-grid { grid-template-columns: 1fr; }
   .highlight-box { grid-template-columns: 1fr; padding: 24px; }
   .hero-stats { gap: 24px; flex-wrap: wrap; }
-  .landing-section { padding: 64px 0; padding-left: 20px; padding-right: 20px; }
-  .landing-section.alt-bg > .landing-inner { padding: 0 20px; }
+  .landing-section { padding: 64px 0; padding-left: var(--landing-pad-x-sm); padding-right: var(--landing-pad-x-sm); }
+  .landing-section.alt-bg > .landing-inner { padding: 0 var(--landing-pad-x-sm); }
   .cta-section { padding: 64px 20px; }
 }
 
