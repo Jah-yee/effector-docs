@@ -334,9 +334,6 @@ code, pre { font-family: var(--font-mono); }
   font-size: 48px; font-weight: 800; letter-spacing: -0.03em;
   margin-bottom: 16px; border: none;
 }
-.home-hero h1 .gradient {
-  font-style: italic;
-}
 .home-hero h1 .accent { color: var(--red); }
 .home-hero .tagline {
   font-size: 20px; color: var(--text2); line-height: 1.6;
