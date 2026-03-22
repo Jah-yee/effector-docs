@@ -1,0 +1,11 @@
+---
+description: 改完文档站后用 Git 提交，避免改动丢失
+globs: "**/*"
+alwaysApply: false
+---
+
+# effector-docs — 提交习惯
+
+- 本目录是**独立 Git 仓库**；父目录 `OpenClawHQ` 根目录不是统一 Git 包。
+- 完成实质修改后执行 `git add` + `git commit`；有远程时定期 `git push`。
+- 流程说明：`docs/git-workflow.zh.md`。
