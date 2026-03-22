@@ -937,9 +937,10 @@ code, pre { font-family: var(--font-mono); }
 .eco-cards {
   display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;
 }
+/* Ecosystem：顶栏深红「胶囊条」+ 印泥浮雕字；正文区单独内边距 */
 .eco-card {
   background: var(--surface); border: 1px solid var(--border);
-  border-radius: var(--radius); padding: 24px 24px 20px;
+  border-radius: var(--radius); padding: 0 0 20px;
   transition: all 0.25s; position: relative; overflow: hidden;
 }
 .eco-card::before {
@@ -956,40 +957,51 @@ code, pre { font-family: var(--font-mono); }
   border-color: rgba(224,62,62,0.15);
 }
 .eco-card h3 {
-  font-family: var(--font-mono); font-size: 13.5px; font-weight: 600;
-  color: var(--orange); margin-bottom: 4px; border: none;
+  font-family: var(--font-mono); font-size: 13px; font-weight: 600;
+  color: var(--orange); margin: 0 0 6px; border: none;
   letter-spacing: -0.01em;
+  padding: 0 24px;
 }
 .eco-card p {
+  font-family: var(--font-sans);
   font-size: 13px; color: var(--text2); line-height: 1.5; margin: 0;
+  padding: 0 24px;
 }
 .eco-card-tier {
   float: none;
   width: 100%;
-  margin: 0 0 12px;
+  margin: 0 0 14px;
+  padding: 12px 20px 14px;
+  box-sizing: border-box;
+  background: linear-gradient(180deg, #3a1f1f 0%, #261212 100%);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.45);
+  border-radius: calc(var(--radius) - 1px) calc(var(--radius) - 1px) 0 0;
 }
+/* 与早期版一致：展示字体 + 印泥色 + 通用浮雕影（非渐变剪字） */
 .eco-card .eco-badge {
   display: block;
   width: 100%;
-  font-family: var(--font-sans);
+  font-family: var(--font-display);
   font-style: italic;
-  font-weight: 800;
-  font-size: clamp(22px, 2.8vw, 36px);
-  line-height: 1.08;
-  letter-spacing: -0.03em;
-  text-transform: none;
+  font-weight: 400;
+  font-size: clamp(20px, 2.5vw, 28px);
+  line-height: 1.1;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--letterpress-ink);
+  text-shadow: var(--letterpress-shadow);
+  background: none !important;
+  -webkit-text-fill-color: unset;
+  -webkit-background-clip: unset;
+  background-clip: unset;
   padding: 0;
   border-radius: 0;
-  background: var(--label-gradient) !important;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  color: transparent;
-  text-shadow: var(--letterpress-shadow-label);
+  filter: none;
 }
 .eco-card-meta {
-  font-size: 11px; color: var(--text3); margin-top: 8px;
-  font-family: var(--font-mono); letter-spacing: 0.02em;
+  font-size: 11px; color: var(--text3); margin-top: 10px;
+  font-family: var(--font-sans); letter-spacing: 0.02em;
+  padding: 0 24px;
 }
 
 /* ═══════════════════════════════════════════════════════
@@ -1050,7 +1062,7 @@ code, pre { font-family: var(--font-mono); }
     letter-spacing: -0.03em;
   }
   .eco-card .eco-badge {
-    font-size: clamp(20px, 4.5vw, 30px);
+    font-size: clamp(18px, 4.5vw, 26px);
   }
   .steps-line { display: none; }
   .hero-glow { display: none; }
