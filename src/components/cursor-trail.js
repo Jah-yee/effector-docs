@@ -1,9 +1,9 @@
 /**
- * effector-docs — lobster cursor + uniform dot trail
+ * effector-docs — lobster cursor + dual-track dot trail
  *
- * - 光标：SVG 龙虾（data URI）
- * - 轨迹：沿鼠标路径按固定步长打点，与速度无关；浅灰白小点随时间淡出
- * - 禁用：prefers-reduced-motion、非精细指针（触摸为主）
+ * - 光标：较大 SVG 龙虾
+ * - 轨迹：沿路径等步长；左右交替、两侧距路径不同、椭圆「高矮」不同、微抖动；
+ *   浅色粒子，淡出较快以便辨认
  */
 (function () {
   'use strict';
@@ -13,15 +13,19 @@
   if (!window.matchMedia('(pointer: fine)').matches) return;
   window.__effectorDocsCursorTrailInit = true;
 
-  var STEP = 13;
-  var DOT_R = 1.25;
-  var FADE_MS = 2800;
-  var MAX_DOTS = 900;
+  var STEP = 12;
+  var FADE_MS = 2400;
+  var MAX_DOTS = 1000;
   var Z_INDEX = 149;
+
+  /** 左右轨与路径垂线距离（px），中间留空，略不对称 → 参差 */
+  var OFF_LEFT = 5;
+  var OFF_RIGHT = 6.8;
 
   var particles = [];
   var lastDotX = null;
   var lastDotY = null;
+  var trailStep = 0;
 
   var canvas = document.createElement('canvas');
   canvas.setAttribute('aria-hidden', 'true');
@@ -42,13 +46,14 @@
     particles.length = 0;
     lastDotX = null;
     lastDotY = null;
+    trailStep = 0;
   }
 
   resize();
   window.addEventListener('resize', resize);
 
-  function pushDot(x, y, now) {
-    particles.push({ x: x, y: y, t: now });
+  function pushParticle(px, py, now, rx, ry, rot) {
+    particles.push({ x: px, y: py, t: now, rx: rx, ry: ry, rot: rot });
     if (particles.length > MAX_DOTS) {
       particles.splice(0, particles.length - MAX_DOTS);
     }
@@ -76,7 +81,30 @@
     while (d >= STEP) {
       lastDotX += ux * STEP;
       lastDotY += uy * STEP;
-      pushDot(lastDotX, lastDotY, now);
+      var ang = Math.atan2(uy, ux);
+      var nx = -uy;
+      var ny = ux;
+
+      var jitter =
+        Math.sin(trailStep * 1.17) * 0.55 + Math.cos(trailStep * 0.61) * 0.35;
+      var stagger = (trailStep % 5) * 0.12 - 0.24;
+
+      var leftTurn = trailStep % 2 === 0;
+      var dist = leftTurn ? OFF_LEFT + stagger : OFF_RIGHT - stagger * 0.6;
+      dist += jitter * 0.25;
+
+      var side = leftTurn ? -1 : 1;
+      var px = lastDotX + nx * side * dist;
+      var py = lastDotY + ny * side * dist;
+
+      if (leftTurn) {
+        pushParticle(px, py, now, 1.35, 2.55, ang + Math.PI / 2);
+      } else {
+        pushParticle(px, py, now, 2.25, 1.2, ang);
+      }
+
+      trailStep++;
+
       dx = bx - lastDotX;
       dy = by - lastDotY;
       d = Math.sqrt(dx * dx + dy * dy);
@@ -102,10 +130,10 @@
         continue;
       }
       var fade = 1 - age / FADE_MS;
-      var alpha = 0.11 * fade * fade;
-      ctx.fillStyle = 'rgba(238, 238, 242, ' + alpha.toFixed(4) + ')';
+      var alpha = 0.28 * Math.pow(fade, 1.15);
+      ctx.fillStyle = 'rgba(248, 248, 252, ' + alpha.toFixed(4) + ')';
       ctx.beginPath();
-      ctx.arc(p.x, p.y, DOT_R, 0, Math.PI * 2);
+      ctx.ellipse(p.x, p.y, p.rx, p.ry, p.rot, 0, Math.PI * 2);
       ctx.fill();
       i++;
     }
@@ -115,18 +143,26 @@
 
   document.body.appendChild(canvas);
 
+  var W = 40;
+  var H = 40;
   var lobsterSvg =
-    '<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28">' +
-    '<ellipse cx="14" cy="17" rx="8" ry="5.5" fill="#E85A4A"/>' +
-    '<ellipse cx="14" cy="10" rx="5" ry="4" fill="#E85A4A"/>' +
-    '<ellipse cx="6" cy="15" rx="2.8" ry="2" fill="#D6453D" transform="rotate(-22 6 15)"/>' +
-    '<ellipse cx="22" cy="15" rx="2.8" ry="2" fill="#D6453D" transform="rotate(22 22 15)"/>' +
-    '<path d="M10 20 Q14 24 18 20" stroke="#C43E3E" stroke-width="1.2" fill="none" stroke-linecap="round"/>' +
-    '<path d="M7 8 Q5 4 6 2" stroke="#C43E3E" stroke-width="1.2" fill="none"/>' +
-    '<path d="M21 8 Q23 4 22 2" stroke="#C43E3E" stroke-width="1.2" fill="none"/>' +
+    '<svg xmlns="http://www.w3.org/2000/svg" width="' +
+    W +
+    '" height="' +
+    H +
+    '" viewBox="0 0 40 40">' +
+    '<ellipse cx="20" cy="24" rx="11" ry="7.5" fill="#E85A4A"/>' +
+    '<ellipse cx="20" cy="14" rx="7" ry="5.5" fill="#E85A4A"/>' +
+    '<ellipse cx="8" cy="21" rx="3.5" ry="2.5" fill="#D6453D" transform="rotate(-22 8 21)"/>' +
+    '<ellipse cx="32" cy="21" rx="3.5" ry="2.5" fill="#D6453D" transform="rotate(22 32 21)"/>' +
+    '<path d="M14 28 Q20 34 26 28" stroke="#C43E3E" stroke-width="1.4" fill="none" stroke-linecap="round"/>' +
+    '<path d="M10 10 Q7 5 8 2" stroke="#C43E3E" stroke-width="1.4" fill="none"/>' +
+    '<path d="M30 10 Q33 5 32 2" stroke="#C43E3E" stroke-width="1.4" fill="none"/>' +
     '</svg>';
   var cursorUrl =
-    'url("data:image/svg+xml,' + encodeURIComponent(lobsterSvg) + '") 14 12, auto';
+    'url("data:image/svg+xml,' +
+    encodeURIComponent(lobsterSvg) +
+    '") 20 17, auto';
   document.documentElement.style.cursor = cursorUrl;
   document.body.style.cursor = cursorUrl;
 })();
