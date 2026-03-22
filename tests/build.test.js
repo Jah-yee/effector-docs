@@ -85,6 +85,7 @@ describe('build output', () => {
   it('copies JS components', () => {
     assert.ok(existsSync(join(DIST, 'components', 'type-explorer.js')));
     assert.ok(existsSync(join(DIST, 'components', 'selection-outline.js')));
+    assert.ok(existsSync(join(DIST, 'components', 'cursor-trail.js')));
   });
 
   it('copies types catalog for client-side use', () => {
