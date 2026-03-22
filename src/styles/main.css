@@ -75,6 +75,19 @@
   --steps-line-x: 0;
   --steps-copy-pl: 40px;
 
+  /* Ecosystem 卡顶栏：暖橙褐渐变（非纯色），与正文 package 橙字、页面暗底衔接 */
+  --eco-tier-gradient:
+    radial-gradient(ellipse 130% 95% at 18% 0%, rgba(242, 122, 58, 0.16) 0%, transparent 52%),
+    linear-gradient(168deg, #4a3428 0%, #35261a 42%, #1c120c 100%);
+  --eco-capsule-ink: #4d2a12;
+  --eco-capsule-press:
+    0 -0.025em 0 rgba(210, 135, 80, 0.24),
+    0 0.04em 0 rgba(0, 0, 0, 0.88),
+    0 0.07em 0.12em rgba(0, 0, 0, 0.72),
+    0 0.12em 0.2em rgba(0, 0, 0, 0.4),
+    0.02em 0.035em 0 rgba(20, 10, 4, 0.28),
+    -0.02em -0.02em 0 rgba(130, 72, 38, 0.34);
+
   --sidebar-w:   260px;
   --topnav-h:    56px;
   --content-max: 820px;
@@ -965,8 +978,8 @@ code, pre { font-family: var(--font-mono); }
 .eco-card:hover::before { transform: scaleX(1); }
 .eco-card-hero {
   grid-column: span 1;
-  background: linear-gradient(135deg, var(--surface) 0%, rgba(224,62,62,0.03) 100%);
-  border-color: rgba(224,62,62,0.15);
+  background: linear-gradient(135deg, var(--surface) 0%, rgba(242, 122, 58, 0.04) 100%);
+  border-color: rgba(242, 122, 58, 0.14);
 }
 .eco-card h3 {
   font-family: var(--font-mono); font-size: 13px; font-weight: 600;
@@ -985,11 +998,12 @@ code, pre { font-family: var(--font-mono); }
   margin: 0 0 14px;
   padding: 12px 20px 14px;
   box-sizing: border-box;
-  background: linear-gradient(180deg, #3a1f1f 0%, #261212 100%);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.45);
+  background: var(--eco-tier-gradient);
+  border-bottom: 1px solid rgba(12, 6, 2, 0.55);
+  box-shadow: inset 0 1px 0 rgba(255, 180, 120, 0.06);
   border-radius: calc(var(--radius) - 1px) calc(var(--radius) - 1px) 0 0;
 }
-/* 与早期版一致：展示字体 + 印泥色 + 通用浮雕影（非渐变剪字） */
+/* 暖橙褐印泥 + 与顶栏同色相的浮雕（非酒红条那套） */
 .eco-card .eco-badge {
   display: block;
   width: 100%;
@@ -1000,8 +1014,8 @@ code, pre { font-family: var(--font-mono); }
   line-height: 1.1;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--letterpress-ink);
-  text-shadow: var(--letterpress-shadow);
+  color: var(--eco-capsule-ink);
+  text-shadow: var(--eco-capsule-press);
   background: none !important;
   -webkit-text-fill-color: unset;
   -webkit-background-clip: unset;
