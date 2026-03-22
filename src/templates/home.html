@@ -172,7 +172,7 @@
     <div class="section-label">Adoption</div>
     <h2 class="section-title">Zero friction. Zero dependencies.</h2>
     <div class="adopt-grid">
-      <div class="adopt-card">
+      <div class="adopt-card" data-glow="green">
         <div class="adopt-num">01</div>
         <div class="adopt-icon">
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
@@ -180,7 +180,7 @@
         <h3>Sidecar manifest</h3>
         <p>Your tool's implementation stays untouched. <code>effector.toml</code> sits next to your code like <code>.d.ts</code> sits next to <code>.js</code>.</p>
       </div>
-      <div class="adopt-card">
+      <div class="adopt-card" data-glow="orange">
         <div class="adopt-num">02</div>
         <div class="adopt-icon">
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
@@ -188,7 +188,7 @@
         <h3>5 minutes to start</h3>
         <p><code>npx create-effector</code> scaffolds everything. One command to validate, one to compile. No configuration.</p>
       </div>
-      <div class="adopt-card">
+      <div class="adopt-card" data-glow="red">
         <div class="adopt-num">03</div>
         <div class="adopt-icon">
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="1.5"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
@@ -196,7 +196,7 @@
         <h3>Zero dependencies</h3>
         <p>The entire toolchain uses only Node.js built-ins. No <code>node_modules</code> tree. Installs in under a second.</p>
       </div>
-      <div class="adopt-card">
+      <div class="adopt-card" data-glow="blue">
         <div class="adopt-num">04</div>
         <div class="adopt-icon">
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.5"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
@@ -367,8 +367,8 @@ const counterObserver = new IntersectionObserver(entries => {
 }, { threshold: 0.5 });
 document.querySelectorAll('.hero-stat .num[data-count]').forEach(el => counterObserver.observe(el));
 
-// Try-card glow follow mouse
-document.querySelectorAll('.try-card[data-glow]').forEach(card => {
+// Try-card + Adoption cards — mouse-follow glow
+document.querySelectorAll('.try-card[data-glow], .adopt-card[data-glow]').forEach(card => {
   card.addEventListener('mousemove', e => {
     const rect = card.getBoundingClientRect();
     card.style.setProperty('--glow-x', `${e.clientX - rect.left}px`);

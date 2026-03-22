@@ -744,18 +744,30 @@ code, pre { font-family: var(--font-mono); }
   transition: all 0.3s ease;
   position: relative; overflow: hidden;
 }
-.adopt-card::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-  background: linear-gradient(90deg, var(--red), var(--orange));
-  opacity: 0; transition: opacity 0.3s;
+.adopt-card > * {
+  position: relative;
+  z-index: 1;
 }
 .adopt-card:hover {
   border-color: var(--border2); box-shadow: 0 8px 32px rgba(0,0,0,0.18);
   transform: translateY(-3px);
 }
-.adopt-card:hover::before { opacity: 1; }
-.adopt-icon { margin-bottom: 18px; opacity: 0.85; transition: opacity 0.3s; }
-.adopt-card:hover .adopt-icon { opacity: 1; }
+.adopt-icon {
+  display: inline-block;
+  margin-bottom: 18px;
+  opacity: 0.85;
+  transform-origin: left top;
+  transition: transform 0.3s ease, opacity 0.3s;
+}
+.adopt-icon svg {
+  display: block;
+  width: 48px;
+  height: 48px;
+}
+.adopt-card:hover .adopt-icon {
+  opacity: 1;
+  transform: scale(1.28);
+}
 .adopt-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 10px; color: var(--text); border: none; }
 .adopt-card p { font-size: 13.5px; color: var(--text2); line-height: 1.65; }
 .adopt-card code {
@@ -1007,28 +1019,36 @@ code, pre { font-family: var(--font-mono); }
 /* ═══════════════════════════════════════════════════════
    TRY IT — mouse-follow glow effect
 ═══════════════════════════════════════════════════════ */
-.try-card[data-glow]::before {
+.try-card[data-glow]::before,
+.adopt-card[data-glow]::before {
   content: ''; position: absolute; inset: 0; border-radius: inherit;
   opacity: 0; transition: opacity 0.4s;
+  pointer-events: none;
+  z-index: 0;
   background: radial-gradient(
     300px circle at var(--glow-x, 50%) var(--glow-y, 50%),
     rgba(224,62,62,0.06),
     transparent 60%
   );
 }
-.try-card[data-glow="orange"]::before {
+.try-card[data-glow="orange"]::before,
+.adopt-card[data-glow="orange"]::before {
   background: radial-gradient(300px circle at var(--glow-x, 50%) var(--glow-y, 50%), rgba(242,122,58,0.08), transparent 60%);
 }
-.try-card[data-glow="green"]::before {
+.try-card[data-glow="green"]::before,
+.adopt-card[data-glow="green"]::before {
   background: radial-gradient(300px circle at var(--glow-x, 50%) var(--glow-y, 50%), rgba(74,222,128,0.06), transparent 60%);
 }
-.try-card[data-glow="blue"]::before {
+.try-card[data-glow="blue"]::before,
+.adopt-card[data-glow="blue"]::before {
   background: radial-gradient(300px circle at var(--glow-x, 50%) var(--glow-y, 50%), rgba(147,197,253,0.06), transparent 60%);
 }
-.try-card[data-glow="red"]::before {
+.try-card[data-glow="red"]::before,
+.adopt-card[data-glow="red"]::before {
   background: radial-gradient(300px circle at var(--glow-x, 50%) var(--glow-y, 50%), rgba(224,62,62,0.06), transparent 60%);
 }
-.try-card[data-glow]:hover::before { opacity: 1; }
+.try-card[data-glow]:hover::before,
+.adopt-card[data-glow]:hover::before { opacity: 1; }
 
 /* ═══════════════════════════════════════════════════════
    CTA — animated glow backdrop
