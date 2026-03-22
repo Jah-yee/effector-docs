@@ -946,7 +946,7 @@ code, pre { font-family: var(--font-mono); }
 .eco-cards {
   display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;
 }
-/* Ecosystem：左上包名 + 右上小胶囊标签（与早期 pill 版一致） */
+/* Ecosystem：首行仅右上胶囊；下一行起左对齐包名（与页面源码 DOM 一致） */
 .eco-card {
   background: var(--surface); border: 1px solid var(--border);
   border-radius: var(--radius); padding: 20px 22px 18px;
@@ -973,18 +973,16 @@ code, pre { font-family: var(--font-mono); }
   background: linear-gradient(135deg, var(--surface) 0%, rgba(96, 165, 250, 0.07) 100%);
   border-color: rgba(96, 165, 250, 0.18);
 }
-.eco-card-head {
+.eco-card-tier {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 10px 14px;
-  margin-bottom: 10px;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 8px;
+  min-height: 0;
 }
-.eco-card-head h3 {
-  margin: 0;
+.eco-card > h3 {
+  margin: 0 0 10px 0;
   padding: 0;
-  flex: 1;
-  min-width: 0;
   font-family: var(--font-mono); font-size: 13px; font-weight: 600;
   color: var(--orange);
   letter-spacing: -0.01em;
@@ -1000,15 +998,15 @@ code, pre { font-family: var(--font-mono); }
   flex-shrink: 0;
   display: inline-block;
   font-family: var(--font-sans);
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 700;
   font-style: normal;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
-  line-height: 1.2;
-  padding: 4px 10px;
+  line-height: 1.15;
+  padding: 2px 7px;
   border-radius: 999px;
-  border: 1px solid transparent;
+  border: none;
   text-shadow: none;
   -webkit-text-stroke: 0;
   filter: none;
@@ -1016,22 +1014,18 @@ code, pre { font-family: var(--font-mono); }
 .eco-card .eco-badge.eco-core {
   background: var(--red-dim);
   color: var(--red);
-  border-color: rgba(224, 62, 62, 0.28);
 }
 .eco-card .eco-badge.eco-dist {
   background: var(--blue-dim);
   color: var(--blue);
-  border-color: rgba(96, 165, 250, 0.28);
 }
 .eco-card .eco-badge.eco-tool {
   background: var(--orange-dim);
   color: var(--orange);
-  border-color: rgba(242, 122, 58, 0.3);
 }
 .eco-card .eco-badge.eco-infra {
   background: var(--green-dim);
   color: var(--green);
-  border-color: rgba(74, 222, 128, 0.28);
 }
 .eco-card-meta {
   font-size: 11px; color: var(--text3); margin-top: 10px;

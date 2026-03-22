@@ -2,7 +2,8 @@
  * effector-docs — custom text selection outline
  *
  * 无填充 + #eae6e1 虚线框，虚线顺时针流动。
- * 逐行合并 + 顺时针轮廓，支持矩形、L 形、多行等。
+ * 逐行合并 + 顺时针轮廓；轮廓为纯水平/垂直折线（外直角与行间内凹直角），无斜边、无圆角。
+ * 注入 ::selection 透明背景，避免与自定义虚线叠加时仍出现系统蓝底选区。
  *
  * z-index: 198 — 低于 .search-overlay (200)，避免盖住搜索层。
  * 类名 / keyframes 使用 edo- 前缀，避免与站内其它样式冲突。
@@ -26,9 +27,11 @@
       styleEl = document.createElement('style');
       styleEl.setAttribute('data-effector-docs', 'selection-outline');
       styleEl.textContent = [
+        '::selection{background:transparent;color:inherit;text-shadow:none;}',
+        '::-moz-selection{background:transparent;color:inherit;text-shadow:none;}',
         '.' + CLS_OVERLAY + '{position:fixed;pointer-events:none;z-index:198;left:0;top:0;overflow:visible;}',
         '.' + CLS_OVERLAY + ' svg{position:absolute;left:0;top:0;display:block;}',
-        '.' + CLS_OVERLAY + ' path{fill:none;stroke:#eae6e1;stroke-width:2;stroke-dasharray:10 8;stroke-linecap:round;stroke-linejoin:round;animation:' + ANIM + ' 0.6s linear infinite;}',
+        '.' + CLS_OVERLAY + ' path{fill:none;stroke:#eae6e1;stroke-width:2;stroke-dasharray:10 8;stroke-linecap:butt;stroke-linejoin:miter;animation:' + ANIM + ' 0.6s linear infinite;}',
         '@keyframes ' + ANIM + '{to{stroke-dashoffset:-18}}',
       ].join('');
       document.head.appendChild(styleEl);
@@ -94,6 +97,11 @@
     return rows;
   }
 
+  /**
+   * 顺时针轮廓：仅水平/垂直线段（外直角与内凹直角），无斜边、无圆角。
+   * 右侧：逐行向下时在「当前行右缘 x」与「下一行顶 y」处折线，避免 (r_i,b_i)→(r_{i+1},t_{i+1}) 斜线。
+   * 左侧：对称。
+   */
   function rowsToPath(rows, offX, offY) {
     if (!rows.length) return '';
     var pts = [];
@@ -104,18 +112,19 @@
     for (var i = 0; i < rows.length; i++) {
       pts.push([rows[i].r, rows[i].b]);
       if (i < rows.length - 1) {
+        pts.push([rows[i].r, rows[i + 1].t]);
         pts.push([rows[i + 1].r, rows[i + 1].t]);
       }
     }
 
     pts.push([rows[rows.length - 1].l, rows[rows.length - 1].b]);
 
-    for (var ri = rows.length - 1; ri >= 0; ri--) {
+    for (var ri = rows.length - 1; ri > 0; ri--) {
       pts.push([rows[ri].l, rows[ri].t]);
-      if (ri > 0) {
-        pts.push([rows[ri - 1].l, rows[ri - 1].b]);
-      }
+      pts.push([rows[ri - 1].l, rows[ri].t]);
+      pts.push([rows[ri - 1].l, rows[ri - 1].b]);
     }
+    pts.push([rows[0].l, rows[0].t]);
 
     var clean = [pts[0]];
     for (var pi = 1; pi < pts.length; pi++) {
@@ -143,33 +152,12 @@
     }
     if (finalPts.length < 3) finalPts = clean;
 
-    var R = 5;
     var fn = finalPts.length;
     var d = [];
     for (var vi = 0; vi < fn; vi++) {
-      var pv = finalPts[(vi - 1 + fn) % fn];
-      var cr = finalPts[vi];
-      var nx = finalPts[(vi + 1) % fn];
-      var dx1 = cr[0] - pv[0];
-      var dy1 = cr[1] - pv[1];
-      var dx2 = nx[0] - cr[0];
-      var dy2 = nx[1] - cr[1];
-      var len1 = Math.sqrt(dx1 * dx1 + dy1 * dy1);
-      var len2 = Math.sqrt(dx2 * dx2 + dy2 * dy2);
-      if (len1 < 0.1 || len2 < 0.1) continue;
-      var rr = Math.min(R, len1 / 2, len2 / 2);
-      var bx = (cr[0] - (dx1 / len1) * rr - offX).toFixed(1);
-      var by = (cr[1] - (dy1 / len1) * rr - offY).toFixed(1);
-      var cx = (cr[0] - offX).toFixed(1);
-      var cy = (cr[1] - offY).toFixed(1);
-      var ax = (cr[0] + (dx2 / len2) * rr - offX).toFixed(1);
-      var ay = (cr[1] + (dy2 / len2) * rr - offY).toFixed(1);
-      if (vi === 0) {
-        d.push('M' + bx + ',' + by);
-      } else {
-        d.push('L' + bx + ',' + by);
-      }
-      d.push('Q' + cx + ',' + cy + ' ' + ax + ',' + ay);
+      var vx = (finalPts[vi][0] - offX).toFixed(1);
+      var vy = (finalPts[vi][1] - offY).toFixed(1);
+      d.push(vi === 0 ? 'M' + vx + ',' + vy : 'L' + vx + ',' + vy);
     }
     d.push('Z');
     return d.join(' ');
