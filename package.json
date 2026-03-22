@@ -1,0 +1,16 @@
+{
+  "name": "@effectorhq/docs",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build.js",
+    "serve": "node serve.js",
+    "dev": "node serve.js --watch",
+    "test": "node --test tests/*.test.js"
+  },
+  "dependencies": {
+    "@effectorhq/core": "^1.0.0",
+    "@effectorhq/types": "^1.0.0"
+  }
+}

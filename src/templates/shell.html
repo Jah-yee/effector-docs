@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="effector — the typed capability layer for AI agents. 40 standard types, static composition, cross-runtime compilation.">
+<title>{{TITLE}}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦞</text></svg>">
+<link rel="stylesheet" href="/styles/main.css">
+</head>
+<body>
+
+<!-- ── Top Navigation ─────────────────────────── -->
+<nav class="topnav">
+  <a href="/" class="topnav-logo"><span>effector</span>HQ</a>
+  <div class="topnav-links">
+    <a href="/" class="{{ACTIVE_NAV_HOME}}">Home</a>
+    <a href="/overview.html" class="{{ACTIVE_NAV_DOCS}}">Docs</a>
+    <a href="/types/index.html" class="{{ACTIVE_NAV_TYPES}}">Types</a>
+    <a href="/playground.html" class="{{ACTIVE_NAV_TOOLS}}">Tools</a>
+    <a href="https://github.com/effectorHQ" class="topnav-github" target="_blank">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+    </a>
+  </div>
+  <button class="sidebar-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">&#9776;</button>
+  <div class="topnav-search" onclick="openSearch()">
+    Search docs... <kbd>&#8984;K</kbd>
+  </div>
+</nav>
+
+<!-- ── Layout ─────────────────────────────────── -->
+<div class="{{LAYOUT_CLASS}}">
+  <aside class="sidebar">
+{{SIDEBAR}}
+  </aside>
+  <div class="main">
+    <article class="content">
+{{CONTENT}}
+    </article>
+    <footer class="footer">
+      Built by <a href="https://github.com/effectorHQ">effectorHQ</a> &middot;
+      <a href="https://github.com/effectorHQ">GitHub</a> &middot;
+      MIT License
+    </footer>
+  </div>
+</div>
+
+<!-- ── Search Overlay ─────────────────────────── -->
+<div class="search-overlay" id="searchOverlay">
+  <div class="search-box">
+    <input class="search-input" id="searchInput" type="text" placeholder="Search documentation..." autocomplete="off">
+    <div class="search-results" id="searchResults"></div>
+  </div>
+</div>
+
+<script>
+// ── Search ──────────────────────────────────────
+let searchIndex = null;
+let searchFocused = -1;
+
+function openSearch() {
+  document.getElementById('searchOverlay').classList.add('open');
+  document.getElementById('searchInput').focus();
+  if (!searchIndex) {
+    fetch('/search-index.json').then(r => r.json()).then(d => searchIndex = d).catch(() => {});
+  }
+}
+function closeSearch() {
+  document.getElementById('searchOverlay').classList.remove('open');
+  document.getElementById('searchInput').value = '';
+  document.getElementById('searchResults').innerHTML = '';
+  searchFocused = -1;
+}
+
+document.addEventListener('keydown', (e) => {
+  if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); openSearch(); }
+  if (e.key === 'Escape') closeSearch();
+  if (document.getElementById('searchOverlay').classList.contains('open')) {
+    const results = document.querySelectorAll('.search-result');
+    if (e.key === 'ArrowDown') { e.preventDefault(); searchFocused = Math.min(searchFocused + 1, results.length - 1); updateFocus(results); }
+    if (e.key === 'ArrowUp') { e.preventDefault(); searchFocused = Math.max(searchFocused - 1, 0); updateFocus(results); }
+    if (e.key === 'Enter' && searchFocused >= 0 && results[searchFocused]) {
+      window.location.href = results[searchFocused].href;
+    }
+  }
+});
+function updateFocus(results) {
+  results.forEach((r, i) => r.classList.toggle('focused', i === searchFocused));
+  if (results[searchFocused]) results[searchFocused].scrollIntoView({ block: 'nearest' });
+}
+
+document.getElementById('searchOverlay').addEventListener('click', (e) => {
+  if (e.target === e.currentTarget) closeSearch();
+});
+
+document.getElementById('searchInput').addEventListener('input', (e) => {
+  const q = e.target.value.toLowerCase().trim();
+  const container = document.getElementById('searchResults');
+  searchFocused = -1;
+  if (!q || !searchIndex) { container.innerHTML = '<div class="search-empty">Type to search...</div>'; return; }
+  const matches = searchIndex.filter(p =>
+    p.t.toLowerCase().includes(q) || p.c.toLowerCase().includes(q)
+  ).slice(0, 12);
+  if (matches.length === 0) { container.innerHTML = '<div class="search-empty">No results found.</div>'; return; }
+  container.innerHTML = matches.map(m => `
+    <a class="search-result" href="${m.u}">
+      <div class="search-result-title">${highlight(m.t, q)}</div>
+      <div class="search-result-section">${m.u}</div>
+    </a>`).join('');
+});
+
+function highlight(text, q) {
+  const idx = text.toLowerCase().indexOf(q);
+  if (idx === -1) return text;
+  return text.slice(0, idx) + '<mark style="background:var(--orange-dim);color:var(--orange);padding:0 2px;border-radius:2px">' + text.slice(idx, idx + q.length) + '</mark>' + text.slice(idx + q.length);
+}
+
+// ── Active sidebar highlighting ──────────────────
+document.querySelectorAll('.sidebar a').forEach(a => {
+  if (a.getAttribute('href') === window.location.pathname) {
+    a.classList.add('active');
+  }
+});
+
+// ── Collapsible sidebar sections ─────────────────
+document.querySelectorAll('.sidebar-section-title').forEach(title => {
+  title.style.cursor = 'pointer';
+  title.style.userSelect = 'none';
+  title.style.display = 'flex';
+  title.style.alignItems = 'center';
+  title.style.justifyContent = 'space-between';
+  const chevron = document.createElement('span');
+  chevron.className = 'sidebar-chevron';
+  chevron.innerHTML = '&#9662;';
+  title.appendChild(chevron);
+
+  // Auto-expand section containing active link
+  const section = title.parentElement;
+  const hasActive = section.querySelector('a.active');
+  if (!hasActive) {
+    section.classList.add('collapsed');
+  }
+
+  title.addEventListener('click', () => {
+    section.classList.toggle('collapsed');
+  });
+});
+
+// ── Copy button feedback animation ───────────────
+document.querySelectorAll('.copy-btn').forEach(btn => {
+  btn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    const original = this.textContent;
+    this.textContent = 'Copied!';
+    this.style.color = 'var(--green)';
+    setTimeout(() => {
+      this.textContent = original;
+      this.style.color = '';
+    }, 1500);
+  });
+});
+
+// Hero install copy feedback
+document.querySelectorAll('.hero-install').forEach(install => {
+  install.addEventListener('click', function() {
+    const btn = this.querySelector('.copy-btn');
+    if (btn) {
+      const svg = btn.innerHTML;
+      btn.innerHTML = '<span style="font-size:12px;color:var(--green)">Copied!</span>';
+      setTimeout(() => { btn.innerHTML = svg; }, 1500);
+    }
+  });
+});
+
+// ── Back to Top button ───────────────────────────
+const btt = document.createElement('button');
+btt.className = 'back-to-top';
+btt.innerHTML = '&#8593;';
+btt.title = 'Back to top';
+btt.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+document.body.appendChild(btt);
+
+window.addEventListener('scroll', () => {
+  btt.classList.toggle('visible', window.scrollY > 400);
+}, { passive: true });
+
+// ── Table of Contents (for content pages) ────────
+(function buildTOC() {
+  const content = document.querySelector('.content');
+  if (!content) return;
+  const headings = content.querySelectorAll('h2[id], h3[id]');
+  if (headings.length < 3) return; // Only show TOC for longer pages
+
+  // Don't show on home page
+  if (document.querySelector('.layout-home')) return;
+
+  const toc = document.createElement('nav');
+  toc.className = 'toc';
+  toc.innerHTML = '<div class="toc-title">On this page</div>';
+  const list = document.createElement('ul');
+
+  headings.forEach(h => {
+    const li = document.createElement('li');
+    li.className = h.tagName === 'H3' ? 'toc-h3' : '';
+    const a = document.createElement('a');
+    a.href = '#' + h.id;
+    a.textContent = h.textContent;
+    li.appendChild(a);
+    list.appendChild(li);
+  });
+
+  toc.appendChild(list);
+
+  // Insert TOC as a floating sidebar on the right for wide screens
+  const main = document.querySelector('.main');
+  if (main) main.appendChild(toc);
+
+  // Scroll spy: highlight current section
+  const tocLinks = toc.querySelectorAll('a');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        tocLinks.forEach(l => l.classList.remove('active'));
+        const match = toc.querySelector(`a[href="#${entry.target.id}"]`);
+        if (match) match.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-80px 0px -70% 0px' });
+
+  headings.forEach(h => observer.observe(h));
+})();
+
+// ── Smooth code block language labels ────────────
+document.querySelectorAll('pre[data-lang]').forEach(pre => {
+  const lang = pre.getAttribute('data-lang');
+  const label = document.createElement('span');
+  label.style.cssText = 'position:absolute;top:8px;left:12px;font-size:11px;color:var(--text3);font-family:var(--font-sans);text-transform:uppercase;letter-spacing:0.05em;';
+  label.textContent = lang;
+  pre.style.position = 'relative';
+  pre.prepend(label);
+});
+
+// ── Smooth page load transition ──────────────────
+document.body.style.opacity = '0';
+document.body.style.transition = 'opacity 0.2s ease';
+requestAnimationFrame(() => { document.body.style.opacity = '1'; });
+</script>
+</body>
+</html>

@@ -1,0 +1,380 @@
+<!-- ═══════════════════════════════════════════════════════
+     HERO — centered, max-width 740px, keeps its own margins
+═══════════════════════════════════════════════════════ -->
+<div class="home-hero" style="padding:120px 24px 80px;max-width:740px">
+  <!-- Decorative glow orbs -->
+  <div class="hero-glow hero-glow-1"></div>
+  <div class="hero-glow hero-glow-2"></div>
+
+  <div class="hero-badge">Open Source &middot; MIT License</div>
+  <h1 style="font-size:clamp(42px,6vw,72px);line-height:1.05;letter-spacing:-0.03em;max-width:800px;border:none">
+    Typed interoperability for<br>
+    <span class="gradient">AI agent tools</span>
+  </h1>
+  <p class="tagline" style="font-size:17px;max-width:540px;line-height:1.8;margin-left:auto;margin-right:auto">
+    AI capabilities are in the pre-TypeScript era. Effector adds a typed interface layer &mdash; 40 standard capability types, static composition checking, and cross-runtime compilation from a single sidecar manifest.
+  </p>
+  <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:36px">
+    <a href="/installation.html" class="btn-primary" style="padding:12px 28px;font-size:16px">Get Started &rarr;</a>
+    <a href="/playground.html" class="btn-secondary" style="padding:12px 28px;font-size:16px">Try the Playground</a>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:16px">
+    <div class="hero-install" onclick="navigator.clipboard.writeText('npx create-effector my-skill')">
+      <span class="prompt">$</span>
+      <span class="cmd">npx create-effector my-skill</span>
+      <button class="copy-btn" title="Copy">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="8" height="8" rx="1.5"/><path d="M3 11V3a1 1 0 011-1h8"/></svg>
+      </button>
+    </div>
+    <a href="https://github.com/effectorHQ" class="btn-ghost" target="_blank" style="padding:10px 16px;font-size:14px">
+      <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+      GitHub
+    </a>
+  </div>
+  <!-- Animated counter stats -->
+  <div class="hero-stats" style="justify-content:center">
+    <div class="hero-stat"><div class="num" data-count="40">0</div><div class="label">Capability Types</div></div>
+    <div class="hero-stat"><div class="num" data-count="4">0</div><div class="label">Compile Targets</div></div>
+    <div class="hero-stat"><div class="num" data-count="249">0</div><div class="label">Tests Passing</div></div>
+    <div class="hero-stat"><div class="num" data-count="0">0</div><div class="label">Dependencies</div></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     SECTION 1: BEFORE & AFTER — the core value prop
+═══════════════════════════════════════════════════════ -->
+<div class="landing-section alt-bg">
+  <div class="landing-inner">
+    <div class="section-label">The Problem</div>
+    <h2 class="section-title">Every AI tool has a type system. It's just invisible.</h2>
+    <p class="section-desc">
+      Your tool takes <em>something</em>, produces <em>something</em>, and needs credentials from the environment. Today these interfaces are implicit. Effector makes them explicit.
+    </p>
+    <div class="before-after-grid">
+      <div class="ba-col ba-before">
+        <div class="ba-header">Without types</div>
+        <div class="ba-item"><span class="ba-icon ba-x"><span class="ba-dot ba-dot-red"></span></span> Chain two tools, pray they work</div>
+        <div class="ba-item"><span class="ba-icon ba-x"><span class="ba-dot ba-dot-red"></span></span> Search tools by keyword</div>
+        <div class="ba-item"><span class="ba-icon ba-x"><span class="ba-dot ba-dot-red"></span></span> Read the README to understand a tool</div>
+        <div class="ba-item"><span class="ba-icon ba-x"><span class="ba-dot ba-dot-red"></span></span> Manually test every combination</div>
+        <div class="ba-item"><span class="ba-icon ba-x"><span class="ba-dot ba-dot-red"></span></span> Rewrite per runtime</div>
+        <div class="ba-item"><span class="ba-icon ba-x"><span class="ba-dot ba-dot-red"></span></span> No permission model</div>
+      </div>
+      <div class="ba-col ba-after">
+        <div class="ba-header">With effector</div>
+        <div class="ba-item"><span class="ba-icon ba-check"><span class="ba-dot ba-dot-green"></span></span> Type-check composition before execution</div>
+        <div class="ba-item"><span class="ba-icon ba-check"><span class="ba-dot ba-dot-green"></span></span> Discover capabilities by interface type</div>
+        <div class="ba-item"><span class="ba-icon ba-check"><span class="ba-dot ba-dot-green"></span></span> Machine-readable interface contracts</div>
+        <div class="ba-item"><span class="ba-icon ba-check"><span class="ba-dot ba-dot-green"></span></span> Automated compatibility verification</div>
+        <div class="ba-item"><span class="ba-icon ba-check"><span class="ba-dot ba-dot-green"></span></span> One manifest, every runtime</div>
+        <div class="ba-item"><span class="ba-icon ba-check"><span class="ba-dot ba-dot-green"></span></span> Declared + audited security</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     SECTION 2: HOW IT WORKS — the 4-step flow
+═══════════════════════════════════════════════════════ -->
+<div class="landing-section">
+  <div class="section-label">How It Works</div>
+  <h2 class="section-title">One file. Four capabilities.</h2>
+  <p class="section-desc">
+    Drop an <code style="background:var(--surface2);padding:2px 8px;border-radius:4px;font-size:0.88em;color:var(--orange)">effector.toml</code> next to your tool. Your implementation stays untouched &mdash; the manifest is pure metadata.
+  </p>
+  <div class="steps">
+    <!-- Vertical connecting line -->
+    <div class="steps-line"></div>
+    <div class="step">
+      <div>
+        <div class="step-num"><span class="step-dot"></span>01</div>
+        <h3>Declare your interface</h3>
+        <p>Pick from 40 standard types to describe what your tool accepts, produces, and requires. Declare permissions explicitly. One file, no code changes.</p>
+      </div>
+      <div class="step-code">
+        <div class="step-code-header"><div class="dot" style="background:var(--red)"></div><div class="dot" style="background:var(--orange);opacity:0.6"></div><div class="dot" style="background:var(--green);opacity:0.6"></div><span style="margin-left:4px">effector.toml</span></div>
+        <pre><span class="section">[effector]</span>
+<span class="kw">name</span> = <span class="str">"code-review"</span>
+<span class="kw">version</span> = <span class="str">"1.0.0"</span>
+
+<span class="section">[effector.interface]</span>
+<span class="kw">input</span> = <span class="str">"CodeDiff"</span>
+<span class="kw">output</span> = <span class="str">"ReviewReport"</span>
+<span class="kw">context</span> = [<span class="str">"Repository"</span>]
+
+<span class="section">[effector.permissions]</span>
+<span class="kw">network</span> = <span class="bool">false</span>
+<span class="kw">filesystem</span> = [<span class="str">"read"</span>]</pre>
+      </div>
+    </div>
+    <div class="step">
+      <div>
+        <div class="step-num"><span class="step-dot"></span>02</div>
+        <h3>Validate statically</h3>
+        <p>Catch type errors, missing permissions, and structural issues at build time. The validator checks your manifest against the 40-type catalog and JSON schema.</p>
+      </div>
+      <div class="step-code">
+        <div class="step-code-header"><div class="dot" style="background:var(--green)"></div><div class="dot" style="background:var(--orange);opacity:0.6"></div><div class="dot" style="background:var(--red);opacity:0.6"></div><span style="margin-left:4px">terminal</span></div>
+        <pre><span class="prompt">$</span> <span class="fn">npx @effectorhq/core validate .</span>
+<span class="type">  &#x2713; effector.toml parsed</span>
+<span class="type">  &#x2713; Schema valid</span>
+<span class="type">  &#x2713; Types: CodeDiff &rarr; ReviewReport</span>
+
+<span class="prompt">$</span> <span class="fn">npx @effectorhq/audit check .</span>
+<span class="type">  &#x2713; Permissions match source</span>
+<span class="type">  &#x2713; No undeclared access</span></pre>
+      </div>
+    </div>
+    <div class="step">
+      <div>
+        <div class="step-num"><span class="step-dot"></span>03</div>
+        <h3>Compile to any runtime</h3>
+        <p>One manifest, every target. The compiler reads your <code style="background:var(--surface2);padding:1px 5px;border-radius:3px;font-size:0.88em;color:var(--orange)">effector.toml</code> and emits MCP schemas, OpenAI function definitions, LangChain configs, or JSON IR.</p>
+      </div>
+      <div class="step-code">
+        <div class="step-code-header"><div class="dot" style="background:var(--orange)"></div><div class="dot" style="background:var(--green);opacity:0.6"></div><div class="dot" style="background:var(--red);opacity:0.6"></div><span style="margin-left:4px">compile.js</span></div>
+        <pre><span class="kw">import</span> { compile } <span class="kw">from</span> <span class="str">'@effectorhq/core/compile'</span>;
+
+<span class="comment">// Same manifest, different targets</span>
+<span class="kw">const</span> mcp  = <span class="fn">compile</span>(def, <span class="str">'mcp'</span>);
+<span class="kw">const</span> oai  = <span class="fn">compile</span>(def, <span class="str">'openai-agents'</span>);
+<span class="kw">const</span> lang = <span class="fn">compile</span>(def, <span class="str">'langchain'</span>);
+<span class="kw">const</span> ir   = <span class="fn">compile</span>(def, <span class="str">'json'</span>);</pre>
+      </div>
+    </div>
+    <div class="step">
+      <div>
+        <div class="step-num"><span class="step-dot"></span>04</div>
+        <h3>Compose with confidence</h3>
+        <p>Chain tools into pipelines with type-level guarantees. The composition checker proves output types match input types &mdash; incompatible wiring is caught before any API call.</p>
+      </div>
+      <div class="step-code">
+        <div class="step-code-header"><div class="dot" style="background:#93c5fd"></div><div class="dot" style="background:var(--orange);opacity:0.6"></div><div class="dot" style="background:var(--green);opacity:0.6"></div><span style="margin-left:4px">pipeline</span></div>
+        <pre><span class="comment">// Static type checking for tool pipelines</span>
+
+<span class="fn">git-fetch</span>        <span class="type">&rarr;</span> <span class="str">CodeSnippet</span>
+    <span class="type">&darr;</span>
+<span class="fn">code-review</span>     <span class="type">&rarr;</span> <span class="str">ReviewReport</span>    <span class="type">&#x2713;</span>
+    <span class="type">&darr;</span>
+<span class="fn">slack-notify</span>    <span class="type">&rarr;</span> <span class="str">SlackMessage</span>    <span class="type">&#x2713;</span>
+
+<span class="comment">// Score: 1.0 — all types compatible</span></pre>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     SECTION 3: ADOPTION — zero friction, with numbered pills
+═══════════════════════════════════════════════════════ -->
+<div class="landing-section alt-bg">
+  <div class="landing-inner">
+    <div class="section-label">Adoption</div>
+    <h2 class="section-title">Zero friction. Zero dependencies.</h2>
+    <div class="adopt-grid">
+      <div class="adopt-card">
+        <div class="adopt-num">01</div>
+        <div class="adopt-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+        </div>
+        <h3>Sidecar manifest</h3>
+        <p>Your tool's implementation stays untouched. <code>effector.toml</code> sits next to your code like <code>.d.ts</code> sits next to <code>.js</code>.</p>
+      </div>
+      <div class="adopt-card">
+        <div class="adopt-num">02</div>
+        <div class="adopt-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        </div>
+        <h3>5 minutes to start</h3>
+        <p><code>npx create-effector</code> scaffolds everything. One command to validate, one to compile. No configuration.</p>
+      </div>
+      <div class="adopt-card">
+        <div class="adopt-num">03</div>
+        <div class="adopt-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="1.5"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+        </div>
+        <h3>Zero dependencies</h3>
+        <p>The entire toolchain uses only Node.js built-ins. No <code>node_modules</code> tree. Installs in under a second.</p>
+      </div>
+      <div class="adopt-card">
+        <div class="adopt-num">04</div>
+        <div class="adopt-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.5"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+        </div>
+        <h3>Build-time only</h3>
+        <p>No runtime overhead. Effector runs at build and CI time. Zero code in the request path.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     SECTION 4: ECOSYSTEM — visual cards instead of table
+═══════════════════════════════════════════════════════ -->
+<div class="landing-section">
+  <div class="section-label">Ecosystem</div>
+  <h2 class="section-title">9 focused packages. One shared kernel.</h2>
+  <p class="section-desc">
+    Every package builds on <code style="background:var(--surface2);padding:2px 8px;border-radius:4px;font-size:0.88em;color:var(--orange)">@effectorhq/core</code>. Every package uses only Node.js built-ins.
+  </p>
+  <div class="eco-cards">
+    <div class="eco-card eco-card-hero">
+      <div class="eco-card-tier"><span class="eco-badge eco-core">Core</span></div>
+      <h3>@effectorhq/core</h3>
+      <p>Shared kernel &mdash; TOML parser, type checker, schema validator, compiler, CLI</p>
+      <div class="eco-card-meta">11 modules &middot; 69 tests</div>
+    </div>
+    <div class="eco-card eco-card-hero">
+      <div class="eco-card-tier"><span class="eco-badge eco-core">Core</span></div>
+      <h3>effector-types</h3>
+      <p>40-type catalog &mdash; fields, aliases, subtypes, frequency scores</p>
+      <div class="eco-card-meta">40 types &middot; 40 tests</div>
+    </div>
+    <div class="eco-card">
+      <div class="eco-card-tier"><span class="eco-badge eco-dist">Dist</span></div>
+      <h3>create-effector</h3>
+      <p>Interactive project scaffolder with manifest, SKILL.md, and test setup</p>
+    </div>
+    <div class="eco-card">
+      <div class="eco-card-tier"><span class="eco-badge eco-tool">Tool</span></div>
+      <h3>@effectorhq/skill-lint</h3>
+      <p>SKILL.md structure validation</p>
+    </div>
+    <div class="eco-card">
+      <div class="eco-card-tier"><span class="eco-badge eco-tool">Tool</span></div>
+      <h3>@effectorhq/audit</h3>
+      <p>Permission verification &amp; trust tracking</p>
+    </div>
+    <div class="eco-card">
+      <div class="eco-card-tier"><span class="eco-badge eco-tool">Tool</span></div>
+      <h3>@effectorhq/compose</h3>
+      <p>Static composition &amp; type compatibility</p>
+    </div>
+    <div class="eco-card">
+      <div class="eco-card-tier"><span class="eco-badge eco-tool">Tool</span></div>
+      <h3>@effectorhq/skill-eval</h3>
+      <p>Quality scoring &mdash; 10 metrics</p>
+    </div>
+    <div class="eco-card">
+      <div class="eco-card-tier"><span class="eco-badge eco-infra">Infra</span></div>
+      <h3>@effectorhq/graph</h3>
+      <p>Interactive D3 visualization</p>
+    </div>
+    <div class="eco-card">
+      <div class="eco-card-tier"><span class="eco-badge eco-infra">Infra</span></div>
+      <h3>openclaw-mcp</h3>
+      <p>MCP server for the full toolchain</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     SECTION 5: TRY IT — interactive tools with glow
+═══════════════════════════════════════════════════════ -->
+<div class="landing-section alt-bg">
+  <div class="landing-inner">
+    <div class="section-label">Try It</div>
+    <h2 class="section-title">Everything runs in the browser.</h2>
+    <p class="section-desc">No sign-up. No download. No setup.</p>
+    <div class="try-grid">
+      <a href="/playground.html" class="try-card" data-glow="orange">
+        <div class="try-icon" style="color:var(--orange)">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="16,18 22,12 16,6"/><polyline points="8,6 2,12 8,18"/></svg>
+        </div>
+        <h3>Playground</h3>
+        <p>Paste a manifest, get instant validation and type checking</p>
+      </a>
+      <a href="/studio.html" class="try-card" data-glow="green">
+        <div class="try-icon" style="color:var(--green)">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
+        </div>
+        <h3>Studio</h3>
+        <p>Visual editor &mdash; pick types, toggle permissions, preview compile output</p>
+      </a>
+      <a href="/graph.html" class="try-card" data-glow="blue">
+        <div class="try-icon" style="color:var(--blue)">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="18" r="3"/><circle cx="18" cy="6" r="3"/><line x1="8.6" y1="7.4" x2="15.4" y2="16.6"/><line x1="15.4" y1="7.4" x2="8.6" y2="16.6"/></svg>
+        </div>
+        <h3>Graph Explorer</h3>
+        <p>Interactive D3 force graph of type relationships and subtypes</p>
+      </a>
+      <a href="/types/index.html" class="try-card" data-glow="red">
+        <div class="try-icon" style="color:var(--red)">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 7V4a2 2 0 012-2h8.5L20 7.5V20a2 2 0 01-2 2H6a2 2 0 01-2-2v-3"/><polyline points="14,2 14,8 20,8"/><line x1="2" y1="15" x2="12" y2="15"/><polyline points="9,12 12,15 9,18"/></svg>
+        </div>
+        <h3>Type Catalog</h3>
+        <p>Browse all 40 types with fields, aliases, and subtype relations</p>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     CTA — with animated gradient border
+═══════════════════════════════════════════════════════ -->
+<div class="cta-section">
+  <div class="cta-glow"></div>
+  <h2>Start with one file.<br><span class="gradient">Ship to every runtime.</span></h2>
+  <p>One command to scaffold. One manifest to declare your interface. One compiler for every target.</p>
+  <div class="cta-actions">
+    <a href="/installation.html" class="btn-primary" style="padding:14px 32px;font-size:16px">Get Started &rarr;</a>
+    <a href="/overview.html" class="btn-secondary" style="padding:14px 32px;font-size:16px">Read the Docs</a>
+  </div>
+  <div style="margin-top:24px">
+    <div class="hero-install" onclick="navigator.clipboard.writeText('npx create-effector my-skill')" style="display:inline-flex">
+      <span class="prompt">$</span>
+      <span class="cmd">npx create-effector my-skill</span>
+      <button class="copy-btn" title="Copy">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="8" height="8" rx="1.5"/><path d="M3 11V3a1 1 0 011-1h8"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     SCRIPTS: scroll reveal + counter animation + interactions
+═══════════════════════════════════════════════════════ -->
+<script>
+// Scroll-reveal observer
+const sectionObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      sectionObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.landing-section').forEach(s => sectionObserver.observe(s));
+
+// Animated counter for hero stats
+const counterObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    const el = entry.target;
+    const target = parseInt(el.dataset.count, 10);
+    if (target === 0) { el.textContent = '0'; counterObserver.unobserve(el); return; }
+    const duration = 1200;
+    const start = performance.now();
+    const tick = (now) => {
+      const t = Math.min((now - start) / duration, 1);
+      const ease = 1 - Math.pow(1 - t, 3); // ease-out cubic
+      el.textContent = Math.round(ease * target);
+      if (t < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+    counterObserver.unobserve(el);
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('.hero-stat .num[data-count]').forEach(el => counterObserver.observe(el));
+
+// Try-card glow follow mouse
+document.querySelectorAll('.try-card[data-glow]').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const rect = card.getBoundingClientRect();
+    card.style.setProperty('--glow-x', `${e.clientX - rect.left}px`);
+    card.style.setProperty('--glow-y', `${e.clientY - rect.top}px`);
+  });
+});
+</script>
+</content>
+</invoke>

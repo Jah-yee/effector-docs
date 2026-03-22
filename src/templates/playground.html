@@ -1,0 +1,281 @@
+<h1>Playground</h1>
+<p class="page-subtitle">Write and validate <code>effector.toml</code> manifests live in your browser. No installation required.</p>
+
+<div style="display:flex;gap:8px;margin-bottom:16px">
+  <select id="presetSelect" onchange="loadPreset()" style="background:var(--surface);border:1px solid var(--border);color:var(--text);padding:6px 12px;border-radius:var(--radius-xs);font-size:13px;font-family:var(--font-sans)">
+    <option value="">Load example...</option>
+    <option value="skill">Skill (code-review)</option>
+    <option value="extension">Extension (notion-sync)</option>
+    <option value="workflow">Workflow (deploy-pipeline)</option>
+    <option value="minimal">Minimal</option>
+  </select>
+  <button onclick="validateManifest()" class="btn-primary" style="padding:6px 16px;font-size:13px">Validate</button>
+</div>
+
+<div class="playground-container">
+  <div class="playground-editor">
+    <div class="playground-header">
+      <span>effector.toml</span>
+      <button onclick="navigator.clipboard.writeText(document.getElementById('tomlInput').value)" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:12px">Copy</button>
+    </div>
+    <textarea id="tomlInput" spellcheck="false" placeholder="# Paste or write your effector.toml here...">[effector]
+name = "my-skill"
+version = "0.1.0"
+description = "A sample skill"
+type = "skill"
+
+[effector.interface]
+input = "String"
+output = "Markdown"
+context = []
+
+[effector.permissions]
+network = false
+subprocess = false
+filesystem = []
+env-read = []</textarea>
+  </div>
+  <div class="playground-output">
+    <div class="playground-header">
+      <span>Validation Output</span>
+      <span id="statusBadge" style="font-size:11px;padding:2px 8px;border-radius:4px"></span>
+    </div>
+    <pre id="outputPre" style="flex:1;margin:0;border:none;border-radius:0;background:var(--bg2);overflow-y:auto"><code id="outputCode" style="color:var(--text2)">Click "Validate" or press Ctrl+Enter to check your manifest.</code></pre>
+  </div>
+</div>
+
+<div style="margin-top:24px">
+  <h2>Keyboard Shortcuts</h2>
+  <table>
+    <tr><td><code>Ctrl+Enter</code> / <code>Cmd+Enter</code></td><td>Validate manifest</td></tr>
+    <tr><td><code>Tab</code></td><td>Insert 2 spaces</td></tr>
+  </table>
+</div>
+
+<script>
+const PRESETS = {
+  skill: `[effector]
+name = "code-review"
+version = "0.1.0"
+description = "Reviews code diffs and produces structured review reports"
+type = "skill"
+
+[effector.interface]
+input = "CodeDiff"
+output = "ReviewReport"
+context = ["Repository", "GitHubCredentials"]
+
+[effector.permissions]
+network = true
+subprocess = false
+filesystem = ["read"]
+env-read = ["GITHUB_TOKEN"]`,
+
+  extension: `[effector]
+name = "notion-sync"
+version = "0.1.0"
+description = "Syncs data with Notion workspaces"
+type = "extension"
+
+[effector.interface]
+input = "JSON"
+output = "OperationStatus"
+context = ["GenericAPIKey"]
+
+[effector.permissions]
+network = true
+subprocess = false
+filesystem = []
+env-read = ["NOTION_TOKEN"]`,
+
+  workflow: `[effector]
+name = "deploy-pipeline"
+version = "0.1.0"
+description = "End-to-end deployment workflow: test, build, deploy"
+type = "workflow"
+
+[effector.interface]
+input = "RepositoryRef"
+output = "DeploymentStatus"
+context = ["AWSCredentials", "GitHubCredentials"]
+
+[effector.permissions]
+network = true
+subprocess = true
+filesystem = ["read", "write"]
+env-read = ["AWS_ACCESS_KEY_ID", "AWS_SECRET_ACCESS_KEY", "GITHUB_TOKEN"]`,
+
+  minimal: `[effector]
+name = "echo"
+version = "0.1.0"
+
+[effector.interface]
+input = "String"
+output = "String"`
+};
+
+const KNOWN_TYPES = new Set([
+  'String','FilePath','URL','JSON','RepositoryRef','CodeDiff','CodeSnippet',
+  'IssueRef','PullRequestRef','CommitRef','TextDocument','DataTable','ImageRef',
+  'PatchSet','StructuredData','Markdown','ReviewReport','SecurityReport',
+  'Notification','SlackMessage','DiscordMessage','OperationStatus','TestResult',
+  'DeploymentStatus','LintReport','Summary','TranslatedText',
+  'GitHubCredentials','GenericAPIKey','Docker','Kubernetes','AWSCredentials',
+  'SlackCredentials','Repository','CodingStandards','ShellEnvironment',
+  'UserPreferences','ConversationHistory','PromptContext','APICredentials'
+]);
+
+function loadPreset() {
+  const sel = document.getElementById('presetSelect').value;
+  if (sel && PRESETS[sel]) {
+    document.getElementById('tomlInput').value = PRESETS[sel];
+    validateManifest();
+  }
+}
+
+function validateManifest() {
+  const src = document.getElementById('tomlInput').value;
+  const out = document.getElementById('outputCode');
+  const badge = document.getElementById('statusBadge');
+  const errors = [];
+  const warnings = [];
+  const info = [];
+
+  try {
+    // Simple TOML parser (enough for effector.toml)
+    const parsed = parseSimpleTOML(src);
+
+    // Check [effector] section
+    if (!parsed.effector) {
+      errors.push('Missing [effector] section');
+    } else {
+      if (!parsed.effector.name) errors.push('Missing required field: effector.name');
+      if (!parsed.effector.version) warnings.push('Missing field: effector.version');
+      if (parsed.effector.name) info.push(`Name: ${parsed.effector.name}`);
+      if (parsed.effector.version) info.push(`Version: ${parsed.effector.version}`);
+      if (parsed.effector.type) info.push(`Type: ${parsed.effector.type}`);
+    }
+
+    // Check interface
+    const iface = parsed['effector.interface'] || parsed.effector?.interface;
+    if (iface) {
+      for (const [key, val] of Object.entries(iface)) {
+        if (key === 'context') {
+          const ctx = Array.isArray(val) ? val : (typeof val === 'string' ? [val] : []);
+          for (const t of ctx) {
+            if (!KNOWN_TYPES.has(t)) errors.push(`Unknown context type: "${t}"`);
+            else info.push(`Context: ${t} ✓`);
+          }
+        } else {
+          if (typeof val === 'string') {
+            if (!KNOWN_TYPES.has(val)) errors.push(`Unknown ${key} type: "${val}"`);
+            else info.push(`${key.charAt(0).toUpperCase() + key.slice(1)}: ${val} ✓`);
+          }
+        }
+      }
+    } else {
+      warnings.push('No [effector.interface] section — types not declared');
+    }
+
+    // Check permissions
+    const perms = parsed['effector.permissions'] || parsed.effector?.permissions;
+    if (perms) {
+      info.push('Permissions declared ✓');
+      if (perms.network === true || perms.network === 'true') info.push('  network: allowed');
+      if (perms.subprocess === true || perms.subprocess === 'true') info.push('  subprocess: allowed');
+    }
+
+  } catch (e) {
+    errors.push(`Parse error: ${e.message}`);
+  }
+
+  // Render output
+  let output = '';
+  if (errors.length > 0) {
+    output += errors.map(e => `✗ ERROR: ${e}`).join('\n') + '\n\n';
+    badge.textContent = 'ERRORS'; badge.style.background = 'var(--red-dim)'; badge.style.color = 'var(--red)';
+  }
+  if (warnings.length > 0) {
+    output += warnings.map(w => `⚠ WARNING: ${w}`).join('\n') + '\n\n';
+    if (errors.length === 0) { badge.textContent = 'WARNINGS'; badge.style.background = 'rgba(251,191,36,0.1)'; badge.style.color = 'var(--amber)'; }
+  }
+  if (info.length > 0) {
+    output += info.map(i => `  ${i}`).join('\n') + '\n';
+  }
+  if (errors.length === 0 && warnings.length === 0) {
+    output += '\n✓ Manifest is valid!';
+    badge.textContent = 'VALID'; badge.style.background = 'var(--green-dim)'; badge.style.color = 'var(--green)';
+  }
+
+  out.textContent = output;
+}
+
+function parseSimpleTOML(src) {
+  const result = {};
+  let currentSection = null;
+
+  for (const line of src.split('\n')) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith('#')) continue;
+
+    const sectionMatch = trimmed.match(/^\[([^\]]+)\]$/);
+    if (sectionMatch) {
+      currentSection = sectionMatch[1];
+      const parts = currentSection.split('.');
+      let obj = result;
+      for (const p of parts) {
+        if (!obj[p]) obj[p] = {};
+        obj = obj[p];
+      }
+      continue;
+    }
+
+    const kvMatch = trimmed.match(/^([a-zA-Z_-]+)\s*=\s*(.+)$/);
+    if (kvMatch && currentSection) {
+      const [, key, rawVal] = kvMatch;
+      const val = parseTOMLValue(rawVal.trim());
+      const parts = currentSection.split('.');
+      let obj = result;
+      for (const p of parts) obj = obj[p];
+      obj[key] = val;
+    }
+  }
+  return result;
+}
+
+function parseTOMLValue(raw) {
+  if (raw === 'true') return true;
+  if (raw === 'false') return false;
+  if (raw.startsWith('"') && raw.endsWith('"')) return raw.slice(1, -1);
+  if (raw.startsWith("'") && raw.endsWith("'")) return raw.slice(1, -1);
+  if (raw.startsWith('[') && raw.endsWith(']')) {
+    const inner = raw.slice(1, -1).trim();
+    if (!inner) return [];
+    return inner.split(',').map(s => parseTOMLValue(s.trim()));
+  }
+  if (!isNaN(raw)) return Number(raw);
+  return raw;
+}
+
+// Keyboard shortcuts
+document.getElementById('tomlInput').addEventListener('keydown', (e) => {
+  if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') { e.preventDefault(); validateManifest(); }
+  if (e.key === 'Tab') {
+    e.preventDefault();
+    const ta = e.target;
+    const start = ta.selectionStart;
+    ta.value = ta.value.substring(0, start) + '  ' + ta.value.substring(ta.selectionEnd);
+    ta.selectionStart = ta.selectionEnd = start + 2;
+  }
+});
+
+// Auto-validate on load
+setTimeout(validateManifest, 100);
+
+// Auto-validate on edit (debounced)
+let validateTimer;
+document.getElementById('tomlInput').addEventListener('input', () => {
+  clearTimeout(validateTimer);
+  validateTimer = setTimeout(validateManifest, 400);
+});
+</script>
