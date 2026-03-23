@@ -541,6 +541,11 @@ function copyAssets() {
   }
 }
 
+function writePagesCname() {
+  // Keep GitHub Pages custom domain persistent on every build output.
+  writeFileSync(join(DIST, 'CNAME'), 'effector.wtf\n');
+}
+
 // ─── Helpers ─────────────────────────────────────────────
 
 function findMarkdown(dir) {
@@ -611,6 +616,7 @@ allPages.push(...buildAPIReference());
 allPages.push(...buildSchemaReference());
 allPages.push(...buildPlayground());
 copyAssets();
+writePagesCname();
 buildSearchIndex(allPages);
 
 // Inject prev/next navigation into sidebar-linked pages
