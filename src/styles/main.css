@@ -750,7 +750,7 @@ code, pre { font-family: var(--font-mono); }
   letter-spacing: 0.1em; margin-bottom: 24px; padding-bottom: 14px;
   border-bottom: 1px solid var(--border);
 }
-.ba-before .ba-header { color: var(--text3); }
+.ba-before .ba-header { color: #CF4C46; }
 .ba-after .ba-header { color: var(--green); }
 .ba-item {
   display: flex; align-items: flex-start; gap: 12px;
@@ -923,8 +923,8 @@ code, pre { font-family: var(--font-mono); }
   position: relative;
 }
 .ba-dot-red {
-  background: rgba(224,62,62,0.5);
-  box-shadow: 0 0 0 2px rgba(224,62,62,0.15);
+  background: rgba(207,76,70,0.5);
+  box-shadow: 0 0 0 2px rgba(207,76,70,0.15);
 }
 .ba-dot-green {
   background: var(--green);
