@@ -31,7 +31,7 @@
         '::-moz-selection{background:transparent;color:inherit;text-shadow:none;}',
         '.' + CLS_OVERLAY + '{position:fixed;pointer-events:none;z-index:198;left:0;top:0;overflow:visible;}',
         '.' + CLS_OVERLAY + ' svg{position:absolute;left:0;top:0;display:block;}',
-        '.' + CLS_OVERLAY + ' path{fill:none;stroke:#eae6e1;stroke-width:2;stroke-dasharray:10 8;stroke-linecap:round;stroke-linejoin:round;animation:' + ANIM + ' 0.6s linear infinite;}',
+        '.' + CLS_OVERLAY + ' path{fill:none;stroke:#eae6e1;stroke-width:2.3;stroke-dasharray:8 6;stroke-linecap:round;stroke-linejoin:round;animation:' + ANIM + ' 0.6s linear infinite;}',
         '@keyframes ' + ANIM + '{to{stroke-dashoffset:-18}}',
       ].join('');
       document.head.appendChild(styleEl);

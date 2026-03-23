@@ -114,8 +114,8 @@ code, pre { font-family: var(--font-mono); }
 .topnav-logo {
   font-size: 18px; font-weight: 700; color: var(--text);
   display: flex; align-items: center;
-  gap: 10px;
-  margin-right: 44px;
+  gap: 0px;
+  margin-right: 32px;
 }
 .topnav-logo span { color: var(--red); }
 .topnav-logo-mark {
@@ -237,6 +237,12 @@ code, pre { font-family: var(--font-mono); }
   font-size: 13.5px;
   line-height: 1.6;
   position: relative;
+}
+.content pre:not([data-lang]) {
+  /* ASCII architecture diagrams: no language tag → render a bit larger & tighter */
+  font-size: 14px;
+  line-height: 1.35;
+  padding: 18px 18px;
 }
 .content pre[data-lang] {
   padding-top: 36px;
@@ -740,7 +746,7 @@ code, pre { font-family: var(--font-mono); }
   border-left: 1px solid var(--border);
 }
 .ba-header {
-  font-size: 11px; font-weight: 600; text-transform: uppercase;
+  font-size: 14px; font-weight: 600; text-transform: uppercase;
   letter-spacing: 0.1em; margin-bottom: 24px; padding-bottom: 14px;
   border-bottom: 1px solid var(--border);
 }
@@ -1259,7 +1265,7 @@ code, pre { font-family: var(--font-mono); }
   height: 14px;
   display: inline-block;
   vertical-align: -2px;
-  margin-right: 6px;
+  margin-right: 2px;
 }
 
 /* ═══════════════════════════════════════════════════════
