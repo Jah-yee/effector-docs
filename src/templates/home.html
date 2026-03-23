@@ -165,6 +165,227 @@
 </div>
 
 <!-- ═══════════════════════════════════════════════════════
+     SECTION 2.5: BENCHMARK — academic-grade evaluation
+═══════════════════════════════════════════════════════ -->
+<div class="landing-section alt-bg">
+  <div class="landing-inner">
+    <div class="section-label">Benchmark</div>
+    <h2 class="section-title">Verified against established benchmarks.</h2>
+    <p class="section-desc">
+      Two-tier evaluation grounded in <strong>BFCL</strong>, <strong>&tau;-bench</strong>, <strong>ToolSword</strong>, <strong>MCPToolBench++</strong>, and <strong>API-Bank</strong>. Not custom metrics &mdash; dimensions that published research has shown correlate with tool-use accuracy.
+    </p>
+
+    <!-- Tier tabs -->
+    <div class="bench-tabs">
+      <button class="bench-tab active" data-tier="a" onclick="switchBenchTier('a')">Tier A &mdash; Toolchain Accuracy</button>
+      <button class="bench-tab" data-tier="b" onclick="switchBenchTier('b')">Tier B &mdash; Schema Quality &Delta;</button>
+    </div>
+
+    <!-- TIER A: Internal Accuracy -->
+    <div class="bench-tier bench-tier-a active" id="bench-tier-a">
+      <div class="bench-grid">
+        <div class="bench-bars">
+          <div class="bench-bar">
+            <div class="bench-bar-label">Type Resolution</div>
+            <div class="bench-bar-track"><div class="bench-bar-fill" style="--target-width:87.7%"></div></div>
+            <div class="bench-bar-value">87.7%</div>
+          </div>
+          <div class="bench-bar">
+            <div class="bench-bar-label">Manifest Validation</div>
+            <div class="bench-bar-track"><div class="bench-bar-fill" style="--target-width:89.7%"></div></div>
+            <div class="bench-bar-value">89.7%</div>
+          </div>
+          <div class="bench-bar">
+            <div class="bench-bar-label">Composition Safety</div>
+            <div class="bench-bar-track"><div class="bench-bar-fill" style="--target-width:100%"></div></div>
+            <div class="bench-bar-value">100%</div>
+          </div>
+          <div class="bench-bar">
+            <div class="bench-bar-label">Security Detection</div>
+            <div class="bench-bar-track"><div class="bench-bar-fill" style="--target-width:81.4%"></div></div>
+            <div class="bench-bar-value" style="color:var(--amber)">81.4%</div>
+          </div>
+          <div class="bench-bar">
+            <div class="bench-bar-label">Compilation</div>
+            <div class="bench-bar-track"><div class="bench-bar-fill" style="--target-width:100%"></div></div>
+            <div class="bench-bar-value">100%</div>
+          </div>
+        </div>
+        <div class="bench-score-card">
+          <div class="bench-score-number gradient" data-count="89.9">0</div>
+          <div class="bench-score-label">Toolchain Score / 100</div>
+          <div class="bench-stats">
+            <div class="bench-stat"><div class="bench-stat-num">179</div><div class="bench-stat-label">Test Cases</div></div>
+            <div class="bench-stat"><div class="bench-stat-num">18</div><div class="bench-stat-label">Known Gaps</div></div>
+            <div class="bench-stat"><div class="bench-stat-num">3.2ms</div><div class="bench-stat-label">Runtime</div></div>
+            <div class="bench-stat"><div class="bench-stat-num">0</div><div class="bench-stat-label">Dependencies</div></div>
+          </div>
+          <div class="bench-run">
+            <span class="prompt">$</span> node benchmark.js --verbose
+          </div>
+        </div>
+      </div>
+      <div class="bench-known-gaps">
+        <div class="bench-gap-title">Known Limitations (why not 100%)</div>
+        <div class="bench-gap-items">
+          <div class="bench-gap-item">
+            <span class="bench-gap-tag">Type Checker</span>
+            Wildcard matching uses naive prefix &mdash; <code>BarCode</code> matches <code>Code*</code> incorrectly
+          </div>
+          <div class="bench-gap-item">
+            <span class="bench-gap-tag">Validator</span>
+            Does not reject unknown top-level fields or check interface types against catalog
+          </div>
+          <div class="bench-gap-item">
+            <span class="bench-gap-tag">Security</span>
+            Regex-based &mdash; misses leetspeak evasion, WebSocket exfiltration, produces false positives on code comments
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TIER B: Schema Quality Comparison -->
+    <div class="bench-tier bench-tier-b" id="bench-tier-b">
+      <div class="bench-b-header">
+        <div class="bench-b-label-row">
+          <span></span>
+          <span class="bench-b-col-label">Baseline MCP</span>
+          <span class="bench-b-col-label bench-b-col-eff">effector MCP</span>
+          <span class="bench-b-col-label">&Delta;</span>
+        </div>
+      </div>
+
+      <!-- Comparable dimensions -->
+      <div class="bench-b-section-title">
+        <span class="bench-b-badge bench-b-comparable">Comparable</span>
+        Both formats can express these
+      </div>
+      <div class="bench-b-row" style="--row-delay:0.1s">
+        <div class="bench-b-dim">
+          <div class="bench-b-dim-id">D1</div>
+          <div>
+            <div class="bench-b-dim-name">Function Selection Signal</div>
+            <div class="bench-b-dim-ref">BFCL &middot; Berkeley Function Calling Leaderboard</div>
+          </div>
+        </div>
+        <div class="bench-b-val bench-b-val-base">10</div>
+        <div class="bench-b-val bench-b-val-eff">38</div>
+        <div class="bench-b-delta bench-b-delta-pos">+28</div>
+      </div>
+      <div class="bench-b-row" style="--row-delay:0.2s">
+        <div class="bench-b-dim">
+          <div class="bench-b-dim-id">D2</div>
+          <div>
+            <div class="bench-b-dim-name">Parameter Extraction Signal</div>
+            <div class="bench-b-dim-ref">BFCL + API-Bank &middot; Li et al., ACL 2023</div>
+          </div>
+        </div>
+        <div class="bench-b-val bench-b-val-base">37</div>
+        <div class="bench-b-val bench-b-val-eff bench-b-val-regress">23</div>
+        <div class="bench-b-delta bench-b-delta-neg">&minus;14</div>
+      </div>
+      <div class="bench-b-row" style="--row-delay:0.3s">
+        <div class="bench-b-dim">
+          <div class="bench-b-dim-id">D5</div>
+          <div>
+            <div class="bench-b-dim-name">Schema Completeness</div>
+            <div class="bench-b-dim-ref">MCPToolBench++ &middot; Nexus (Srinivasan et al., 2023)</div>
+          </div>
+        </div>
+        <div class="bench-b-val bench-b-val-base">29</div>
+        <div class="bench-b-val bench-b-val-eff">66</div>
+        <div class="bench-b-delta bench-b-delta-pos">+37</div>
+      </div>
+
+      <!-- Differential dimensions -->
+      <div class="bench-b-section-title">
+        <span class="bench-b-badge bench-b-differential">Differential</span>
+        Capabilities effector adds to MCP
+      </div>
+      <div class="bench-b-row" style="--row-delay:0.4s">
+        <div class="bench-b-dim">
+          <div class="bench-b-dim-id">D3</div>
+          <div>
+            <div class="bench-b-dim-name">Multi-Step Composition Safety</div>
+            <div class="bench-b-dim-ref">&tau;-bench (Yao et al., 2024) + MCP-Bench</div>
+          </div>
+        </div>
+        <div class="bench-b-val bench-b-val-base">13</div>
+        <div class="bench-b-val bench-b-val-eff">88</div>
+        <div class="bench-b-delta bench-b-delta-pos">+75</div>
+      </div>
+      <div class="bench-b-row" style="--row-delay:0.5s">
+        <div class="bench-b-dim">
+          <div class="bench-b-dim-id">D4</div>
+          <div>
+            <div class="bench-b-dim-name">Safety &amp; Permission Coverage</div>
+            <div class="bench-b-dim-ref">ToolSword (Ye et al., 2024) + SafeToolBench (Guo et al., 2024)</div>
+          </div>
+        </div>
+        <div class="bench-b-val bench-b-val-base">0</div>
+        <div class="bench-b-val bench-b-val-eff">53</div>
+        <div class="bench-b-delta bench-b-delta-pos">+53</div>
+      </div>
+
+      <!-- Summary row -->
+      <div class="bench-b-summary">
+        <div class="bench-b-summary-item">
+          <div class="bench-b-summary-num gradient">+18</div>
+          <div class="bench-b-summary-label">Comparable &Delta;</div>
+        </div>
+        <div class="bench-b-summary-item">
+          <div class="bench-b-summary-num gradient">+64</div>
+          <div class="bench-b-summary-label">Differential &Delta;</div>
+        </div>
+        <div class="bench-b-summary-item">
+          <div class="bench-b-summary-num gradient">+36</div>
+          <div class="bench-b-summary-label">Combined &Delta;</div>
+        </div>
+        <div class="bench-b-summary-item">
+          <div class="bench-b-summary-num" style="color:var(--green)">8/8</div>
+          <div class="bench-b-summary-label">Composition Chains</div>
+        </div>
+      </div>
+
+      <!-- Regression callout -->
+      <div class="bench-b-regression">
+        <div class="bench-b-regression-icon">&#x26A0;</div>
+        <div>
+          <strong>D2 Regression:</strong> compile() generates inputSchema.properties only for envRead variables.
+          6/10 tools show parameter constraint regression. <em>This is a real compiler limitation, not a measurement artifact.</em>
+        </div>
+      </div>
+
+      <!-- Composition chain mini-viz -->
+      <div class="bench-chain-section">
+        <div class="bench-chain-title">Composition Chain Verification</div>
+        <div class="bench-chains">
+          <div class="bench-chain bench-chain-ok"><span class="bench-chain-icon">&#x2713;</span> code-review <span class="bench-chain-arrow">&rarr;</span> slack-notify <span class="bench-chain-type">exact-match</span></div>
+          <div class="bench-chain bench-chain-ok"><span class="bench-chain-icon">&#x2713;</span> security-scan <span class="bench-chain-arrow">&rarr;</span> slack-notify <span class="bench-chain-type">subtype</span></div>
+          <div class="bench-chain bench-chain-fail"><span class="bench-chain-icon">&#x2717;</span> file-search <span class="bench-chain-arrow">&rarr;</span> deploy-service <span class="bench-chain-type">incompatible</span></div>
+          <div class="bench-chain bench-chain-fail"><span class="bench-chain-icon">&#x2717;</span> db-query <span class="bench-chain-arrow">&rarr;</span> summarize-doc <span class="bench-chain-type">incompatible</span></div>
+        </div>
+        <div class="bench-chain-note">Baseline tools cannot participate &mdash; MCP has no typed interface model</div>
+      </div>
+    </div>
+
+    <div class="bench-methodology">
+      Grounded in
+      <a href="https://gorilla.cs.berkeley.edu/leaderboard.html" target="_blank">BFCL</a>,
+      <a href="https://arxiv.org/abs/2508.07575" target="_blank">MCPToolBench++</a>,
+      <a href="https://arxiv.org/abs/2509.09734" target="_blank">MCP-AgentBench</a>,
+      &tau;-bench (Yao et al., 2024),
+      ToolSword (Ye et al., 2024),
+      SafeToolBench (Guo et al., 2024),
+      API-Bank (Li et al., ACL 2023).
+      <br>
+      Deterministic &middot; No API keys &middot; Reproducible:
+      <code style="background:var(--bg);padding:2px 8px;border-radius:4px;font-size:12px;color:var(--orange)">node benchmark.js --verbose</code>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
      SECTION 3: ADOPTION — zero friction, with numbered pills
 ═══════════════════════════════════════════════════════ -->
 <div class="landing-section alt-bg">
@@ -218,53 +439,53 @@
     Every package builds on <code style="background:var(--surface2);padding:2px 8px;border-radius:4px;font-size:0.88em;color:var(--orange)">@effectorhq/core</code>. Every package uses only Node.js built-ins.
   </p>
   <div class="eco-cards">
-    <div class="eco-card eco-card-hero">
+    <a class="eco-card eco-card-hero" href="https://github.com/effectorHQ/effector-core" target="_blank" rel="noopener noreferrer" aria-label="Open effectorHQ/effector-core on GitHub">
       <div class="eco-card-tier"><span class="eco-badge eco-core">Core</span></div>
       <h3>@effectorhq/core</h3>
       <p>Shared kernel &mdash; TOML parser, type checker, schema validator, compiler, CLI</p>
       <div class="eco-card-meta">11 modules &middot; 69 tests</div>
-    </div>
-    <div class="eco-card eco-card-hero">
+    </a>
+    <a class="eco-card eco-card-hero" href="https://github.com/effectorHQ/effector-types" target="_blank" rel="noopener noreferrer" aria-label="Open effectorHQ/effector-types on GitHub">
       <div class="eco-card-tier"><span class="eco-badge eco-core">Core</span></div>
       <h3>effector-types</h3>
       <p>40-type catalog &mdash; fields, aliases, subtypes, frequency scores</p>
       <div class="eco-card-meta">40 types &middot; 40 tests</div>
-    </div>
-    <div class="eco-card">
+    </a>
+    <a class="eco-card" href="https://github.com/effectorHQ/create-effector" target="_blank" rel="noopener noreferrer" aria-label="Open effectorHQ/create-effector on GitHub">
       <div class="eco-card-tier"><span class="eco-badge eco-dist">Dist</span></div>
       <h3>create-effector</h3>
       <p>Interactive project scaffolder with manifest, SKILL.md, and test setup</p>
-    </div>
-    <div class="eco-card">
+    </a>
+    <a class="eco-card" href="https://github.com/effectorHQ/skill-lint" target="_blank" rel="noopener noreferrer" aria-label="Open effectorHQ/skill-lint on GitHub">
       <div class="eco-card-tier"><span class="eco-badge eco-tool">Tool</span></div>
       <h3>@effectorhq/skill-lint</h3>
       <p>SKILL.md structure validation</p>
-    </div>
-    <div class="eco-card">
+    </a>
+    <a class="eco-card" href="https://github.com/effectorHQ/effector-audit" target="_blank" rel="noopener noreferrer" aria-label="Open effectorHQ/effector-audit on GitHub">
       <div class="eco-card-tier"><span class="eco-badge eco-tool">Tool</span></div>
       <h3>@effectorhq/audit</h3>
       <p>Permission verification &amp; trust tracking</p>
-    </div>
-    <div class="eco-card">
+    </a>
+    <a class="eco-card" href="https://github.com/effectorHQ/effector-compose" target="_blank" rel="noopener noreferrer" aria-label="Open effectorHQ/effector-compose on GitHub">
       <div class="eco-card-tier"><span class="eco-badge eco-tool">Tool</span></div>
       <h3>@effectorhq/compose</h3>
       <p>Static composition &amp; type compatibility</p>
-    </div>
-    <div class="eco-card">
+    </a>
+    <a class="eco-card" href="https://github.com/effectorHQ/skill-eval" target="_blank" rel="noopener noreferrer" aria-label="Open effectorHQ/skill-eval on GitHub">
       <div class="eco-card-tier"><span class="eco-badge eco-tool">Tool</span></div>
       <h3>@effectorhq/skill-eval</h3>
       <p>Quality scoring &mdash; 10 metrics</p>
-    </div>
-    <div class="eco-card">
+    </a>
+    <a class="eco-card" href="https://github.com/effectorHQ/effector-graph" target="_blank" rel="noopener noreferrer" aria-label="Open effectorHQ/effector-graph on GitHub">
       <div class="eco-card-tier"><span class="eco-badge eco-infra">Infra</span></div>
       <h3>@effectorhq/graph</h3>
       <p>Interactive D3 visualization</p>
-    </div>
-    <div class="eco-card">
+    </a>
+    <a class="eco-card" href="https://github.com/effectorHQ/openclaw-mcp" target="_blank" rel="noopener noreferrer" aria-label="Open effectorHQ/openclaw-mcp on GitHub">
       <div class="eco-card-tier"><span class="eco-badge eco-infra">Infra</span></div>
       <h3>openclaw-mcp</h3>
       <p>MCP server for the full toolchain</p>
-    </div>
+    </a>
   </div>
 </div>
 
@@ -375,6 +596,33 @@ document.querySelectorAll('.try-card[data-glow], .adopt-card[data-glow]').forEac
     card.style.setProperty('--glow-y', `${e.clientY - rect.top}px`);
   });
 });
+
+// Benchmark tab switching
+window.switchBenchTier = function(tier) {
+  document.querySelectorAll('.bench-tab').forEach(t => t.classList.toggle('active', t.dataset.tier === tier));
+  document.querySelectorAll('.bench-tier').forEach(t => t.classList.toggle('active', t.id === 'bench-tier-' + tier));
+};
+
+// Benchmark score counter animation
+const benchCounterObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    const el = entry.target;
+    const target = parseFloat(el.dataset.count);
+    const isFloat = String(target).includes('.');
+    const duration = 1600;
+    const start = performance.now();
+    const tick = (now) => {
+      const t = Math.min((now - start) / duration, 1);
+      const ease = 1 - Math.pow(1 - t, 3);
+      el.textContent = isFloat ? (ease * target).toFixed(1) : Math.round(ease * target);
+      if (t < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+    benchCounterObserver.unobserve(el);
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('.bench-score-number[data-count]').forEach(el => benchCounterObserver.observe(el));
 </script>
 </content>
 </invoke>
