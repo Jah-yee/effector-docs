@@ -1691,7 +1691,7 @@ code, pre { font-family: var(--font-mono); }
    Some elements define their own cursor styles on :active/:focus; !important avoids
    the "default arrow cursor" fallback during clicking. */
 :root {
-  --effector-meme-cursor: url("/assets/deal-with-it-pointer-60.png") 0 0, auto;
+  --effector-meme-cursor: url("/assets/deal-with-it-pointer-60.png") 31 59, auto;
 }
 a, button, input[type="button"], input[type="submit"], input[type="reset"], select, textarea,
 [role="button"], [onclick], label {
