@@ -33,3 +33,7 @@ Connect this repo to Vercel. `vercel.json` runs submodules + `npm install` + `no
 | `node_modules/@effectorhq/core` | `src/` for API reference |
 
 For a **local monorepo** (sibling `docs/`, `effector-types/`, etc.), paths under `..` are still detected automatically.
+
+## License
+
+This project is currently licensed under the Apache 2.0 License 。
