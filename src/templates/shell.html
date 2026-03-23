@@ -257,7 +257,7 @@ requestAnimationFrame(() => { document.body.style.opacity = '1'; });
   // Use Web Animations API so the effect is robust across active/focus states.
   var SELECTOR =
     'a,button,input[type="button"],input[type="submit"],input[type="reset"],select,textarea,[role="button"],[onclick],label';
-  var DURATION_MS = 560;
+  var DURATION_MS = 680;
 
   function isDisabled(el) {
     return !!(el && (el.disabled || el.getAttribute('aria-disabled') === 'true'));
@@ -277,6 +277,19 @@ requestAnimationFrame(() => { document.body.style.opacity = '1'; });
 
     // Ensure transform can be applied immediately.
     el.style.willChange = 'transform';
+    // Make sure scale is visible even for inline elements.
+    var prevDisplay = '';
+    var changedDisplay = false;
+    try {
+      var display = window.getComputedStyle(el).display;
+      if (display === 'inline') {
+        prevDisplay = el.style.display;
+        el.style.display = 'inline-block';
+        changedDisplay = true;
+      }
+    } catch (err) {}
+
+    try { el.style.transformOrigin = 'center'; } catch (err) {}
 
     // Preserve any existing CSS transform by composing it with scale().
     // Without this, elements that already use transforms may appear "not animated".
@@ -290,23 +303,29 @@ requestAnimationFrame(() => { document.body.style.opacity = '1'; });
       [
         { transform: base + 'scale(1)', offset: 0 },
         {
-          transform: base + 'scale(1.12)',
-          offset: 0.48,
+          transform: base + 'scale(1.18)',
+          offset: 0.42,
           easing: 'cubic-bezier(0.16, 1, 0.3, 1)', // slow-ish growth
         },
         {
-          transform: base + 'scale(1.03)',
-          offset: 0.74,
+          transform: base + 'scale(0.965)',
+          offset: 0.72,
           easing: 'cubic-bezier(0.2, 0.8, 0.2, 1)',
         },
         { transform: base + 'scale(1)', offset: 1 },
       ],
-      { duration: DURATION_MS, fill: 'both' }
+      { duration: DURATION_MS, fill: 'both', composite: 'replace' }
     );
 
     el.__effectorClickPopAnim = anim;
     anim.onfinish = function () {
       try { el.style.willChange = ''; } catch (err) {}
+      if (changedDisplay) {
+        try {
+          if (prevDisplay) el.style.display = prevDisplay;
+          else el.style.removeProperty('display');
+        } catch (err) {}
+      }
       try { delete el.__effectorClickPopAnim; } catch (err) {}
     };
   }, { capture: true });
