@@ -57,7 +57,7 @@ effector is in active development with a stable core spec and a functional toolc
 
 ## Contributing
 
-effector is open source under the MIT License.
+effector is open source under the Apache License 2.0.
 
 - **GitHub**: [github.com/effectorHQ](https://github.com/effectorHQ)
 - **Issues**: Bug reports, feature requests, and type proposals welcome

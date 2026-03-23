@@ -115,7 +115,7 @@ The manifest is standard TOML — any editor with TOML syntax highlighting works
 
 ### How can I contribute?
 
-The entire toolchain is open-source under MIT. Contributions welcome:
+The entire toolchain is open-source under Apache 2.0. Contributions welcome:
 - **New type proposals**: Open an issue with the type name, fields, category, and frequency rationale
 - **Compile targets**: Add support for new runtimes
 - **Bug fixes and improvements**: PRs welcome across all repos
