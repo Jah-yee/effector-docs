@@ -254,11 +254,10 @@ requestAnimationFrame(() => { document.body.style.opacity = '1'; });
   if (window.__effectorDocsClickPopInit) return;
   window.__effectorDocsClickPopInit = true;
 
-  var POP_CLASS = 'effector-click-pop';
-  var ANIM_NAME = 'effectorClickPop';
-
-  // Most interactive controls across the site.
-  var SELECTOR = 'a,button,input,select,textarea,[role="button"],[onclick]';
+  // Use Web Animations API so the effect is robust across active/focus states.
+  var SELECTOR =
+    'a,button,input[type="button"],input[type="submit"],input[type="reset"],select,textarea,[role="button"],[onclick],label';
+  var DURATION_MS = 560;
 
   function isDisabled(el) {
     return !!(el && (el.disabled || el.getAttribute('aria-disabled') === 'true'));
@@ -268,18 +267,37 @@ requestAnimationFrame(() => { document.body.style.opacity = '1'; });
     var el = e.target && e.target.closest ? e.target.closest(SELECTOR) : null;
     if (!el || isDisabled(el)) return;
 
-    // Restart animation on every click.
-    el.classList.remove(POP_CLASS);
-    void el.offsetWidth; // force reflow
-    el.classList.add(POP_CLASS);
+    // Cancel previous pop animation (if any), then restart.
+    if (el.__effectorClickPopAnim && el.__effectorClickPopAnim.cancel) {
+      try { el.__effectorClickPopAnim.cancel(); } catch (err) {}
+    }
 
-    el.addEventListener(
-      'animationend',
-      function (ev) {
-        if (ev.animationName === ANIM_NAME) el.classList.remove(POP_CLASS);
-      },
-      { once: true }
+    // Ensure transform can be applied immediately.
+    el.style.willChange = 'transform';
+
+    var anim = el.animate(
+      [
+        { transform: 'scale(1)', offset: 0 },
+        {
+          transform: 'scale(1.12)',
+          offset: 0.48,
+          easing: 'cubic-bezier(0.16, 1, 0.3, 1)', // slow-ish growth
+        },
+        {
+          transform: 'scale(1.03)',
+          offset: 0.74,
+          easing: 'cubic-bezier(0.2, 0.8, 0.2, 1)',
+        },
+        { transform: 'scale(1)', offset: 1 },
+      ],
+      { duration: DURATION_MS, fill: 'both' }
     );
+
+    el.__effectorClickPopAnim = anim;
+    anim.onfinish = function () {
+      try { el.style.willChange = ''; } catch (err) {}
+      try { delete el.__effectorClickPopAnim; } catch (err) {}
+    };
   }, { capture: true });
 })();
 </script>

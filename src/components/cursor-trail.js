@@ -144,9 +144,8 @@
   document.body.appendChild(canvas);
 
   // Replace the cursor icon with the "Deal With It" meme pointer.
-  // Note: the PNG is loaded from the third-party CDN.
-  var cursorUrl =
-    'url("https://cdn.custom-cursor.com/db/pointer/32/Deal_With_It_Pointer.png") 0 0, auto';
+  // Use a locally resized 64px asset so the cursor is reliably 2x larger.
+  var cursorUrl = 'url("/assets/deal-with-it-pointer-64.png") 0 0, auto';
   document.documentElement.style.cursor = cursorUrl;
   document.body.style.cursor = cursorUrl;
 })();
