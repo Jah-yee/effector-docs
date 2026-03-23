@@ -72,8 +72,9 @@
   --landing-pad-x: 56px;
   --landing-pad-x-sm: 28px;
   /* How It Works — 竖线位置 + 左侧文案缩进 */
-  /* Align the vertical connector with the left step dot (padding-left 40 + dot radius 3). */
-  --steps-line-x: 43px;
+  /* Align the vertical connector with the left step dot. Tuned to avoid
+     the horizontal connector "floating" away from the vertical line. */
+  --steps-line-x: 38px;
   --steps-copy-pl: 40px;
 
   --sidebar-w:   260px;
