@@ -145,7 +145,7 @@
 
   // Replace the cursor icon with the "Deal With It" meme pointer.
   // Use a locally resized 64px asset so the cursor is reliably 2x larger.
-  var cursorUrl = 'url("/assets/deal-with-it-pointer-64.png") 0 0, auto';
+  var cursorUrl = 'url("/assets/deal-with-it-pointer-60.png") 0 0, auto';
   document.documentElement.style.cursor = cursorUrl;
   document.body.style.cursor = cursorUrl;
 })();

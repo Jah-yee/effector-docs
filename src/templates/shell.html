@@ -263,7 +263,10 @@ requestAnimationFrame(() => { document.body.style.opacity = '1'; });
     return !!(el && (el.disabled || el.getAttribute('aria-disabled') === 'true'));
   }
 
-  document.addEventListener('click', function (e) {
+  document.addEventListener('pointerdown', function (e) {
+    // Avoid triggering on secondary mouse buttons.
+    if (typeof e.button === 'number' && e.button !== 0) return;
+
     var el = e.target && e.target.closest ? e.target.closest(SELECTOR) : null;
     if (!el || isDisabled(el)) return;
 
@@ -275,20 +278,28 @@ requestAnimationFrame(() => { document.body.style.opacity = '1'; });
     // Ensure transform can be applied immediately.
     el.style.willChange = 'transform';
 
+    // Preserve any existing CSS transform by composing it with scale().
+    // Without this, elements that already use transforms may appear "not animated".
+    var base = '';
+    try {
+      var t = window.getComputedStyle(el).transform;
+      if (t && t !== 'none') base = t + ' ';
+    } catch (err) {}
+
     var anim = el.animate(
       [
-        { transform: 'scale(1)', offset: 0 },
+        { transform: base + 'scale(1)', offset: 0 },
         {
-          transform: 'scale(1.12)',
+          transform: base + 'scale(1.12)',
           offset: 0.48,
           easing: 'cubic-bezier(0.16, 1, 0.3, 1)', // slow-ish growth
         },
         {
-          transform: 'scale(1.03)',
+          transform: base + 'scale(1.03)',
           offset: 0.74,
           easing: 'cubic-bezier(0.2, 0.8, 0.2, 1)',
         },
-        { transform: 'scale(1)', offset: 1 },
+        { transform: base + 'scale(1)', offset: 1 },
       ],
       { duration: DURATION_MS, fill: 'both' }
     );
