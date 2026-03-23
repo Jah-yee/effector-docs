@@ -247,6 +247,41 @@ document.querySelectorAll('pre[data-lang]').forEach(pre => {
 document.body.style.opacity = '0';
 document.body.style.transition = 'opacity 0.2s ease';
 requestAnimationFrame(() => { document.body.style.opacity = '1'; });
+
+// ── Meme click "pop" animation (Q 弹放大 + 回弹缩小) ─────────────
+(function initClickPop() {
+  'use strict';
+  if (window.__effectorDocsClickPopInit) return;
+  window.__effectorDocsClickPopInit = true;
+
+  var POP_CLASS = 'effector-click-pop';
+  var ANIM_NAME = 'effectorClickPop';
+
+  // Most interactive controls across the site.
+  var SELECTOR = 'a,button,input,select,textarea,[role="button"],[onclick]';
+
+  function isDisabled(el) {
+    return !!(el && (el.disabled || el.getAttribute('aria-disabled') === 'true'));
+  }
+
+  document.addEventListener('click', function (e) {
+    var el = e.target && e.target.closest ? e.target.closest(SELECTOR) : null;
+    if (!el || isDisabled(el)) return;
+
+    // Restart animation on every click.
+    el.classList.remove(POP_CLASS);
+    void el.offsetWidth; // force reflow
+    el.classList.add(POP_CLASS);
+
+    el.addEventListener(
+      'animationend',
+      function (ev) {
+        if (ev.animationName === ANIM_NAME) el.classList.remove(POP_CLASS);
+      },
+      { once: true }
+    );
+  }, { capture: true });
+})();
 </script>
 <script src="/components/selection-outline.js" defer></script>
 <script src="/components/cursor-trail.js" defer></script>

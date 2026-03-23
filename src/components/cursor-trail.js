@@ -143,26 +143,10 @@
 
   document.body.appendChild(canvas);
 
-  var W = 40;
-  var H = 40;
-  var lobsterSvg =
-    '<svg xmlns="http://www.w3.org/2000/svg" width="' +
-    W +
-    '" height="' +
-    H +
-    '" viewBox="0 0 40 40">' +
-    '<ellipse cx="20" cy="24" rx="11" ry="7.5" fill="#E85A4A"/>' +
-    '<ellipse cx="20" cy="14" rx="7" ry="5.5" fill="#E85A4A"/>' +
-    '<ellipse cx="8" cy="21" rx="3.5" ry="2.5" fill="#D6453D" transform="rotate(-22 8 21)"/>' +
-    '<ellipse cx="32" cy="21" rx="3.5" ry="2.5" fill="#D6453D" transform="rotate(22 32 21)"/>' +
-    '<path d="M14 28 Q20 34 26 28" stroke="#C43E3E" stroke-width="1.4" fill="none" stroke-linecap="round"/>' +
-    '<path d="M10 10 Q7 5 8 2" stroke="#C43E3E" stroke-width="1.4" fill="none"/>' +
-    '<path d="M30 10 Q33 5 32 2" stroke="#C43E3E" stroke-width="1.4" fill="none"/>' +
-    '</svg>';
+  // Replace the cursor icon with the "Deal With It" meme pointer.
+  // Note: the PNG is loaded from the third-party CDN.
   var cursorUrl =
-    'url("data:image/svg+xml,' +
-    encodeURIComponent(lobsterSvg) +
-    '") 20 17, auto';
+    'url("https://cdn.custom-cursor.com/db/pointer/32/Deal_With_It_Pointer.png") 0 0, auto';
   document.documentElement.style.cursor = cursorUrl;
   document.body.style.cursor = cursorUrl;
 })();
