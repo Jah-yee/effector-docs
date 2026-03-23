@@ -72,7 +72,8 @@
   --landing-pad-x: 56px;
   --landing-pad-x-sm: 28px;
   /* How It Works — 竖线位置 + 左侧文案缩进 */
-  --steps-line-x: 0;
+  /* Align the vertical connector with the left step dot (padding-left 40 + dot radius 3). */
+  --steps-line-x: 43px;
   --steps-copy-pl: 40px;
 
   --sidebar-w:   260px;
@@ -546,9 +547,26 @@ code, pre { font-family: var(--font-mono); }
   gap: 64px;
   align-items: start;
   padding: 72px 0 104px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: none;
   position: relative;
   z-index: 1;
+}
+
+/* Horizontal divider: start at the connector so the left intersection area never
+   shows an extra segment. (Fixes the "line overflow" look.) */
+.step::after {
+  content: '';
+  position: absolute;
+  left: var(--steps-line-x);
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--border);
+  z-index: 0;
+}
+
+.step:last-child::after {
+  display: none;
 }
 .step > * {
   min-width: 0;
