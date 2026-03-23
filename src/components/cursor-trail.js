@@ -16,6 +16,10 @@
   var STEP = 12;
   var FADE_MS = 2400;
   var MAX_DOTS = 1000;
+  // 轻量自适应：低端设备降低粒子量，减少弱机卡顿概率。
+  try {
+    if (navigator.deviceMemory && Number(navigator.deviceMemory) <= 4) MAX_DOTS = 650;
+  } catch (err) {}
   var Z_INDEX = 149;
 
   /** 左右轨与路径垂线距离（px），中间留空，略不对称 → 参差 */
@@ -34,8 +38,11 @@
   var ctx = canvas.getContext('2d');
   if (!ctx) return;
 
+  var tickRaf = null;
+
   function resize() {
-    var dpr = window.devicePixelRatio || 1;
+    // 限制 DPR，避免超高 DPR 屏幕在全屏 canvas 上过度耗性能。
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
     var w = window.innerWidth;
     var h = window.innerHeight;
     canvas.width = Math.floor(w * dpr);
@@ -60,6 +67,9 @@
   }
 
   function onMove(e) {
+    // 只有在移动发生后才开始 tick，粒子消失后 tick 会自动停止。
+    if (tickRaf === null) tickRaf = requestAnimationFrame(tick);
+
     var bx = e.clientX;
     var by = e.clientY;
     var now = performance.now();
@@ -117,6 +127,9 @@
   document.addEventListener('mousemove', onMove, { passive: true });
 
   function tick(now) {
+    tickRaf = null;
+    if (document.visibilityState !== 'visible') return;
+
     var w = window.innerWidth;
     var h = window.innerHeight;
     ctx.clearRect(0, 0, w, h);
@@ -137,15 +150,17 @@
       ctx.fill();
       i++;
     }
-    requestAnimationFrame(tick);
+    // 粒子为空时停止绘制，避免空转浪费 CPU/GPU。
+    if (particles.length > 0) {
+      tickRaf = requestAnimationFrame(tick);
+    }
   }
-  requestAnimationFrame(tick);
 
   document.body.appendChild(canvas);
 
   // Replace the cursor icon with the "Deal With It" meme pointer.
   // Hotspot 根据裁剪图计算得到，使指尖落在点击点附近（更靠上、对准食指）。
-  var cursorUrl = 'url("/assets/deal-with-it-pointer-48.png") 24 43, auto';
+  var cursorUrl = 'url("/assets/deal-with-it-pointer-48.png") 15 0, auto';
   document.documentElement.style.cursor = cursorUrl;
   document.body.style.cursor = cursorUrl;
 })();

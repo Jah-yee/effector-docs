@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" fill="none">
+  <!-- Background -->
+  <rect width="500" height="500" rx="80" fill="#1A1A1A"/>
+
+  <!--
+    effectorHQ mark  three-prong claw
+    Three filled prongs taper via cubic beziers to symmetric pointed tips.
+    Center prong is tallest. Palm is a thick rounded bar at base.
+  -->
+
+  <!-- Left prong  center x=160, 60px wide, tip at y=70 -->
+  <path d="M 130,375
+           L 130,225
+           C 130,145 155,75 160,70
+           C 165,75 190,145 190,225
+           L 190,375 Z"
+        fill="#E03E3E"/>
+
+  <!-- Center prong  center x=250, 60px wide, tip at y=40 (tallest) -->
+  <path d="M 220,375
+           L 220,205
+           C 220,115 245,45 250,40
+           C 255,45 280,115 280,205
+           L 280,375 Z"
+        fill="#E03E3E"/>
+
+  <!-- Right prong  center x=340, 60px wide, tip at y=70 -->
+  <path d="M 310,375
+           L 310,225
+           C 310,145 335,75 340,70
+           C 345,75 370,145 370,225
+           L 370,375 Z"
+        fill="#E03E3E"/>
+
+  <!-- Palm bar -->
+  <rect x="80" y="362" width="340" height="68" rx="34" fill="#E03E3E"/>
+</svg>
+

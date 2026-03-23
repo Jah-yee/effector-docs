@@ -31,7 +31,7 @@
         '::-moz-selection{background:transparent;color:inherit;text-shadow:none;}',
         '.' + CLS_OVERLAY + '{position:fixed;pointer-events:none;z-index:198;left:0;top:0;overflow:visible;}',
         '.' + CLS_OVERLAY + ' svg{position:absolute;left:0;top:0;display:block;}',
-        '.' + CLS_OVERLAY + ' path{fill:none;stroke:#eae6e1;stroke-width:2;stroke-dasharray:10 8;stroke-linecap:butt;stroke-linejoin:miter;animation:' + ANIM + ' 0.6s linear infinite;}',
+        '.' + CLS_OVERLAY + ' path{fill:none;stroke:#eae6e1;stroke-width:2;stroke-dasharray:10 8;stroke-linecap:round;stroke-linejoin:round;animation:' + ANIM + ' 0.6s linear infinite;}',
         '@keyframes ' + ANIM + '{to{stroke-dashoffset:-18}}',
       ].join('');
       document.head.appendChild(styleEl);
@@ -200,7 +200,7 @@
       if (rows[ri2].b > maxY) maxY = rows[ri2].b;
     }
 
-    var pad = 10;
+    var pad = 16;
     var oL = minX - pad;
     var oT = minY - pad;
     var oW = maxX - minX + pad * 2;
@@ -228,7 +228,7 @@
     }
   }
 
-  function onSelectionChange() {
+  function scheduleUpdate() {
     if (raf) cancelAnimationFrame(raf);
     raf = requestAnimationFrame(function () {
       raf = null;
@@ -236,12 +236,16 @@
     });
   }
 
+  function onSelectionChange() {
+    scheduleUpdate();
+  }
+
   function onScrollResize() {
     var sel = document.getSelection();
-    if (sel && sel.rangeCount > 0 && !sel.isCollapsed) updateBox();
+    if (sel && sel.rangeCount > 0 && !sel.isCollapsed) scheduleUpdate();
   }
 
   document.addEventListener('selectionchange', onSelectionChange);
-  window.addEventListener('scroll', onScrollResize, true);
+  window.addEventListener('scroll', onScrollResize, { capture: true, passive: true });
   window.addEventListener('resize', onScrollResize);
 })();

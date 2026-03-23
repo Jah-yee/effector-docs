@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="effector — the typed capability layer for AI agents. 40 standard types, static composition, cross-runtime compilation.">
+<meta name="description" content="{{DESCRIPTION}}">
 <title>{{TITLE}}</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -258,7 +258,7 @@ requestAnimationFrame(() => { document.body.style.opacity = '1'; });
   var SELECTOR =
     'a,button,input[type="button"],input[type="submit"],input[type="reset"],select,textarea,[role="button"],[onclick],label,' +
     '.btn-primary,.btn-secondary,.btn-ghost,.copy-btn,.hero-install,.try-card,.adopt-card,.eco-card,.cap-card,.problem-card,.step,.back-to-top';
-  var DURATION_MS = 760;
+  var DURATION_MS = 860;
 
   function isDisabled(el) {
     return !!(el && (el.disabled || el.getAttribute('aria-disabled') === 'true'));
@@ -275,6 +275,8 @@ requestAnimationFrame(() => { document.body.style.opacity = '1'; });
     if (el.__effectorClickPopAnim && el.__effectorClickPopAnim.cancel) {
       try { el.__effectorClickPopAnim.cancel(); } catch (err) {}
     }
+    // WAAPI 失败时会用 class 兜底；先移除避免旧动画卡住
+    try { el.classList.remove('effector-click-pop'); } catch (err) {}
 
     // Ensure transform can be applied immediately.
     el.style.willChange = 'transform';
@@ -305,35 +307,7 @@ requestAnimationFrame(() => { document.body.style.opacity = '1'; });
     try { el.style.transform = base + 'scale(1)'; } catch (err) {}
     try { el.style.filter = 'none'; } catch (err) {}
 
-    var anim = el.animate(
-      [
-        {
-          transform: base + 'scale(1)',
-          filter: 'none',
-          boxShadow: '0 0 0 rgba(0,0,0,0)',
-          offset: 0,
-        },
-        {
-          transform: base + 'scale(1.32)',
-          filter: 'drop-shadow(0 0 14px rgba(242,122,58,0.55))',
-          boxShadow: '0 0 0 1px rgba(242,122,58,0.35), 0 10px 30px rgba(0,0,0,0.25)',
-          offset: 0.40,
-          easing: 'cubic-bezier(0.16, 1, 0.3, 1)', // slow-ish growth
-        },
-        {
-          transform: base + 'scale(0.90)',
-          filter: 'drop-shadow(0 0 8px rgba(224,62,62,0.35))',
-          boxShadow: '0 0 0 1px rgba(224,62,62,0.20), 0 6px 18px rgba(0,0,0,0.18)',
-          offset: 0.72,
-          easing: 'cubic-bezier(0.2, 0.8, 0.2, 1)',
-        },
-        { transform: base + 'scale(1)', filter: 'none', boxShadow: '0 0 0 rgba(0,0,0,0)', offset: 1 },
-      ],
-      { duration: DURATION_MS, fill: 'both', composite: 'replace' }
-    );
-
-    el.__effectorClickPopAnim = anim;
-    anim.onfinish = function () {
+    function restore() {
       try { el.style.willChange = ''; } catch (err) {}
       if (changedDisplay) {
         try {
@@ -342,6 +316,68 @@ requestAnimationFrame(() => { document.body.style.opacity = '1'; });
         } catch (err) {}
       }
       try { delete el.__effectorClickPopAnim; } catch (err) {}
+    }
+
+    var anim = null;
+    try {
+      anim = el.animate(
+        [
+          {
+            transform: base + 'scale(1)',
+            filter: 'none',
+            boxShadow: '0 0 0 rgba(0,0,0,0)',
+            offset: 0,
+          },
+          {
+            transform: base + 'scale(1.18)',
+            filter: 'drop-shadow(0 0 12px rgba(242,122,58,0.45))',
+            boxShadow: '0 0 0 1px rgba(242,122,58,0.28), 0 8px 26px rgba(0,0,0,0.22)',
+            offset: 0.30,
+            easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
+          },
+          {
+            transform: base + 'scale(0.985)',
+            filter: 'drop-shadow(0 0 9px rgba(224,62,62,0.28))',
+            boxShadow: '0 0 0 1px rgba(224,62,62,0.16), 0 5px 14px rgba(0,0,0,0.18)',
+            offset: 0.58,
+            easing: 'cubic-bezier(0.2, 0.8, 0.2, 1)',
+          },
+          {
+            transform: base + 'scale(1.035)',
+            filter: 'drop-shadow(0 0 10px rgba(224,62,62,0.22))',
+            boxShadow: '0 0 0 1px rgba(224,62,62,0.12), 0 7px 18px rgba(0,0,0,0.16)',
+            offset: 0.74,
+            easing: 'cubic-bezier(0.1, 0.9, 0.2, 1)',
+          },
+          { transform: base + 'scale(1)', filter: 'none', boxShadow: '0 0 0 rgba(0,0,0,0)', offset: 1 },
+        ],
+        // 不要强依赖 composite（不同浏览器兼容性不一致）
+        { duration: DURATION_MS, fill: 'both' }
+      );
+    } catch (err) {
+      anim = null;
+    }
+
+    if (!anim) {
+      // WAAPI 不可用或出错：用 CSS 动画兜底保证“每次都能看到”
+      try {
+        el.classList.remove('effector-click-pop');
+        // Force restart
+        void el.offsetWidth;
+        el.classList.add('effector-click-pop');
+      } catch (err) {}
+
+      setTimeout(function () {
+        restore();
+        try { el.classList.remove('effector-click-pop'); } catch (err) {}
+      }, DURATION_MS + 40);
+      return;
+    }
+
+    el.__effectorClickPopAnim = anim;
+    anim.onfinish = function () {
+      restore();
+      try { el.classList.remove('effector-click-pop'); } catch (err) {}
     };
   }, { capture: true });
 })();

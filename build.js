@@ -232,7 +232,16 @@ const SIDEBAR = [
 
 // ─── Templates ───────────────────────────────────────────
 
-function renderShell(title, bodyHtml, { activeUrl = '', isHome = false, subtitle = '' } = {}) {
+function renderShell(
+  title,
+  bodyHtml,
+  {
+    activeUrl = '',
+    isHome = false,
+    subtitle = '',
+    description = 'we build hands for AI that moves first'
+  } = {}
+) {
   const shell = readFileSync(join(SRC, 'templates', 'shell.html'), 'utf-8');
   const sidebarHtml = SIDEBAR.map(section => {
     const items = section.items.map(item => {
@@ -250,6 +259,7 @@ function renderShell(title, bodyHtml, { activeUrl = '', isHome = false, subtitle
 
   return shell
     .replace('{{TITLE}}', title + ' - effector docs')
+    .replace('{{DESCRIPTION}}', description)
     .replace('{{SIDEBAR}}', sidebarHtml)
     .replace('{{CONTENT}}', subtitleHtml + bodyHtml)
     .replace('{{LAYOUT_CLASS}}', layoutClass)
@@ -483,10 +493,12 @@ function buildHomepage() {
   const shell = readFileSync(join(SRC, 'templates', 'shell.html'), 'utf-8');
 
   const sidebarHtml = ''; // Home has no sidebar
+  const description = 'we build hands for AI that moves first';
   const result = shell
     .replace('{{TITLE}}', 'effector — Typed Capability Layer for AI Agents')
     .replace('{{SIDEBAR}}', sidebarHtml)
     .replace('{{CONTENT}}', homeTemplate)
+    .replace('{{DESCRIPTION}}', description)
     .replace('{{LAYOUT_CLASS}}', 'layout-home')
     .replace(/\{\{ACTIVE_NAV_(\w+)\}\}/g, (_, key) => key === 'HOME' ? 'active' : '');
 
@@ -544,6 +556,94 @@ function copyAssets() {
 function writePagesCname() {
   // Keep GitHub Pages custom domain persistent on every build output.
   writeFileSync(join(DIST, 'CNAME'), 'effector.wtf\n');
+}
+
+function getSiteBaseUrl() {
+  // Allow local/dev overrides without changing code.
+  return (
+    process.env.EFFECTOR_SITE_URL ||
+    process.env.SITE_BASE_URL ||
+    'https://effector.wtf'
+  ).replace(/\/+$/, '');
+}
+
+function escapeXml(s) {
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+}
+
+function copyDotFiles() {
+  const dotDir = join(ROOT, '.dot');
+  if (!existsSync(dotDir)) return;
+
+  // sitemap.xml / robots.txt are generated to keep them accurate.
+  const skip = new Set(['sitemap.xml', 'robots.txt']);
+
+  for (const entry of readdirSync(dotDir, { withFileTypes: true })) {
+    const f = entry.name;
+    const from = join(dotDir, f);
+    if (!f || skip.has(f)) continue;
+    if (!existsSync(from)) continue;
+    if (!entry.isFile()) continue;
+    copyFileSync(from, join(DIST, f));
+  }
+}
+
+function writeCrawlerFiles(pages) {
+  const baseUrl = getSiteBaseUrl();
+  const today = new Date().toISOString().slice(0, 10);
+  const locSet = new Set();
+
+  for (const p of pages || []) {
+    if (!p || typeof p.url !== 'string') continue;
+    const raw = p.url.trim();
+    if (!raw) continue;
+
+    let loc = raw;
+    if (loc === '/') {
+      loc = baseUrl + '/';
+    } else if (loc.startsWith('http://') || loc.startsWith('https://')) {
+      // keep absolute
+    } else if (loc.startsWith('/')) {
+      loc = baseUrl + loc;
+    } else {
+      loc = baseUrl + '/' + loc;
+    }
+
+    locSet.add(loc);
+  }
+
+  const sortedLoc = Array.from(locSet).sort();
+  const urlsXml = sortedLoc
+    .map(loc => `  <url><loc>${escapeXml(loc)}</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq></url>`)
+    .join('\n');
+
+  const sitemapTemplatePath = join(ROOT, '.dot', 'sitemap.xml');
+  let sitemapXml = '';
+  if (existsSync(sitemapTemplatePath)) {
+    const tpl = readFileSync(sitemapTemplatePath, 'utf-8');
+    sitemapXml = tpl.replace('{{URLS}}', `\n${urlsXml}\n`);
+  } else {
+    sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urlsXml}\n</urlset>\n`;
+  }
+  writeFileSync(join(DIST, 'sitemap.xml'), sitemapXml.endsWith('\n') ? sitemapXml : sitemapXml + '\n');
+
+  const robotsTemplatePath = join(ROOT, '.dot', 'robots.txt');
+  let robots = '';
+  if (existsSync(robotsTemplatePath)) {
+    robots = readFileSync(robotsTemplatePath, 'utf-8');
+    robots = robots.replace(
+      /^Sitemap:.*$/m,
+      `Sitemap: ${baseUrl}/sitemap.xml`
+    );
+  } else {
+    robots = `User-agent: *\nAllow: /\nSitemap: ${baseUrl}/sitemap.xml\n`;
+  }
+  writeFileSync(join(DIST, 'robots.txt'), robots.endsWith('\n') ? robots : robots + '\n');
 }
 
 // ─── Helpers ─────────────────────────────────────────────
@@ -616,7 +716,9 @@ allPages.push(...buildAPIReference());
 allPages.push(...buildSchemaReference());
 allPages.push(...buildPlayground());
 copyAssets();
+copyDotFiles();
 writePagesCname();
+writeCrawlerFiles(allPages);
 buildSearchIndex(allPages);
 
 // Inject prev/next navigation into sidebar-linked pages

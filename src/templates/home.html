@@ -6,22 +6,22 @@
   <div class="hero-glow hero-glow-1"></div>
   <div class="hero-glow hero-glow-2"></div>
 
-  <div class="hero-badge">Open Source &middot; MIT License</div>
+  <div class="hero-badge">we build hands for AI that moves first</div>
   <h1 style="font-size:clamp(42px,6vw,72px);line-height:1.05;letter-spacing:-0.03em;max-width:800px;border:none">
     Typed interoperability for<br>
     <span class="gradient">AI agent tools</span>
   </h1>
   <p class="tagline" style="font-size:17px;max-width:540px;line-height:1.8;margin-left:auto;margin-right:auto">
-    AI capabilities are in the pre-TypeScript era. Effector adds a typed interface layer &mdash; 40 standard capability types, static composition checking, and cross-runtime compilation from a single sidecar manifest.
+    AI capabilities are in the pre-TypeScript era. Effector adds a typed interface layer—tools can be composed, verified, and compiled across runtimes. All in one <code style="background:var(--surface2);padding:2px 8px;border-radius:4px;font-size:0.88em;color:var(--orange);font-family:var(--font-mono)">effector.toml</code> sidecar.
   </p>
   <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:36px">
     <a href="/installation.html" class="btn-primary" style="padding:12px 28px;font-size:16px">Get Started &rarr;</a>
     <a href="/playground.html" class="btn-secondary" style="padding:12px 28px;font-size:16px">Try the Playground</a>
   </div>
   <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:16px">
-    <div class="hero-install" onclick="navigator.clipboard.writeText('npm init @effectorhq/effector-code')">
+    <div class="hero-install" onclick="navigator.clipboard.writeText('npm install @effectorhq/core')">
       <span class="prompt">$</span>
-      <span class="cmd">npm init @effectorhq/effector-code</span>
+      <span class="cmd">npm install @effectorhq/core</span>
       <button class="copy-btn" title="Copy">
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="8" height="8" rx="1.5"/><path d="M3 11V3a1 1 0 011-1h8"/></svg>
       </button>
@@ -34,7 +34,6 @@
   <!-- Animated counter stats -->
   <div class="hero-stats" style="justify-content:center">
     <div class="hero-stat"><div class="num" data-count="40">0</div><div class="label">Capability Types</div></div>
-    <div class="hero-stat"><div class="num" data-count="4">0</div><div class="label">Compile Targets</div></div>
     <div class="hero-stat"><div class="num" data-count="249">0</div><div class="label">Tests Passing</div></div>
     <div class="hero-stat"><div class="num" data-count="0">0</div><div class="label">Dependencies</div></div>
   </div>
@@ -542,9 +541,9 @@
     <a href="/overview.html" class="btn-secondary" style="padding:14px 32px;font-size:16px">Read the Docs</a>
   </div>
   <div style="margin-top:24px">
-    <div class="hero-install" onclick="navigator.clipboard.writeText('npm init @effectorhq/effector-code')" style="display:inline-flex">
+    <div class="hero-install" onclick="navigator.clipboard.writeText('npm install @effectorhq/core')" style="display:inline-flex">
       <span class="prompt">$</span>
-      <span class="cmd">npm init @effectorhq/effector-code</span>
+      <span class="cmd">npm install @effectorhq/core</span>
       <button class="copy-btn" title="Copy">
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="8" height="8" rx="1.5"/><path d="M3 11V3a1 1 0 011-1h8"/></svg>
       </button>
@@ -590,11 +589,34 @@ document.querySelectorAll('.hero-stat .num[data-count]').forEach(el => counterOb
 
 // Try-card + Adoption cards — mouse-follow glow
 document.querySelectorAll('.try-card[data-glow], .adopt-card[data-glow]').forEach(card => {
+  // Mousemove 很高频，getBoundingClientRect() 也不便宜；用 rAF 节流，并让 rect
+  // 在短时间内复用，降低卡顿概率（不改变视觉逻辑）。
+  let rect = null;
+  let lastRectAt = 0;
+  let raf = null;
+  let lastClientX = 0;
+  let lastClientY = 0;
+
+  function refreshRect(now) {
+    rect = card.getBoundingClientRect();
+    lastRectAt = now;
+  }
+
   card.addEventListener('mousemove', e => {
-    const rect = card.getBoundingClientRect();
-    card.style.setProperty('--glow-x', `${e.clientX - rect.left}px`);
-    card.style.setProperty('--glow-y', `${e.clientY - rect.top}px`);
-  });
+    const now = performance.now();
+    lastClientX = e.clientX;
+    lastClientY = e.clientY;
+
+    if (!rect || now - lastRectAt > 120) refreshRect(now);
+    if (raf) return;
+
+    raf = requestAnimationFrame(() => {
+      raf = null;
+      if (!rect) return;
+      card.style.setProperty('--glow-x', `${lastClientX - rect.left}px`);
+      card.style.setProperty('--glow-y', `${lastClientY - rect.top}px`);
+    });
+  }, { passive: true });
 });
 
 // Benchmark tab switching
