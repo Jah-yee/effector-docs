@@ -144,8 +144,8 @@
   document.body.appendChild(canvas);
 
   // Replace the cursor icon with the "Deal With It" meme pointer.
-  // Hotspot 根据裁剪图计算得到，使指尖落在点击点附近。
-  var cursorUrl = 'url("/assets/deal-with-it-pointer-52.png") 27 49, auto';
+  // Hotspot 根据裁剪图计算得到，使指尖落在点击点附近（更靠上、对准食指）。
+  var cursorUrl = 'url("/assets/deal-with-it-pointer-48.png") 24 43, auto';
   document.documentElement.style.cursor = cursorUrl;
   document.body.style.cursor = cursorUrl;
 })();
