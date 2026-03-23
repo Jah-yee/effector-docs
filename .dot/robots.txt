@@ -1,5 +1,23 @@
 User-agent: *
 Allow: /
-Host: effector.wtf
+Disallow:
+Crawl-delay: 0
+
+User-agent: Googlebot
+Allow: /
+Disallow:
+
+User-agent: Bingbot
+Allow: /
+Disallow:
+
+User-agent: Slurp
+Allow: /
+Disallow:
+
+User-agent: DuckDuckBot
+Allow: /
+Disallow:
+
 Sitemap: https://effector.wtf/sitemap.xml
 

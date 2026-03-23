@@ -114,10 +114,15 @@ code, pre { font-family: var(--font-mono); }
 .topnav-logo {
   font-size: 18px; font-weight: 700; color: var(--text);
   display: flex; align-items: center;
-  /* no gap — logo reads as effectorHQ */
+  gap: 10px;
   margin-right: 44px;
 }
 .topnav-logo span { color: var(--red); }
+.topnav-logo-mark {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
 .topnav-links { display: flex; gap: 8px; flex: 1; }
 .topnav-links a {
   color: var(--text2); padding: 8px 16px; border-radius: var(--radius-xs);
@@ -1249,6 +1254,13 @@ code, pre { font-family: var(--font-mono); }
   margin-left: var(--sidebar-w);
 }
 .footer a { color: var(--text2); }
+.footer-logo-mark {
+  width: 14px;
+  height: 14px;
+  display: inline-block;
+  vertical-align: -2px;
+  margin-right: 6px;
+}
 
 /* ═══════════════════════════════════════════════════════
    HOME LAYOUT (no sidebar)
