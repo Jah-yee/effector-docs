@@ -145,7 +145,7 @@
 
   // Replace the cursor icon with the "Deal With It" meme pointer.
   // Hotspot 根据裁剪图计算得到，使指尖落在点击点附近。
-  var cursorUrl = 'url("/assets/deal-with-it-pointer-56.png") 29 55, auto';
+  var cursorUrl = 'url("/assets/deal-with-it-pointer-52.png") 27 49, auto';
   document.documentElement.style.cursor = cursorUrl;
   document.body.style.cursor = cursorUrl;
 })();

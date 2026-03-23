@@ -256,8 +256,9 @@ requestAnimationFrame(() => { document.body.style.opacity = '1'; });
 
   // Use Web Animations API so the effect is robust across active/focus states.
   var SELECTOR =
-    'a,button,input[type="button"],input[type="submit"],input[type="reset"],select,textarea,[role="button"],[onclick],label';
-  var DURATION_MS = 680;
+    'a,button,input[type="button"],input[type="submit"],input[type="reset"],select,textarea,[role="button"],[onclick],label,' +
+    '.btn-primary,.btn-secondary,.btn-ghost,.copy-btn,.hero-install,.try-card,.adopt-card,.eco-card,.cap-card,.problem-card,.step,.back-to-top';
+  var DURATION_MS = 620;
 
   function isDisabled(el) {
     return !!(el && (el.disabled || el.getAttribute('aria-disabled') === 'true'));
@@ -301,18 +302,20 @@ requestAnimationFrame(() => { document.body.style.opacity = '1'; });
 
     var anim = el.animate(
       [
-        { transform: base + 'scale(1)', offset: 0 },
+        { transform: base + 'scale(1)', filter: 'none', offset: 0 },
         {
-          transform: base + 'scale(1.18)',
-          offset: 0.42,
+          transform: base + 'scale(1.26)',
+          filter: 'drop-shadow(0 0 12px rgba(242,122,58,0.40))',
+          offset: 0.40,
           easing: 'cubic-bezier(0.16, 1, 0.3, 1)', // slow-ish growth
         },
         {
-          transform: base + 'scale(0.965)',
-          offset: 0.72,
+          transform: base + 'scale(0.93)',
+          filter: 'drop-shadow(0 0 6px rgba(224,62,62,0.25))',
+          offset: 0.70,
           easing: 'cubic-bezier(0.2, 0.8, 0.2, 1)',
         },
-        { transform: base + 'scale(1)', offset: 1 },
+        { transform: base + 'scale(1)', filter: 'none', offset: 1 },
       ],
       { duration: DURATION_MS, fill: 'both', composite: 'replace' }
     );
