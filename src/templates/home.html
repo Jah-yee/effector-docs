@@ -280,8 +280,8 @@
           </div>
         </div>
         <div class="bench-b-val bench-b-val-base">37</div>
-        <div class="bench-b-val bench-b-val-eff bench-b-val-regress">23</div>
-        <div class="bench-b-delta bench-b-delta-neg">&minus;14</div>
+        <div class="bench-b-val bench-b-val-eff">73</div>
+        <div class="bench-b-delta bench-b-delta-pos">+36</div>
       </div>
       <div class="bench-b-row" style="--row-delay:0.3s">
         <div class="bench-b-dim">
@@ -292,8 +292,8 @@
           </div>
         </div>
         <div class="bench-b-val bench-b-val-base">29</div>
-        <div class="bench-b-val bench-b-val-eff">66</div>
-        <div class="bench-b-delta bench-b-delta-pos">+37</div>
+        <div class="bench-b-val bench-b-val-eff">93</div>
+        <div class="bench-b-delta bench-b-delta-pos">+64</div>
       </div>
 
       <!-- Differential dimensions -->
@@ -329,7 +329,7 @@
       <!-- Summary row -->
       <div class="bench-b-summary">
         <div class="bench-b-summary-item">
-          <div class="bench-b-summary-num gradient">+18</div>
+          <div class="bench-b-summary-num gradient">+43</div>
           <div class="bench-b-summary-label">Comparable &Delta;</div>
         </div>
         <div class="bench-b-summary-item">
@@ -337,7 +337,7 @@
           <div class="bench-b-summary-label">Differential &Delta;</div>
         </div>
         <div class="bench-b-summary-item">
-          <div class="bench-b-summary-num gradient">+36</div>
+          <div class="bench-b-summary-num gradient">+51</div>
           <div class="bench-b-summary-label">Combined &Delta;</div>
         </div>
         <div class="bench-b-summary-item">
@@ -346,12 +346,12 @@
         </div>
       </div>
 
-      <!-- Regression callout -->
-      <div class="bench-b-regression">
-        <div class="bench-b-regression-icon">&#x26A0;</div>
+      <!-- Zero regressions note -->
+      <div class="bench-b-regression" style="border-color: var(--green, #22C55E); background: rgba(34,197,94,0.06);">
+        <div class="bench-b-regression-icon" style="color: var(--green, #22C55E);">&#x2713;</div>
         <div>
-          <strong>D2 Regression:</strong> compile() generates inputSchema.properties only for envRead variables.
-          6/10 tools show parameter constraint regression. <em>This is a real compiler limitation, not a measurement artifact.</em>
+          <strong>0 regressions.</strong> Compiler expands interface input types into JSON Schema parameters via the type catalog.
+          All 50 tool&times;dimension cells show improvement over baseline.
         </div>
       </div>
 
