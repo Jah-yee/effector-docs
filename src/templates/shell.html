@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="icon" type="image/png" href="/assets/hero-hands-logo.png">
 <link rel="apple-touch-icon" href="/assets/hero-hands-logo.png">
-<link rel="stylesheet" href="/styles/main.css">
+<link rel="stylesheet" href="/styles/main.css?v={{ASSET_VERSION}}">
 </head>
 <body>
 
@@ -138,16 +138,13 @@ document.querySelectorAll('.sidebar-section-title').forEach(title => {
   chevron.innerHTML = '&#9662;';
   title.appendChild(chevron);
 
-  // Auto-expand section containing active link
   const section = title.parentElement;
-  const hasActive = section.querySelector('a.active');
   // Default sidebar open/close state:
-  // - Expanded: Getting Started / Core Concepts / Reference / Tools
-  // - Collapsed: Product / Operations / Community
+  // - Expanded: Product
+  // - Collapsed: all other sections
   // Users can still collapse/expand by clicking the section title.
   const label = (title.textContent || '').replace(/[▼▾]+/g, '').trim();
-  const expanded = new Set(['Getting Started', 'Core Concepts', 'Reference', 'Tools']);
-  if (expanded.has(label)) {
+  if (label === 'Product') {
     section.classList.remove('collapsed');
   } else {
     section.classList.add('collapsed');
@@ -268,7 +265,7 @@ requestAnimationFrame(() => { document.body.style.opacity = '1'; });
   var SELECTOR =
     'a,button,input[type="button"],input[type="submit"],input[type="reset"],select,textarea,[role="button"],[onclick],label,' +
     '.btn-primary,.btn-secondary,.btn-ghost,.copy-btn,.hero-install,.try-card,.adopt-card,.eco-card,.cap-card,.problem-card,.step,.back-to-top';
-  var DURATION_MS = 400;
+  var DURATION_MS = 480;
 
   function isDisabled(el) {
     return !!(el && (el.disabled || el.getAttribute('aria-disabled') === 'true'));
@@ -342,14 +339,14 @@ requestAnimationFrame(() => { document.body.style.opacity = '1'; });
             transform: base + 'scale(1.06)',
             filter: 'drop-shadow(0 0 8px rgba(242,122,58,0.3))',
             boxShadow: '0 0 0 1px rgba(242,122,58,0.1)',
-            offset: 0.30,
+            offset: 0.24,
             easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
           },
           {
             transform: base + 'scale(0.99)',
             filter: 'none',
             boxShadow: '0 0 0 rgba(0,0,0,0)',
-            offset: 0.65,
+            offset: 0.58,
             easing: 'cubic-bezier(0.33, 1, 0.68, 1)',
           },
           { transform: base + 'scale(1)', filter: 'none', boxShadow: '0 0 0 rgba(0,0,0,0)', offset: 1, easing: 'cubic-bezier(0.33, 1, 0.68, 1)' },

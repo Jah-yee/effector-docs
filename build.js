@@ -50,6 +50,7 @@ const CORE = pickDir([
 ]);
 
 console.log('[build] sources — DOCS:', DOCS || '—', '| TYPES:', TYPES || '—', '| SCHEMA:', SCHEMA || '—', '| CORE:', CORE || '—');
+const ASSET_VERSION = Date.now().toString(36);
 
 // ─── Markdown → HTML ──────────────────────────────────────
 
@@ -260,6 +261,7 @@ function renderShell(
   return shell
     .replace('{{TITLE}}', title + ' - effector docs')
     .replace('{{DESCRIPTION}}', description)
+    .replace('{{ASSET_VERSION}}', ASSET_VERSION)
     .replace('{{SIDEBAR}}', sidebarHtml)
     .replace('{{CONTENT}}', subtitleHtml + bodyHtml)
     .replace('{{LAYOUT_CLASS}}', layoutClass)
@@ -496,6 +498,7 @@ function buildHomepage() {
   const description = 'we build hands for AI that moves first';
   const result = shell
     .replace('{{TITLE}}', 'effector — Typed Capability Layer for AI Agents')
+    .replace('{{ASSET_VERSION}}', ASSET_VERSION)
     .replace('{{SIDEBAR}}', sidebarHtml)
     .replace('{{CONTENT}}', homeTemplate)
     .replace('{{DESCRIPTION}}', description)
