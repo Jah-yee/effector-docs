@@ -52,15 +52,15 @@
   /* 暗红印泥：utility / 非渐变字用 */
   --letterpress-ink: #3e1614;
   /* 区块小标题实色（与 hero 渐变标题区分；避免 clip:text 导致阴影失效） */
-  --section-label-ink: #b7484c;
-  --section-label-ink-on-alt: #c75a5e;
+ --section-label-ink: #e15163;
+ --section-label-ink-on-alt: #e85d6e;
   /*
    * 渐变字浮雕：明暗结构不变；高光/咬边与字身同为偏暗酒红，避免桃橙感。
    */
   --letterpress-shadow-label:
     /* 上沿：主层 —— 暗红高光（压暗、偏红） */
-    0 -0.03em 0 rgba(165, 58, 64, 0.4),
-    0 -0.02em 0 rgba(120, 38, 42, 0.32),
+ 0 -0.03em 0 rgba(198, 66, 79, 0.48),
+ 0 -0.02em 0 rgba(144, 36, 48, 0.38),
     /* 下沿：浅槽 */
     0 0.04em 0 rgba(0, 0, 0, 0.4),
     0 0.07em 0.12em rgba(0, 0, 0, 0.28),
@@ -88,6 +88,17 @@
 ═══════════════════════════════════════════════════════ */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"] {
+  -webkit-appearance: none;
+  appearance: none;
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: none;
+}
 body {
   font-family: var(--font-sans);
   background: var(--bg);
@@ -425,9 +436,9 @@ code, pre { font-family: var(--font-mono); }
 .landing-section.alt-bg > .landing-inner { max-width: 1400px; margin: 0 auto; padding: 0 var(--landing-pad-x); }
 /*
  * 区块小标题（THE PROBLEM / HOW IT WORKS …）
- * 官网底：--bg #0F0F0F、条纹区 --bg2 #141414。
- * 勿再用 background-clip:text + 透明字：与 text-shadow 叠用时常见「浮雕不见 / 发灰脏边」。
- * 用实色印泥 + --letterpress-shadow-label，条纹区略提亮字色以贴合稍亮底。
+ * 目标：保留新版偏酒红配色，同时找回旧版文字内部纹理层次。
+ * 做法：默认仍用实色字 + letterpress 阴影兜底；支持 background-clip:text 的浏览器
+ * 再叠一层低对比度纹理渐变，避免颜色发灰。
  */
 .section-label {
   display: block;
@@ -450,6 +461,45 @@ code, pre { font-family: var(--font-mono); }
 }
 .landing-section.alt-bg .section-label {
   color: var(--section-label-ink-on-alt);
+}
+@supports (-webkit-background-clip: text) {
+  .section-label {
+    background-image:
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--section-label-ink) 86%, #ffe1e6 14%) 0%,
+        color-mix(in srgb, var(--section-label-ink) 98%, #000 2%) 46%,
+        color-mix(in srgb, var(--section-label-ink) 90%, #000 10%) 100%
+      ),
+      repeating-linear-gradient(
+        168deg,
+        rgba(255, 236, 236, 0.14) 0px,
+        rgba(255, 236, 236, 0.14) 1px,
+        rgba(0, 0, 0, 0.00) 1px,
+        rgba(0, 0, 0, 0.00) 4px
+      );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .landing-section.alt-bg .section-label {
+    background-image:
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--section-label-ink-on-alt) 88%, #ffe6e9 12%) 0%,
+        color-mix(in srgb, var(--section-label-ink-on-alt) 98%, #000 2%) 46%,
+        color-mix(in srgb, var(--section-label-ink-on-alt) 91%, #000 9%) 100%
+      ),
+      repeating-linear-gradient(
+        168deg,
+        rgba(255, 236, 236, 0.12) 0px,
+        rgba(255, 236, 236, 0.12) 1px,
+        rgba(0, 0, 0, 0.00) 1px,
+        rgba(0, 0, 0, 0.00) 4px
+      );
+  }
 }
 .section-title {
   font-size: clamp(28px, 4vw, 38px); font-weight: 700;
@@ -2105,14 +2155,23 @@ code, pre { font-family: var(--font-mono); }
 
 /* Regression callout */
 .bench-b-regression {
-  display: flex; gap: 12px; align-items: flex-start;
+  display: flex; gap: 10px; align-items: center;
   margin-top: 24px; padding: 16px 20px;
   background: rgba(251,191,36,0.04);
   border: 1px solid rgba(251,191,36,0.15);
   border-radius: var(--radius-sm);
   font-size: 13px; color: var(--text2); line-height: 1.6;
 }
-.bench-b-regression-icon { font-size: 18px; flex-shrink: 0; }
+.bench-b-regression-icon {
+  font-size: 14px;
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: 0;
+}
+.bench-b-regression > div:last-child {
+  flex: 1;
+  min-width: 0;
+}
 .bench-b-regression strong { color: var(--amber); }
 .bench-b-regression em { color: var(--text3); font-style: italic; }
 
