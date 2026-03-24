@@ -7,6 +7,14 @@ subtitle: Auto-generate effector.toml from existing MCP server projects.
 
 The reverse compiler scans an existing MCP server project and auto-generates an `effector.toml` manifest. This is the fastest way to adopt effector for an existing project.
 
+## When to use Reverse Compiler
+
+- You already have an MCP server and want to bootstrap `effector.toml` quickly
+- You are migrating existing tools and need a best-effort first draft
+- You want permission/type hints before manual cleanup
+
+If you start from scratch, use [Studio](/studio.html) or [Playground](/playground.html).
+
 ## Usage
 
 ```bash

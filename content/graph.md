@@ -7,6 +7,14 @@ subtitle: Interactive dependency graph visualization for capability registries.
 
 The effector Graph Explorer visualizes capability registries as interactive D3 force-directed graphs. See how capabilities connect through their types, explore the type spectrum, and analyze composition patterns.
 
+## When to use Graph Explorer
+
+- You need registry-level visibility (not single manifest editing)
+- You want to inspect composition density, trust, and type coverage
+- You need diff views between two registry snapshots
+
+If you are editing one manifest, use [Playground](/playground.html) or [Studio](/studio.html).
+
 ## Views
 
 ### Explorer

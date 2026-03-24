@@ -45,6 +45,13 @@ Now your tool has:
 
 effector is a cohesive ecosystem of focused tools, each doing one thing well:
 
+### Choose by task
+
+- **Validate fast**: [Playground](/playground.html) — edit TOML and get immediate validation/compile output
+- **Author visually**: [Studio](/studio.html) — form-based manifest + SKILL.md generation
+- **Migrate existing MCP**: [Reverse Compiler](/reverse-compiler.html) — generate first-draft manifest from code
+- **Analyze registries**: [Graph Explorer](/graph.html) — graph, spectrum, dashboard, diff
+
 | Tool | What it does |
 |------|-------------|
 | `@effectorhq/core` | Shared kernel — TOML parser, type checker, schema validator, compiler |

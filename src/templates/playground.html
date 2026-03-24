@@ -1,60 +1,70 @@
-<h1>Playground</h1>
-<p class="page-subtitle">Write and validate <code>effector.toml</code> manifests live in your browser. No installation required.</p>
+<div class="pg-wide">
 
-<div style="display:flex;gap:8px;margin-bottom:16px">
-  <select id="presetSelect" onchange="loadPreset()" style="background:var(--surface);border:1px solid var(--border);color:var(--text);padding:6px 12px;border-radius:var(--radius-xs);font-size:13px;font-family:var(--font-sans)">
-    <option value="">Load example...</option>
-    <option value="skill">Skill (code-review)</option>
-    <option value="extension">Extension (notion-sync)</option>
-    <option value="workflow">Workflow (deploy-pipeline)</option>
-    <option value="minimal">Minimal</option>
-  </select>
-  <button onclick="validateManifest()" class="btn-primary" style="padding:6px 16px;font-size:13px">Validate</button>
+<!-- ── Hero: title + one line ──────────────────────── -->
+<div class="pg-hero">
+  <h1 style="font-size:clamp(28px,4vw,36px);letter-spacing:-0.02em">Playground</h1>
+  <p class="tagline">Write and validate <code style="background:var(--surface2);padding:2px 8px;border-radius:4px;font-size:0.88em;color:var(--orange)">effector.toml</code> manifests live in your browser. No installation required.</p>
 </div>
 
+<!-- ── Flow diagram: standalone visual ─────────────── -->
+<div class="pg-flow-hero">
+  <div class="pg-flow-chain">
+    <span class="pg-flow-node pg-flow-source">effector.toml</span>
+    <span class="pg-flow-sep">
+      <svg width="24" height="12" viewBox="0 0 24 12"><path d="M0 6h20m-4-4l4 4-4 4" fill="none" stroke="var(--text3)" stroke-width="1.5"/></svg>
+    </span>
+    <span class="pg-flow-node">validate</span>
+    <span class="pg-flow-sep">
+      <svg width="24" height="12" viewBox="0 0 24 12"><path d="M0 6h20m-4-4l4 4-4 4" fill="none" stroke="var(--text3)" stroke-width="1.5"/></svg>
+    </span>
+    <span class="pg-flow-node">compile</span>
+    <span class="pg-flow-sep">
+      <svg width="24" height="12" viewBox="0 0 24 12"><path d="M0 6h20m-4-4l4 4-4 4" fill="none" stroke="var(--text3)" stroke-width="1.5"/></svg>
+    </span>
+    <span class="pg-flow-targets">
+      <span class="pg-flow-node pg-flow-target" style="border-color:var(--green)">MCP</span>
+      <span class="pg-flow-node pg-flow-target" style="border-color:var(--blue)">OpenAI</span>
+      <span class="pg-flow-node pg-flow-target" style="border-color:var(--amber)">LangChain</span>
+    </span>
+  </div>
+</div>
+
+<!-- ── Controls: dropdown + validate ───────────────── -->
+<div class="pg-controls">
+  <button class="pg-validate-btn" onclick="validateManifest()">Validate</button>
+  <span class="pg-controls-hint" id="statusBadge"></span>
+</div>
+<div class="pg-modes">
+  <button class="pg-mode-card active" data-mode="skill" onclick="selectPreset('skill')">
+    <span class="pg-mode-title">Scale</span>
+    <span class="pg-mode-desc">code-review: CodeDiff → ReviewReport</span>
+  </button>
+  <button class="pg-mode-card" data-mode="extension" onclick="selectPreset('extension')">
+    <span class="pg-mode-title">Extension</span>
+    <span class="pg-mode-desc">notion-sync: JSON → OperationStatus</span>
+  </button>
+  <button class="pg-mode-card" data-mode="workflow" onclick="selectPreset('workflow')">
+    <span class="pg-mode-title">Flow</span>
+    <span class="pg-mode-desc">deploy-pipeline: RepositoryRef → DeploymentStatus</span>
+  </button>
+  <button class="pg-mode-card" data-mode="minimal" onclick="selectPreset('minimal')">
+    <span class="pg-mode-title">Workflow (Minimal)</span>
+    <span class="pg-mode-desc">Simplest valid manifest</span>
+  </button>
+</div>
+
+<!-- ── Editor + Output ─────────────────────────────── -->
 <div class="playground-container">
   <div class="playground-editor">
     <div class="playground-header">
       <span>effector.toml</span>
-      <button onclick="navigator.clipboard.writeText(document.getElementById('tomlInput').value)" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:12px">Copy</button>
+      <div class="pg-header-actions">
+        <button onclick="navigator.clipboard.writeText(document.getElementById('tomlInput').value)" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:12px">Copy</button>
+        <button onclick="downloadCurrentManifest()" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:12px">Download</button>
+        <button onclick="shareCurrentManifest()" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:12px">Share</button>
+      </div>
     </div>
     <textarea id="tomlInput" spellcheck="false" placeholder="# Paste or write your effector.toml here...">[effector]
-name = "my-skill"
-version = "0.1.0"
-description = "A sample skill"
-type = "skill"
-
-[effector.interface]
-input = "String"
-output = "Markdown"
-context = []
-
-[effector.permissions]
-network = false
-subprocess = false
-filesystem = []
-env-read = []</textarea>
-  </div>
-  <div class="playground-output">
-    <div class="playground-header">
-      <span>Validation Output</span>
-      <span id="statusBadge" style="font-size:11px;padding:2px 8px;border-radius:4px"></span>
-    </div>
-    <pre id="outputPre" style="flex:1;margin:0;border:none;border-radius:0;background:var(--bg2);overflow-y:auto"><code id="outputCode" style="color:var(--text2)">Click "Validate" or press Ctrl+Enter to check your manifest.</code></pre>
-  </div>
-</div>
-
-<div style="margin-top:24px">
-  <h2>Keyboard Shortcuts</h2>
-  <table>
-    <tr><td><code>Ctrl+Enter</code> / <code>Cmd+Enter</code></td><td>Validate manifest</td></tr>
-    <tr><td><code>Tab</code></td><td>Insert 2 spaces</td></tr>
-  </table>
-</div>
-
-<script>
-const PRESETS = {
-  skill: `[effector]
 name = "code-review"
 version = "0.1.0"
 description = "Reviews code diffs and produces structured review reports"
@@ -69,213 +79,336 @@ context = ["Repository", "GitHubCredentials"]
 network = true
 subprocess = false
 filesystem = ["read"]
-env-read = ["GITHUB_TOKEN"]`,
+env-read = ["GITHUB_TOKEN"]</textarea>
+  </div>
+  <div class="playground-output">
+    <div class="pg-output-tabs">
+      <button class="pg-output-tab active" onclick="switchOutputTab('validate')">Validation</button>
+      <button class="pg-output-tab" onclick="switchOutputTab('mcp')">MCP</button>
+      <button class="pg-output-tab" onclick="switchOutputTab('openai')">OpenAI</button>
+      <button class="pg-output-tab" onclick="switchOutputTab('json')">JSON IR</button>
+      <button class="pg-output-tab" onclick="switchOutputTab('diff')">Diff</button>
+    </div>
+    <pre id="outputPre" style="flex:1;margin:0;border:none;border-radius:0;background:var(--bg2);overflow-y:auto;padding:16px"><code id="outputCode" style="color:var(--text2)">Press Validate or Ctrl+Enter.</code></pre>
+  </div>
+</div>
 
-  extension: `[effector]
-name = "notion-sync"
-version = "0.1.0"
-description = "Syncs data with Notion workspaces"
-type = "extension"
+<div class="pg-preview">
+  <h2>Interaction Preview</h2>
+  <p>Generate a sample run from your current manifest. This is synthetic output for intuition, not execution.</p>
+  <button class="btn-secondary pg-preview-btn" onclick="runSimulation()">Generate Preview</button>
+  <pre class="pg-preview-output" id="simulationOutput"><code>Run preview to see sample input/output.</code></pre>
+</div>
 
-[effector.interface]
-input = "JSON"
-output = "OperationStatus"
-context = ["GenericAPIKey"]
+<!-- ── Keyboard Shortcuts ──────────────────────────── -->
+<div class="pg-shortcuts">
+  <h2>Keyboard Shortcuts</h2>
+  <table>
+    <tr><td><kbd>Ctrl+Enter</kbd> / <kbd>Cmd+Enter</kbd></td><td>Validate manifest</td></tr>
+    <tr><td><kbd>Tab</kbd></td><td>Insert 2 spaces</td></tr>
+  </table>
+</div>
 
-[effector.permissions]
-network = true
-subprocess = false
-filesystem = []
-env-read = ["NOTION_TOKEN"]`,
+<!-- ── Next Steps (accordion) ──────────────────────── -->
+<div class="pg-section" id="pg-pipeline">
+  <h2 class="pg-next-title">Next Steps</h2>
+  <div class="quickstart-steps">
+    <div class="quickstart-step" data-step="1">
+      <button class="quickstart-toggle active" onclick="toggleToolStep(1)">
+        <span class="quickstart-num">01</span>
+        <span class="quickstart-toggle-title">Scaffold</span>
+        <span class="quickstart-toggle-icon">&minus;</span>
+      </button>
+      <div class="quickstart-body open" id="toolStepBody1">
+        <div class="quickstart-cmd" onclick="navigator.clipboard.writeText('npx create-effector my-tool')">
+          <span class="prompt">$</span>
+          <span class="cmd">npx create-effector my-tool</span>
+        </div>
+        <pre class="quickstart-note"><span style="color:var(--green)">Created</span> effector.toml
+<span style="color:var(--green)">Created</span> SKILL.md
+<span style="color:var(--green)">Created</span> tests/</pre>
+      </div>
+    </div>
+    <div class="quickstart-step" data-step="2">
+      <button class="quickstart-toggle" onclick="toggleToolStep(2)">
+        <span class="quickstart-num">02</span>
+        <span class="quickstart-toggle-title">Validate</span>
+        <span class="quickstart-toggle-icon">+</span>
+      </button>
+      <div class="quickstart-body" id="toolStepBody2">
+        <div class="quickstart-cmd" onclick="navigator.clipboard.writeText('npx @effectorhq/core validate .')">
+          <span class="prompt">$</span>
+          <span class="cmd">npx @effectorhq/core validate .</span>
+        </div>
+        <pre class="quickstart-note"><span style="color:var(--green)">✓</span> effector.toml parsed
+<span style="color:var(--green)">✓</span> Schema valid
+<span style="color:var(--green)">✓</span> Valid types
+<span style="color:var(--green)">✓</span> CodeDiff → ReviewReport</pre>
+      </div>
+    </div>
+    <div class="quickstart-step" data-step="3">
+      <button class="quickstart-toggle" onclick="toggleToolStep(3)">
+        <span class="quickstart-num">03</span>
+        <span class="quickstart-toggle-title">Audit</span>
+        <span class="quickstart-toggle-icon">+</span>
+      </button>
+      <div class="quickstart-body" id="toolStepBody3">
+        <div class="quickstart-cmd" onclick="navigator.clipboard.writeText('npx @effectorhq/audit check .')">
+          <span class="prompt">$</span>
+          <span class="cmd">npx @effectorhq/audit check .</span>
+        </div>
+        <pre class="quickstart-note"><span style="color:var(--green)">✓</span> Permissions match source
+<span style="color:var(--green)">✓</span> No undeclared access</pre>
+      </div>
+    </div>
+    <div class="quickstart-step" data-step="4">
+      <button class="quickstart-toggle" onclick="toggleToolStep(4)">
+        <span class="quickstart-num">04</span>
+        <span class="quickstart-toggle-title">Compile</span>
+        <span class="quickstart-toggle-icon">+</span>
+      </button>
+      <div class="quickstart-body" id="toolStepBody4">
+        <div class="quickstart-cmd" onclick="navigator.clipboard.writeText('npx @effectorhq/core compile . --target mcp')">
+          <span class="prompt">$</span>
+          <span class="cmd">npx @effectorhq/core compile . --target mcp</span>
+        </div>
+        <pre class="quickstart-note"><span style="color:var(--green)">→</span> mcp-schema.json</pre>
+      </div>
+    </div>
+  </div>
+</div>
 
-  workflow: `[effector]
-name = "deploy-pipeline"
-version = "0.1.0"
-description = "End-to-end deployment workflow: test, build, deploy"
-type = "workflow"
+<div class="pg-bottom-cta">
+  <h2>Ready to reserve your tool contract?</h2>
+  <p>Validate here, then ship to runtime-specific schemas with one manifest.</p>
+  <div class="pg-bottom-actions">
+    <a href="/installation.html" class="btn-primary" style="padding:10px 22px;font-size:14px">Get Started</a>
+    <a href="/studio.html" class="btn-secondary" style="padding:10px 22px;font-size:14px">Open Studio</a>
+  </div>
+</div>
 
-[effector.interface]
-input = "RepositoryRef"
-output = "DeploymentStatus"
-context = ["AWSCredentials", "GitHubCredentials"]
+</div><!-- /pg-wide -->
 
-[effector.permissions]
-network = true
-subprocess = true
-filesystem = ["read", "write"]
-env-read = ["AWS_ACCESS_KEY_ID", "AWS_SECRET_ACCESS_KEY", "GITHUB_TOKEN"]`,
+<script>
+const TYPE_CATALOG = {
+  String:{fields:{required:['value'],optional:['encoding']}},FilePath:{fields:{required:['path'],optional:['exists']}},URL:{fields:{required:['url'],optional:['headers']}},JSON:{fields:{required:['data'],optional:['schema']}},CodeDiff:{fields:{required:['files'],optional:['context','startLine','endLine']}},CodeSnippet:{fields:{required:['code'],optional:['language','startLine','endLine']}},RepositoryRef:{fields:{required:['url'],optional:['branch','commit']}},IssueRef:{fields:{required:['number'],optional:['url']}},TextDocument:{fields:{required:['content'],optional:['title','wordCount']}},DataTable:{fields:{required:['rows'],optional:['headers','total']}},ImageRef:{fields:{required:['url'],optional:['width','height']}},PatchSet:{fields:{required:['patches'],optional:['context']}},StructuredData:{fields:{required:['data'],optional:['schema']}},PullRequestRef:{fields:{required:['number'],optional:['url']}},CommitRef:{fields:{required:['sha'],optional:['message']}},
+  Markdown:{fields:{required:['content'],optional:['title']}},ReviewReport:{fields:{required:['findings'],optional:['score','summary']}},SecurityReport:{fields:{required:['vulnerabilities'],optional:['score','summary']}},Notification:{fields:{required:['message'],optional:['title']}},OperationStatus:{fields:{required:['success'],optional:['message','data']}},TestResult:{fields:{required:['passed'],optional:['failures','total','duration']}},DeploymentStatus:{fields:{required:['success'],optional:['url','duration']}},LintReport:{fields:{required:['issues'],optional:['errorCount','warningCount']}},Summary:{fields:{required:['content'],optional:['keyPoints']}},SlackMessage:{fields:{required:['content'],optional:['attachments']}},DiscordMessage:{fields:{required:['content'],optional:['embeds']}},TranslatedText:{fields:{required:['content'],optional:['language']}},
+  GitHubCredentials:{fields:{required:['token'],optional:[]}},GenericAPIKey:{fields:{required:['key'],optional:['url']}},Docker:{fields:{required:[],optional:['image']}},Kubernetes:{fields:{required:[],optional:['context']}},AWSCredentials:{fields:{required:['accessKeyId','secretAccessKey'],optional:['region']}},SlackCredentials:{fields:{required:['token'],optional:['channel']}},Repository:{fields:{required:['path'],optional:['branch']}},CodingStandards:{fields:{required:['rules'],optional:[]}},ShellEnvironment:{fields:{required:['env'],optional:['cwd']}},UserPreferences:{fields:{required:['data'],optional:[]}},ConversationHistory:{fields:{required:['messages'],optional:[]}},PromptContext:{fields:{required:['context'],optional:['variables']}},APICredentials:{fields:{required:['key'],optional:['url']}},
+};
+const KNOWN_TYPES = new Set(Object.keys(TYPE_CATALOG));
 
-  minimal: `[effector]
-name = "echo"
-version = "0.1.0"
-
-[effector.interface]
-input = "String"
-output = "String"`
+const PRESETS = {
+  skill: `[effector]\nname = "code-review"\nversion = "0.1.0"\ndescription = "Reviews code diffs and produces structured review reports"\ntype = "skill"\n\n[effector.interface]\ninput = "CodeDiff"\noutput = "ReviewReport"\ncontext = ["Repository", "GitHubCredentials"]\n\n[effector.permissions]\nnetwork = true\nsubprocess = false\nfilesystem = ["read"]\nenv-read = ["GITHUB_TOKEN"]`,
+  extension: `[effector]\nname = "notion-sync"\nversion = "0.1.0"\ndescription = "Syncs data with Notion workspaces"\ntype = "extension"\n\n[effector.interface]\ninput = "JSON"\noutput = "OperationStatus"\ncontext = ["GenericAPIKey"]\n\n[effector.permissions]\nnetwork = true\nsubprocess = false\nfilesystem = []\nenv-read = ["NOTION_TOKEN"]`,
+  workflow: `[effector]\nname = "deploy-pipeline"\nversion = "0.1.0"\ndescription = "End-to-end deployment workflow: test, build, deploy"\ntype = "workflow"\n\n[effector.interface]\ninput = "RepositoryRef"\noutput = "DeploymentStatus"\ncontext = ["AWSCredentials", "GitHubCredentials"]\n\n[effector.permissions]\nnetwork = true\nsubprocess = true\nfilesystem = ["read", "write"]\nenv-read = ["AWS_ACCESS_KEY_ID", "AWS_SECRET_ACCESS_KEY", "GITHUB_TOKEN"]`,
+  minimal: `[effector]\nname = "echo"\nversion = "0.1.0"\ndescription = "Simplest valid manifest"\n\n[effector.interface]\ninput = "String"\noutput = "String"`
 };
 
-const KNOWN_TYPES = new Set([
-  'String','FilePath','URL','JSON','RepositoryRef','CodeDiff','CodeSnippet',
-  'IssueRef','PullRequestRef','CommitRef','TextDocument','DataTable','ImageRef',
-  'PatchSet','StructuredData','Markdown','ReviewReport','SecurityReport',
-  'Notification','SlackMessage','DiscordMessage','OperationStatus','TestResult',
-  'DeploymentStatus','LintReport','Summary','TranslatedText',
-  'GitHubCredentials','GenericAPIKey','Docker','Kubernetes','AWSCredentials',
-  'SlackCredentials','Repository','CodingStandards','ShellEnvironment',
-  'UserPreferences','ConversationHistory','PromptContext','APICredentials'
-]);
-
-function loadPreset() {
-  const sel = document.getElementById('presetSelect').value;
-  if (sel && PRESETS[sel]) {
-    document.getElementById('tomlInput').value = PRESETS[sel];
-    validateManifest();
+function parseSimpleTOML(src) {
+  const result = {}; let currentSection = null;
+  for (const line of src.split('\n')) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith('#')) continue;
+    const sm = trimmed.match(/^\[([^\]]+)\]$/);
+    if (sm) { currentSection = sm[1]; const parts = currentSection.split('.'); let obj = result; for (const p of parts) { if (!obj[p]) obj[p] = {}; obj = obj[p]; } continue; }
+    const kv = trimmed.match(/^([a-zA-Z_-]+)\s*=\s*(.+)$/);
+    if (kv && currentSection) { const parts = currentSection.split('.'); let obj = result; for (const p of parts) obj = obj[p]; obj[kv[1]] = parseTOMLValue(kv[2].trim()); }
   }
+  return result;
 }
+function parseTOMLValue(raw) {
+  if (raw === 'true') return true; if (raw === 'false') return false;
+  if ((raw.startsWith('"') && raw.endsWith('"')) || (raw.startsWith("'") && raw.endsWith("'"))) return raw.slice(1, -1);
+  if (raw.startsWith('[') && raw.endsWith(']')) { const inner = raw.slice(1, -1).trim(); return inner ? inner.split(',').map(s => parseTOMLValue(s.trim())) : []; }
+  if (!isNaN(raw)) return Number(raw); return raw;
+}
+
+function inferFieldType(name) {
+  const a = new Set(['files','rows','patches','messages','findings','issues','headers','vulnerabilities','blocks','embeds','rules','failures','keyPoints','context','variables','attachments','passedChecks']);
+  const b = new Set(['exists','success','passed','failed','skipped']);
+  const n = new Set(['total','score','width','height','duration','confidence','number','startLine','endLine','exitCode','errorCount','warningCount','wordCount','tokenCount']);
+  const o = new Set(['data','metadata','env','schema','options','coverage']);
+  if (a.has(name)) return 'array'; if (b.has(name)) return 'boolean'; if (n.has(name)) return 'number'; if (o.has(name)) return 'object'; return 'string';
+}
+function expandInputType(typeName) {
+  const td = TYPE_CATALOG[typeName]; if (!td?.fields) return null;
+  const properties = {}, required = td.fields.required || [];
+  for (const f of required) { const t = inferFieldType(f); const p = {type:t,description:`${typeName} — ${f} (required)`}; if (t==='array') p.items={type:'string'}; properties[f]=p; }
+  for (const f of (td.fields.optional||[])) { const t = inferFieldType(f); const p = {type:t,description:`${typeName} — ${f}`}; if (t==='array') p.items={type:'string'}; properties[f]=p; }
+  return { properties, required };
+}
+function compileToBrowser(def, target) {
+  const name = (def.name||'unnamed').replace(/[^a-zA-Z0-9_-]/g,'_');
+  const envVars = def.permissions?.['env-read'] || [];
+  const expanded = def.interface?.input ? expandInputType(def.interface.input) : null;
+  if (target === 'mcp') {
+    const tool = {name, description:def.description||'', inputSchema:{type:'object',properties:{}}};
+    if (expanded) { Object.assign(tool.inputSchema.properties, expanded.properties); if (expanded.required.length>0) tool.inputSchema.required=[...expanded.required]; }
+    for (const v of envVars) { tool.inputSchema.properties[v]={type:'string',description:`Environment variable: ${v}`}; }
+    if (envVars.length>0) { const req=new Set(tool.inputSchema.required||[]); for (const v of envVars) req.add(v); tool.inputSchema.required=[...req]; }
+    if (def.interface) tool._interface={input:def.interface.input||null,output:def.interface.output||null,context:def.interface.context||[]};
+    return JSON.stringify(tool,null,2);
+  }
+  if (target === 'openai') {
+    const fn = {type:'function',function:{name,description:def.description||'',parameters:{type:'object',properties:{},required:[]}}};
+    if (expanded) { Object.assign(fn.function.parameters.properties,expanded.properties); fn.function.parameters.required=[...expanded.required]; }
+    for (const v of envVars) { fn.function.parameters.properties[v]={type:'string',description:`Environment variable: ${v}`}; fn.function.parameters.required.push(v); }
+    return JSON.stringify(fn,null,2);
+  }
+  return JSON.stringify(def,null,2);
+}
+function buildTargetDiff(def) {
+  const i = def.interface?.input||'n/a', o = def.interface?.output||'n/a', ev = def.permissions?.['env-read']||[];
+  return `Input: ${i}  Output: ${o}  Env: ${ev.length?ev.join(', '):'none'}\n\nMCP keys : name, description, inputSchema, _interface\nOpenAI   : type, function.name, function.parameters\nJSON IR  : name, version, type, interface, permissions`;
+}
+
+function setModeActive(name) {
+  document.querySelectorAll('.pg-mode-card').forEach((el) => {
+    el.classList.toggle('active', el.dataset.mode === name);
+  });
+}
+
+let _currentTab = 'validate';
+const _outputCache = {validate:'',validateHtml:'',mcp:'',openai:'',json:'',diff:'',validateStatus:'valid'};
+let _lastValidation = {errors:[],warnings:[],info:[],parsed:null};
 
 function validateManifest() {
   const src = document.getElementById('tomlInput').value;
-  const out = document.getElementById('outputCode');
-  const badge = document.getElementById('statusBadge');
-  const errors = [];
-  const warnings = [];
-  const info = [];
-
+  const errors=[], warnings=[], info=[]; let parsed=null;
   try {
-    // Simple TOML parser (enough for effector.toml)
-    const parsed = parseSimpleTOML(src);
-
-    // Check [effector] section
-    if (!parsed.effector) {
-      errors.push('Missing [effector] section');
-    } else {
+    parsed = parseSimpleTOML(src);
+    if (!parsed.effector) { errors.push('Missing [effector] section'); }
+    else {
       if (!parsed.effector.name) errors.push('Missing required field: effector.name');
       if (!parsed.effector.version) warnings.push('Missing field: effector.version');
       if (parsed.effector.name) info.push(`Name: ${parsed.effector.name}`);
       if (parsed.effector.version) info.push(`Version: ${parsed.effector.version}`);
       if (parsed.effector.type) info.push(`Type: ${parsed.effector.type}`);
     }
-
-    // Check interface
-    const iface = parsed['effector.interface'] || parsed.effector?.interface;
+    const iface = parsed.effector?.interface;
     if (iface) {
-      for (const [key, val] of Object.entries(iface)) {
-        if (key === 'context') {
-          const ctx = Array.isArray(val) ? val : (typeof val === 'string' ? [val] : []);
-          for (const t of ctx) {
-            if (!KNOWN_TYPES.has(t)) errors.push(`Unknown context type: "${t}"`);
-            else info.push(`Context: ${t} ✓`);
-          }
-        } else {
-          if (typeof val === 'string') {
-            if (!KNOWN_TYPES.has(val)) errors.push(`Unknown ${key} type: "${val}"`);
-            else info.push(`${key.charAt(0).toUpperCase() + key.slice(1)}: ${val} ✓`);
-          }
-        }
+      for (const [key,val] of Object.entries(iface)) {
+        if (key==='context') { const ctx=Array.isArray(val)?val:(typeof val==='string'?[val]:[]); for (const t of ctx) { if (!KNOWN_TYPES.has(t)) errors.push(`Unknown context type: "${t}"`); else info.push(`Context: ${t} \u2713`); } }
+        else if (typeof val==='string') { if (!KNOWN_TYPES.has(val)) errors.push(`Unknown ${key} type: "${val}"`); else info.push(`${key.charAt(0).toUpperCase()+key.slice(1)}: ${val} \u2713`); }
       }
-    } else {
-      warnings.push('No [effector.interface] section — types not declared');
-    }
+    } else { warnings.push('No [effector.interface] section'); }
+    const perms = parsed.effector?.permissions;
+    if (perms) { info.push('Permissions declared \u2713'); if (perms.network===true) info.push('  network: allowed'); if (perms.subprocess===true) info.push('  subprocess: allowed'); }
+  } catch(e) { errors.push(`Parse error: ${e.message}`); }
 
-    // Check permissions
-    const perms = parsed['effector.permissions'] || parsed.effector?.permissions;
-    if (perms) {
-      info.push('Permissions declared ✓');
-      if (perms.network === true || perms.network === 'true') info.push('  network: allowed');
-      if (perms.subprocess === true || perms.subprocess === 'true') info.push('  subprocess: allowed');
-    }
-
-  } catch (e) {
-    errors.push(`Parse error: ${e.message}`);
-  }
-
-  // Render output
   let output = '';
-  if (errors.length > 0) {
-    output += errors.map(e => `✗ ERROR: ${e}`).join('\n') + '\n\n';
-    badge.textContent = 'ERRORS'; badge.style.background = 'var(--red-dim)'; badge.style.color = 'var(--red)';
-  }
-  if (warnings.length > 0) {
-    output += warnings.map(w => `⚠ WARNING: ${w}`).join('\n') + '\n\n';
-    if (errors.length === 0) { badge.textContent = 'WARNINGS'; badge.style.background = 'rgba(251,191,36,0.1)'; badge.style.color = 'var(--amber)'; }
-  }
-  if (info.length > 0) {
-    output += info.map(i => `  ${i}`).join('\n') + '\n';
-  }
-  if (errors.length === 0 && warnings.length === 0) {
-    output += '\n✓ Manifest is valid!';
-    badge.textContent = 'VALID'; badge.style.background = 'var(--green-dim)'; badge.style.color = 'var(--green)';
-  }
+  if (errors.length>0) output += errors.map(e=>`\u2717 ${e}`).join('\n')+'\n\n';
+  if (warnings.length>0) output += warnings.map(w=>`\u26A0 ${w}`).join('\n')+'\n\n';
+  if (info.length>0) output += info.map(i=>`  ${i}`).join('\n')+'\n';
+  if (errors.length===0 && warnings.length===0) output += '\n\u2713 Manifest is valid!';
 
-  out.textContent = output;
+  _outputCache.validate = output;
+  _outputCache.validateStatus = errors.length>0?'error':warnings.length>0?'warning':'valid';
+  _lastValidation = {errors,warnings,info,parsed};
+
+  if (parsed?.effector) {
+    const def = {name:parsed.effector.name||'unnamed',version:parsed.effector.version||'0.0.0',type:parsed.effector.type||'skill',description:parsed.effector.description||'',interface:parsed.effector.interface||null,permissions:parsed.effector.permissions||null};
+    _outputCache.mcp = compileToBrowser(def,'mcp');
+    _outputCache.openai = compileToBrowser(def,'openai');
+    _outputCache.json = compileToBrowser(def,'json');
+    _outputCache.diff = buildTargetDiff(def);
+  } else { _outputCache.mcp=_outputCache.openai=_outputCache.json=_outputCache.diff='// Fix validation errors first'; }
+
+  const badge = document.getElementById('statusBadge');
+  badge.textContent = _outputCache.validateStatus === 'valid' ? 'VALID' : _outputCache.validateStatus === 'warning' ? 'WARN' : 'ERROR';
+  badge.className = `pg-controls-hint pg-badge-${_outputCache.validateStatus}`;
+
+  showCurrentTab();
 }
 
-function parseSimpleTOML(src) {
-  const result = {};
-  let currentSection = null;
+function switchOutputTab(tab) {
+  _currentTab = tab;
+  document.querySelectorAll('.pg-output-tab').forEach(t => t.classList.toggle('active', t.textContent.toLowerCase().includes(tab === 'validate' ? 'validation' : tab)));
+  showCurrentTab();
+}
+function showCurrentTab() { document.getElementById('outputCode').textContent = _outputCache[_currentTab] || ''; }
 
-  for (const line of src.split('\n')) {
-    const trimmed = line.trim();
-    if (!trimmed || trimmed.startsWith('#')) continue;
-
-    const sectionMatch = trimmed.match(/^\[([^\]]+)\]$/);
-    if (sectionMatch) {
-      currentSection = sectionMatch[1];
-      const parts = currentSection.split('.');
-      let obj = result;
-      for (const p of parts) {
-        if (!obj[p]) obj[p] = {};
-        obj = obj[p];
-      }
-      continue;
-    }
-
-    const kvMatch = trimmed.match(/^([a-zA-Z_-]+)\s*=\s*(.+)$/);
-    if (kvMatch && currentSection) {
-      const [, key, rawVal] = kvMatch;
-      const val = parseTOMLValue(rawVal.trim());
-      const parts = currentSection.split('.');
-      let obj = result;
-      for (const p of parts) obj = obj[p];
-      obj[key] = val;
-    }
+function selectPreset(name) {
+  if (PRESETS[name]) {
+    document.getElementById('tomlInput').value = PRESETS[name];
+    setModeActive(name);
+    validateManifest();
   }
-  return result;
 }
 
-function parseTOMLValue(raw) {
-  if (raw === 'true') return true;
-  if (raw === 'false') return false;
-  if (raw.startsWith('"') && raw.endsWith('"')) return raw.slice(1, -1);
-  if (raw.startsWith("'") && raw.endsWith("'")) return raw.slice(1, -1);
-  if (raw.startsWith('[') && raw.endsWith(']')) {
-    const inner = raw.slice(1, -1).trim();
-    if (!inner) return [];
-    return inner.split(',').map(s => parseTOMLValue(s.trim()));
-  }
-  if (!isNaN(raw)) return Number(raw);
-  return raw;
-}
-
-// Keyboard shortcuts
 document.getElementById('tomlInput').addEventListener('keydown', (e) => {
-  if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') { e.preventDefault(); validateManifest(); }
-  if (e.key === 'Tab') {
-    e.preventDefault();
-    const ta = e.target;
-    const start = ta.selectionStart;
-    ta.value = ta.value.substring(0, start) + '  ' + ta.value.substring(ta.selectionEnd);
-    ta.selectionStart = ta.selectionEnd = start + 2;
-  }
+  if ((e.metaKey||e.ctrlKey) && e.key==='Enter') { e.preventDefault(); validateManifest(); }
+  if (e.key==='Tab') { e.preventDefault(); const ta=e.target, s=ta.selectionStart; ta.value=ta.value.substring(0,s)+'  '+ta.value.substring(ta.selectionEnd); ta.selectionStart=ta.selectionEnd=s+2; }
 });
 
-// Auto-validate on load
-setTimeout(validateManifest, 100);
-
-// Auto-validate on edit (debounced)
 let validateTimer;
 document.getElementById('tomlInput').addEventListener('input', () => {
   clearTimeout(validateTimer);
   validateTimer = setTimeout(validateManifest, 400);
 });
+
+function downloadCurrentManifest() {
+  const blob = new Blob([document.getElementById('tomlInput').value], {type:'text/plain'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'effector.toml'; a.click();
+}
+function shareCurrentManifest() {
+  const url = `${location.origin}${location.pathname}?manifest=${encodeURIComponent(document.getElementById('tomlInput').value)}`;
+  navigator.clipboard.writeText(url);
+}
+
+function makeSampleByType(typeName) {
+  const spec = TYPE_CATALOG[typeName];
+  if (!spec?.fields) return { value: `sample-${typeName}` };
+  const out = {};
+  const req = spec.fields.required || [];
+  for (const field of req) {
+    const t = inferFieldType(field);
+    if (t === 'array') out[field] = ['sample'];
+    else if (t === 'boolean') out[field] = true;
+    else if (t === 'number') out[field] = 1;
+    else if (t === 'object') out[field] = { sample: true };
+    else out[field] = `sample-${field}`;
+  }
+  return out;
+}
+
+function runSimulation() {
+  const parsed = _lastValidation.parsed;
+  const pre = document.getElementById('simulationOutput');
+  if (!parsed?.effector?.interface) {
+    pre.textContent = 'Add [effector.interface] with input/output to generate preview.';
+    return;
+  }
+  const inputType = parsed.effector.interface.input;
+  const outputType = parsed.effector.interface.output;
+  const sample = {
+    inputType: inputType || null,
+    sampleInput: inputType ? makeSampleByType(inputType) : null,
+    outputType: outputType || null,
+    sampleOutputShape: outputType ? makeSampleByType(outputType) : null,
+  };
+  pre.textContent = JSON.stringify(sample, null, 2);
+  pre.scrollTop = 0;
+}
+
+function toggleToolStep(step) {
+  for (let i=1; i<=4; i++) {
+    const body = document.getElementById(`toolStepBody${i}`);
+    const btn = document.querySelector(`.quickstart-step[data-step="${i}"] .quickstart-toggle`);
+    const icon = btn?.querySelector('.quickstart-toggle-icon');
+    const open = i === step;
+    if (body) body.classList.toggle('open', open);
+    if (btn) btn.classList.toggle('active', open);
+    if (icon) icon.innerHTML = open ? '&minus;' : '+';
+  }
+}
+
+(function init() {
+  const params = new URLSearchParams(location.search);
+  const encoded = params.get('manifest');
+  if (encoded) document.getElementById('tomlInput').value = encoded;
+  setModeActive('skill');
+  toggleToolStep(1);
+  setTimeout(validateManifest, 80);
+})();
 </script>

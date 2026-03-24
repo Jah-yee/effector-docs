@@ -7,6 +7,14 @@ subtitle: Visual editor for creating typed AI agent capabilities.
 
 The effector Studio is a visual editor for creating `effector.toml` and `SKILL.md` manifests. Fill in form fields, pick types from the catalog, set permissions — the manifest is generated automatically.
 
+## When to use Studio
+
+- Need a form-based authoring flow instead of writing TOML manually
+- Need to export final files (`effector.toml`, `SKILL.md`) for real project usage
+- Need non-technical teammates to edit capability metadata safely
+
+If you only need a quick validation loop, use [Playground](/playground.html).
+
 ## Features
 
 - **Visual form** — name, version, type, description with instant preview
