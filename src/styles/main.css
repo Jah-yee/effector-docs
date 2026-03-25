@@ -108,6 +108,8 @@ body {
 }
 a { color: var(--orange); text-decoration: none; transition: color 0.2s; }
 a:hover { color: var(--red); }
+/* Only underline the specific "Two-tier evaluation" link in the benchmark paragraph */
+.bench-eval-link { text-decoration: underline !important; }
 code, pre { font-family: var(--font-mono); }
 
 /* ═══════════════════════════════════════════════════════
