@@ -32,6 +32,7 @@
   --font-mono:   'JetBrains Mono', 'Fira Code', 'SF Mono', monospace;
   --font-sans:   'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-display: 'Instrument Serif', Georgia, 'Times New Roman', serif;
+  --effector-meme-cursor: url("/assets/deal-with-it-pointer-48.png") 15 0, auto;
 
   /*
    * Letterpress on near-black / gray (#0F0F0F, #141414, #1A1A1A):
@@ -2377,11 +2378,10 @@ code, pre { font-family: var(--font-mono); }
 /* Force the meme cursor on interactive elements.
    Some elements define their own cursor styles on :active/:focus; !important avoids
    the "default arrow cursor" fallback during clicking. */
-:root {
-  --effector-meme-cursor: url("/assets/deal-with-it-pointer-48.png") 15 0, auto;
-}
+html, body,
 a, button, input[type="button"], input[type="submit"], input[type="reset"], select, textarea,
-[role="button"], [onclick], label {
+[role="button"], [onclick], label, summary, [tabindex],
+.sidebar-section-title, .topnav-search, .sidebar-toggle {
   cursor: var(--effector-meme-cursor) !important;
 }
 a:active, button:active, [role="button"]:active, [onclick]:active, label:active {
