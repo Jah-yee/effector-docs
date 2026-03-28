@@ -32,7 +32,7 @@ jobs:
           git submodule update --init docs-content
           cd docs-content
           git fetch origin main
-          git checkout -B main FETCH_HEAD
+          git reset --hard origin/main
           cd ..
 
       - uses: actions/setup-node@v4
