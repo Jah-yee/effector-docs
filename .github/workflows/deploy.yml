@@ -24,6 +24,17 @@ jobs:
         with:
           submodules: recursive
 
+      # When docs repo notifies us, pull latest effectorHQ/docs into submodule so the
+      # site matches canonical docs without a manual submodule bump in this repo.
+      - name: Sync docs-content to latest docs main
+        if: github.event_name == 'repository_dispatch'
+        run: |
+          git submodule update --init docs-content
+          cd docs-content
+          git fetch origin main
+          git checkout -B main FETCH_HEAD
+          cd ..
+
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
