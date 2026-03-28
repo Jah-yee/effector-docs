@@ -18,7 +18,7 @@ If you start from scratch, use [Studio](/studio.html) or [Playground](/playgroun
 ## Usage
 
 ```bash
-npx @effectorhq/core init --from-mcp [dir]
+effector init --from-mcp [dir]
 ```
 
 ## How It Works
@@ -114,7 +114,7 @@ env-read = []
 
 1. Review and edit the generated `effector.toml`
 2. Add a `SKILL.md` with instructions
-3. Run `effector-core validate .` to verify
+3. Run `effector check .` to verify
 4. Optionally run `@effectorhq/audit scan .` for security audit
 
 ## Next Steps

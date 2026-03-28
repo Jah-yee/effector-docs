@@ -60,16 +60,16 @@ jobs:
         run: npm install -g @effectorhq/core
 
       - name: Validate manifest
-        run: effector-core validate .
+        run: effector check .
 
       - name: Check types
-        run: effector-core check-types .
+        run: effector check .
 
       - name: Audit permissions
         run: npx @effectorhq/audit check --strict .
 
       - name: Compile MCP output
-        run: effector-core compile . -t mcp
+        run: effector compile . -t mcp
 ```
 
 ## GitLab CI
@@ -80,8 +80,8 @@ effector-validate:
   stage: test
   script:
     - npm install -g @effectorhq/core
-    - effector-core validate .
-    - effector-core check-types .
+    - effector check .
+    - effector check .
   rules:
     - changes:
         - effector.toml
@@ -95,7 +95,7 @@ Validate locally before pushing:
 ```bash
 # .git/hooks/pre-commit
 #!/bin/sh
-npx @effectorhq/core validate . || exit 1
+effector check . || exit 1
 ```
 
 Or with [Husky](https://github.com/typicode/husky):
@@ -104,7 +104,7 @@ Or with [Husky](https://github.com/typicode/husky):
 {
   "husky": {
     "hooks": {
-      "pre-commit": "npx @effectorhq/core validate ."
+      "pre-commit": "effector check ."
     }
   }
 }
@@ -115,7 +115,7 @@ Or with [Husky](https://github.com/typicode/husky):
 All CLI tools support `--format json` for machine-readable output:
 
 ```bash
-npx @effectorhq/core validate . --format json
+effector check . --format json
 ```
 
 ```json
@@ -142,7 +142,7 @@ For monorepos with multiple tools, validate each one:
   run: |
     for dir in tools/*/; do
       echo "Validating $dir"
-      effector-core validate "$dir" || exit 1
+      effector check "$dir" || exit 1
     done
 ```
 
@@ -151,7 +151,7 @@ For monorepos with multiple tools, validate each one:
 Add a validation badge to your README:
 
 ```bash
-npx @effectorhq/core badge .
+effector check .
 ```
 
 This outputs a shields.io URL you can add to your README:

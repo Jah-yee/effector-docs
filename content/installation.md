@@ -7,48 +7,43 @@ subtitle: Get effector running in 30 seconds.
 
 ## Requirements
 
-- **Node.js 22+** (uses modern built-ins like `parseArgs`)
+- **Node.js 18+** (uses built-ins like `parseArgs`)
 - npm, yarn, or pnpm
 
 ## Quick Start
 
-The fastest way to start is with the scaffolder:
+The fastest way to start:
 
 ```bash
-npx create-effector my-skill
+npx @effectorhq/cli init my-skill
 cd my-skill
+effector check .
+effector compile . -t mcp
 ```
 
-This creates a complete project with `effector.toml`, `SKILL.md`, and a working test setup.
+This creates a complete project with `effector.toml` and `SKILL.md`, validates it, and compiles to MCP — all with zero configuration.
 
 ## Install the CLI
 
-To add effector validation to an existing project:
+For system-wide access:
 
 ```bash
-npm install @effectorhq/core
-```
-
-Then validate your manifest:
-
-```bash
-npx @effectorhq/core validate .
-```
-
-## Global Installation
-
-For system-wide CLI access:
-
-```bash
-npm install -g @effectorhq/core
+npm install -g @effectorhq/cli
 ```
 
 Now you can run from anywhere:
 
 ```bash
-effector-core validate ./my-project
-effector-core types
-effector-core compile ./my-project -t mcp
+effector init my-skill           # scaffold a typed skill manifest
+effector check .                 # validate + type-check + lint + audit
+effector compile . -t mcp        # compile to MCP tool schema
+effector inspect .               # show parsed interface + permissions
+```
+
+Or run directly without installing:
+
+```bash
+npx @effectorhq/cli check .
 ```
 
 ## Per-Project Setup
@@ -58,11 +53,11 @@ Add to an existing project's `package.json`:
 ```json
 {
   "devDependencies": {
-    "@effectorhq/core": "^1.0.0"
+    "@effectorhq/cli": "^1.0.0"
   },
   "scripts": {
-    "validate": "effector-core validate .",
-    "compile:mcp": "effector-core compile . -t mcp"
+    "check": "effector check .",
+    "compile:mcp": "effector compile . -t mcp"
   }
 }
 ```
@@ -72,22 +67,20 @@ Add to an existing project's `package.json`:
 If you have an existing MCP server and want to generate `effector.toml` automatically:
 
 ```bash
-npx @effectorhq/core init --from-mcp .
+effector init --from-mcp .
 ```
 
 This scans your source code, detects tool definitions, infers types and permissions, and generates a well-commented `effector.toml`.
 
-## The Full Toolkit
+## The Toolkit
 
 | Package | Purpose | Install |
 |---------|---------|---------|
-| `@effectorhq/core` | Parse, validate, type-check, compile | `npm i @effectorhq/core` |
-| `create-effector` | Scaffold new projects | `npx create-effector` |
-| `@effectorhq/skill-lint` | Validate SKILL.md structure | `npm i @effectorhq/skill-lint` |
-| `@effectorhq/audit` | Security & permission audit | `npm i @effectorhq/audit` |
-| `@effectorhq/compose` | Composition checking | `npm i @effectorhq/compose` |
-| `@effectorhq/graph` | Dependency visualization | `npm i @effectorhq/graph` |
-| `@effectorhq/skill-eval` | Quality scoring | `npm i @effectorhq/skill-eval` |
+| `@effectorhq/cli` | **The product.** init, check, compile, inspect, serve. | `npm i -g @effectorhq/cli` |
+| `@effectorhq/core` | Embeddable zero-dep kernel. Parse, validate, compile. | `npm i @effectorhq/core` |
+| `@effectorhq/serve` | Typed MCP server with preflight validation. | `npm i @effectorhq/serve` |
+
+Internal packages (used by CLI, not installed separately): `@effectorhq/types`, `@effectorhq/audit`, `@effectorhq/compose`, `@effectorhq/lint`.
 
 ## Verify Installation
 
@@ -95,18 +88,24 @@ After installation, verify everything works:
 
 ```bash
 # Check version
-npx @effectorhq/core --version
+effector --version
 
-# List all 40 standard types
-npx @effectorhq/core types
-
-# Validate a project
-npx @effectorhq/core validate .
+# Scaffold and validate
+effector init test-skill
+effector check test-skill
+effector compile test-skill -t mcp
 ```
 
 ## CI Integration
 
-Add effector validation to your GitHub Actions workflow:
+Add effector validation to your CI:
+
+```yaml
+# .github/workflows/effector.yml
+- run: npx @effectorhq/cli check . --json
+```
+
+Or use the GitHub Action:
 
 ```yaml
 - uses: effectorHQ/effector-action@v1
@@ -119,17 +118,17 @@ See the [CI/CD Integration guide](/guides/ci-integration.html) for a complete wo
 
 ## Troubleshooting
 
-**"effector-core: command not found"**
-Make sure Node.js 22+ is installed and `node_modules/.bin` is in your PATH, or use `npx @effectorhq/core`.
+**"effector: command not found"**
+Make sure Node.js 18+ is installed and the CLI is installed globally (`npm i -g @effectorhq/cli`), or use `npx @effectorhq/cli`.
 
 **"Cannot find module @effectorhq/core"**
 Make sure the package is installed (`npm install @effectorhq/core`) and the version is correct.
 
 **"Unknown type" warnings**
-Your `effector.toml` references a type not in the 40-type catalog. Run `npx @effectorhq/core types` to see all valid types, or use `String`/`JSON` as a generic fallback.
+Your `effector.toml` references a type not in the 42-type catalog. Run `effector inspect .` to see your current interface, or check the type catalog for valid names.
 
 ## Next Steps
 
 - [Your First Manifest](/first-manifest.html) — build an effector.toml step by step
 - [CLI Reference](/cli-reference.html) — all commands and flags
-- [Type Catalog](/types/index.html) — browse the 40 standard types
+- [Type Catalog](/types/index.html) — browse the 42 standard types

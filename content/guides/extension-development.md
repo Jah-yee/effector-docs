@@ -118,14 +118,14 @@ function mapInterfaceToParams(iface) {
 
 ### 3. Register with the CLI
 
-Extensions integrate via the `--target` flag in `npx @effectorhq/core compile`:
+Extensions integrate via the `--target` flag in `effector compile`:
 
 ```bash
 # Use your custom compile target
-npx @effectorhq/core compile ./my-tool -t ./my-compile-target
+effector compile ./my-tool -t ./my-compile-target
 
 # Or if published to npm
-npx @effectorhq/core compile ./my-tool -t compile-autogpt
+effector compile ./my-tool -t compile-autogpt
 ```
 
 ## Example: Custom Validation Rule
@@ -248,7 +248,7 @@ Users install and use:
 
 ```bash
 npm install compile-autogpt
-npx @effectorhq/core compile ./my-tool -t compile-autogpt
+effector compile ./my-tool -t compile-autogpt
 ```
 
 ## Best Practices

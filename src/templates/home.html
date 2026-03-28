@@ -114,14 +114,13 @@
       </div>
       <div class="step-code">
         <div class="step-code-header"><div class="dot" style="background:var(--green)"></div><div class="dot" style="background:var(--orange);opacity:0.6"></div><div class="dot" style="background:var(--red);opacity:0.6"></div><span style="margin-left:4px">terminal</span></div>
-        <pre><span class="prompt">$</span> <span class="fn">npx @effectorhq/core validate .</span>
-<span class="type">  &#x2713; effector.toml parsed</span>
-<span class="type">  &#x2713; Schema valid</span>
-<span class="type">  &#x2713; Types: CodeDiff &rarr; ReviewReport</span>
+        <pre><span class="prompt">$</span> <span class="fn">effector check .</span>
+<span class="type">  Manifest    &#x2713; valid</span>
+<span class="type">  Types       &#x2713; CodeDiff &rarr; ReviewReport</span>
+<span class="type">  Lint        &#x2713; 0 warnings</span>
+<span class="type">  Audit       &#x2713; Score 5/5</span>
 
-<span class="prompt">$</span> <span class="fn">npx @effectorhq/audit check .</span>
-<span class="type">  &#x2713; Permissions match source</span>
-<span class="type">  &#x2713; No undeclared access</span></pre>
+<span class="type">  &#x2713; All checks passed (3.1ms)</span></pre>
       </div>
     </div>
     <div class="step">
@@ -406,7 +405,7 @@
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
         </div>
         <h3>5 minutes to start</h3>
-        <p><code>npx create-effector</code> scaffolds everything. One command to validate, one to compile. No configuration.</p>
+        <p><code>npx @effectorhq/cli init</code> scaffolds everything. One command to validate, one to compile. No configuration.</p>
       </div>
       <div class="adopt-card" data-glow="red">
         <div class="adopt-num">03</div>
@@ -433,35 +432,35 @@
 ═══════════════════════════════════════════════════════ -->
 <div class="landing-section">
   <div class="section-label">Ecosystem</div>
-  <h2 class="section-title">9 focused packages. One shared kernel.</h2>
+  <h2 class="section-title">One monorepo. One shared kernel.</h2>
   <p class="section-desc">
     Every package builds on <code style="background:var(--surface2);padding:2px 8px;border-radius:4px;font-size:0.88em;color:var(--orange)">@effectorhq/core</code>. Every package uses only Node.js built-ins.
   </p>
   <div class="eco-cards">
-    <a class="eco-card eco-card-hero" href="https://github.com/effectorHQ/effector-core" target="_blank" rel="noopener noreferrer" aria-label="Open effectorHQ/effector-core on GitHub">
+    <a class="eco-card eco-card-hero" href="https://github.com/OpenClawHQ/effectorhq" target="_blank" rel="noopener noreferrer" aria-label="Open effectorHQ monorepo on GitHub">
+      <div class="eco-card-tier"><span class="eco-badge eco-core">Product</span></div>
+      <h3>@effectorhq/cli</h3>
+      <p>The product &mdash; init, check, compile, inspect, serve. One install, one tool.</p>
+      <div class="eco-card-meta">5 commands &middot; 250+ tests</div>
+    </a>
+    <a class="eco-card eco-card-hero" href="https://github.com/OpenClawHQ/effectorhq/tree/main/packages/core" target="_blank" rel="noopener noreferrer" aria-label="Open @effectorhq/core on GitHub">
       <div class="eco-card-tier"><span class="eco-badge eco-core">Core</span></div>
       <h3>@effectorhq/core</h3>
-      <p>Shared kernel &mdash; TOML parser, type checker, schema validator, compiler, CLI</p>
+      <p>Embeddable zero-dep kernel &mdash; TOML parser, type checker, schema validator, compiler</p>
       <div class="eco-card-meta">11 modules &middot; 69 tests</div>
     </a>
-    <a class="eco-card eco-card-hero" href="https://github.com/effectorHQ/effector-types" target="_blank" rel="noopener noreferrer" aria-label="Open effectorHQ/effector-types on GitHub">
-      <div class="eco-card-tier"><span class="eco-badge eco-core">Core</span></div>
+    <a class="eco-card" href="https://github.com/OpenClawHQ/effectorhq/tree/main/packages/serve" target="_blank" rel="noopener noreferrer" aria-label="Open @effectorhq/serve on GitHub">
+      <div class="eco-card-tier"><span class="eco-badge eco-dist">Runtime</span></div>
+      <h3>@effectorhq/serve</h3>
+      <p>Typed MCP server with preflight validation and permission enforcement</p>
+    </a>
+    <a class="eco-card" href="https://github.com/OpenClawHQ/effectorhq/tree/main/packages/types" target="_blank" rel="noopener noreferrer" aria-label="Open effector-types on GitHub">
+      <div class="eco-card-tier"><span class="eco-badge eco-tool">Internal</span></div>
       <h3>effector-types</h3>
-      <p>40-type catalog &mdash; fields, aliases, subtypes, frequency scores</p>
-      <div class="eco-card-meta">40 types &middot; 40 tests</div>
+      <p>42-type catalog &mdash; fields, aliases, subtypes, frequency scores</p>
     </a>
-    <a class="eco-card" href="https://github.com/effectorHQ/create-effector" target="_blank" rel="noopener noreferrer" aria-label="Open effectorHQ/create-effector on GitHub">
-      <div class="eco-card-tier"><span class="eco-badge eco-dist">Dist</span></div>
-      <h3>create-effector</h3>
-      <p>Interactive project scaffolder with manifest, SKILL.md, and test setup</p>
-    </a>
-    <a class="eco-card" href="https://github.com/effectorHQ/skill-lint" target="_blank" rel="noopener noreferrer" aria-label="Open effectorHQ/skill-lint on GitHub">
-      <div class="eco-card-tier"><span class="eco-badge eco-tool">Tool</span></div>
-      <h3>@effectorhq/skill-lint</h3>
-      <p>SKILL.md structure validation</p>
-    </a>
-    <a class="eco-card" href="https://github.com/effectorHQ/effector-audit" target="_blank" rel="noopener noreferrer" aria-label="Open effectorHQ/effector-audit on GitHub">
-      <div class="eco-card-tier"><span class="eco-badge eco-tool">Tool</span></div>
+    <a class="eco-card" href="https://github.com/OpenClawHQ/effectorhq/tree/main/packages/audit" target="_blank" rel="noopener noreferrer" aria-label="Open effector-audit on GitHub">
+      <div class="eco-card-tier"><span class="eco-badge eco-tool">Internal</span></div>
       <h3>@effectorhq/audit</h3>
       <p>Permission verification &amp; trust tracking</p>
     </a>

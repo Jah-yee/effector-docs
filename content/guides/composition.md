@@ -14,7 +14,7 @@ In untyped agent systems, composition is held together by convention and prayer.
 Effector makes composition **verifiable**:
 
 ```bash
-npx @effectorhq/core compose check ./review-tool ./notify-tool
+effector compose check ./review-tool ./notify-tool
 ```
 
 ## The Composition Model
@@ -38,7 +38,7 @@ output = "Summary"
 ```
 
 ```bash
-npx @effectorhq/core compose check ./code-review ./review-summarizer
+effector compose check ./code-review ./review-summarizer
 # ✓ Pipeline valid: CodeSnippet → ReviewReport → Summary
 ```
 
@@ -81,7 +81,7 @@ steps = ["git-fetch", "code-review", "slack-notify"]
 ```
 
 ```bash
-npx @effectorhq/core compose check ./git-fetch ./code-review ./slack-notify
+effector compose check ./git-fetch ./code-review ./slack-notify
 # ✓ git-fetch(Repository → CodeSnippet) → code-review(CodeSnippet → ReviewReport) → slack-notify(ReviewReport → SlackMessage)
 ```
 

@@ -120,13 +120,14 @@ env-read = ["GITHUB_TOKEN"]</textarea>
         <span class="quickstart-toggle-icon">&minus;</span>
       </button>
       <div class="quickstart-body open" id="toolStepBody1">
-        <div class="quickstart-cmd" onclick="navigator.clipboard.writeText('npx create-effector my-tool')">
+        <div class="quickstart-cmd" onclick="navigator.clipboard.writeText('npx @effectorhq/cli init my-tool')">
           <span class="prompt">$</span>
-          <span class="cmd">npx create-effector my-tool</span>
+          <span class="cmd">npx @effectorhq/cli init my-tool</span>
         </div>
         <pre class="quickstart-note"><span style="color:var(--green)">Created</span> effector.toml
 <span style="color:var(--green)">Created</span> SKILL.md
-<span style="color:var(--green)">Created</span> tests/</pre>
+
+<span style="color:var(--dim)">→ Next: effector check .</span></pre>
       </div>
     </div>
     <div class="quickstart-step" data-step="2">
@@ -136,14 +137,14 @@ env-read = ["GITHUB_TOKEN"]</textarea>
         <span class="quickstart-toggle-icon">+</span>
       </button>
       <div class="quickstart-body" id="toolStepBody2">
-        <div class="quickstart-cmd" onclick="navigator.clipboard.writeText('npx @effectorhq/core validate .')">
+        <div class="quickstart-cmd" onclick="navigator.clipboard.writeText('effector check .')">
           <span class="prompt">$</span>
-          <span class="cmd">npx @effectorhq/core validate .</span>
+          <span class="cmd">effector check .</span>
         </div>
-        <pre class="quickstart-note"><span style="color:var(--green)">✓</span> effector.toml parsed
-<span style="color:var(--green)">✓</span> Schema valid
-<span style="color:var(--green)">✓</span> Valid types
-<span style="color:var(--green)">✓</span> CodeDiff → ReviewReport</pre>
+        <pre class="quickstart-note"><span style="color:var(--green)">✓</span> Manifest valid
+<span style="color:var(--green)">✓</span> CodeDiff → ReviewReport (known, compatible)
+<span style="color:var(--green)">✓</span> Lint 0 warnings
+<span style="color:var(--green)">✓</span> Audit Score 5/5</pre>
       </div>
     </div>
     <div class="quickstart-step" data-step="3">
@@ -153,12 +154,14 @@ env-read = ["GITHUB_TOKEN"]</textarea>
         <span class="quickstart-toggle-icon">+</span>
       </button>
       <div class="quickstart-body" id="toolStepBody3">
-        <div class="quickstart-cmd" onclick="navigator.clipboard.writeText('npx @effectorhq/audit check .')">
+        <div class="quickstart-cmd" onclick="navigator.clipboard.writeText('effector inspect .')">
           <span class="prompt">$</span>
-          <span class="cmd">npx @effectorhq/audit check .</span>
+          <span class="cmd">effector inspect .</span>
         </div>
-        <pre class="quickstart-note"><span style="color:var(--green)">✓</span> Permissions match source
-<span style="color:var(--green)">✓</span> No undeclared access</pre>
+        <pre class="quickstart-note">  input    CodeDiff
+  output   ReviewReport
+  context  Repository
+  network  yes</pre>
       </div>
     </div>
     <div class="quickstart-step" data-step="4">
@@ -168,11 +171,11 @@ env-read = ["GITHUB_TOKEN"]</textarea>
         <span class="quickstart-toggle-icon">+</span>
       </button>
       <div class="quickstart-body" id="toolStepBody4">
-        <div class="quickstart-cmd" onclick="navigator.clipboard.writeText('npx @effectorhq/core compile . --target mcp')">
+        <div class="quickstart-cmd" onclick="navigator.clipboard.writeText('effector compile . -t mcp')">
           <span class="prompt">$</span>
-          <span class="cmd">npx @effectorhq/core compile . --target mcp</span>
+          <span class="cmd">effector compile . -t mcp</span>
         </div>
-        <pre class="quickstart-note"><span style="color:var(--green)">→</span> mcp-schema.json</pre>
+        <pre class="quickstart-note"><span style="color:var(--green)">→</span> effector-mcp.json</pre>
       </div>
     </div>
   </div>

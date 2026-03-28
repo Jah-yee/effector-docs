@@ -54,14 +54,13 @@ Each type has a frequency score from 0.0 to 1.0 reflecting how commonly it appea
 ### How do I add effector to an existing project?
 
 ```bash
-npm install @effectorhq/core
-npx @effectorhq/core init .
+npx @effectorhq/cli init .
 ```
 
-This creates a starter `effector.toml`. If you have an existing MCP server, use:
+This creates a starter `effector.toml` and `SKILL.md`. If you have an existing MCP server, use:
 
 ```bash
-npx @effectorhq/core init --from-mcp .
+effector init --from-mcp .
 ```
 
 The reverse compiler scans your source and generates a typed manifest automatically.

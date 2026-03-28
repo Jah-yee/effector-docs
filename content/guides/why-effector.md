@@ -43,7 +43,7 @@ Before effector:
 
 After effector:
 ```bash
-npx @effectorhq/core compose check ./code-review ./slack-notify
+effector compose check ./code-review ./slack-notify
 # ✓ ReviewReport → SlackMessage (compatible via Notification supertype)
 ```
 
@@ -54,9 +54,9 @@ Before effector:
 
 After effector:
 ```bash
-npx @effectorhq/core compile . -t mcp
-npx @effectorhq/core compile . -t langchain
-npx @effectorhq/core compile . -t openai-agents
+effector compile . -t mcp
+effector compile . -t langchain
+effector compile . -t openai-agents
 ```
 
 One manifest, any runtime. Your tool's implementation doesn't change.
@@ -82,7 +82,7 @@ Before effector:
 
 After effector:
 ```bash
-npx @effectorhq/core types | grep SecurityReport
+effector inspect . | grep SecurityReport
 # SecurityReport (output, analysis) — subtype of ReviewReport
 ```
 
@@ -106,7 +106,7 @@ TypeScript didn't replace JavaScript. It added a type layer that made the ecosys
 - **Zero code changes** — `effector.toml` is a sidecar file
 - **Zero dependencies** — the toolchain uses only Node.js built-ins
 - **Zero runtime overhead** — effector runs at build/CI time only
-- **5 minutes to start** — `npx create-effector my-tool` scaffolds everything
+- **5 minutes to start** — `npx @effectorhq/cli init my-tool` scaffolds everything
 
 ## Who Benefits
 

@@ -123,7 +123,7 @@ Given PR #42 on myorg/myrepo:
 ## Step 6: Validate
 
 ```bash
-npx @effectorhq/core validate .
+effector check .
 ```
 
 Expected output:
@@ -141,13 +141,13 @@ Generate runtime-specific schemas:
 
 ```bash
 # MCP tool schema
-npx @effectorhq/core compile . -t mcp
+effector compile . -t mcp
 
 # OpenAI function definition
-npx @effectorhq/core compile . -t openai-agents
+effector compile . -t openai-agents
 
 # LangChain tool config
-npx @effectorhq/core compile . -t langchain
+effector compile . -t langchain
 ```
 
 ## What's Next

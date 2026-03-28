@@ -64,7 +64,7 @@ context = ["GitHubCredentials", "SlackCredentials"]
 ### 1. Scaffold
 
 ```bash
-npx create-effector my-skill
+npx @effectorhq/cli init my-skill
 ```
 
 The scaffolder generates a complete project with `effector.toml`, `SKILL.md`, source stubs, and tests.
@@ -137,14 +137,14 @@ SKILL.md serves two purposes:
 ### 5. Validate
 
 ```bash
-npx @effectorhq/core validate .
-npx @effectorhq/core check-types .
+effector check .
+effector check .
 ```
 
 ### 6. Compile
 
 ```bash
-npx @effectorhq/core compile . -t mcp
+effector compile . -t mcp
 ```
 
 ## SKILL.md Structure
@@ -171,7 +171,7 @@ npx @effectorhq/core compile . -t mcp
 `@effectorhq/skill-lint` checks SKILL.md structure:
 
 ```bash
-npx @effectorhq/skill-lint .
+effector check .
 ```
 
 It verifies:
@@ -208,13 +208,13 @@ A score of 80+ indicates a well-defined capability. Below 60 suggests significan
 
 ```bash
 # Full validation
-npx @effectorhq/core validate .
+effector check .
 
 # Type checking only
-npx @effectorhq/core check-types .
+effector check .
 
 # SKILL.md linting
-npx @effectorhq/skill-lint .
+effector check .
 
 # Permission audit
 npx @effectorhq/audit check .

@@ -172,10 +172,10 @@ context = ["Repository", "GitHubCredentials"]
 
 ```bash
 # Validate types against the catalog
-npx @effectorhq/core check-types .
+effector check .
 
 # List all available types
-npx @effectorhq/core types
+effector inspect .
 ```
 
 ### Composition

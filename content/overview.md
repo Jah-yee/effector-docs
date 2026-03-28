@@ -54,13 +54,10 @@ effector is a cohesive ecosystem of focused tools, each doing one thing well:
 
 | Tool | What it does |
 |------|-------------|
-| `@effectorhq/core` | Shared kernel — TOML parser, type checker, schema validator, compiler |
-| `create-effector` | Scaffold new capabilities in seconds with interactive prompts |
-| `@effectorhq/skill-lint` | Validate SKILL.md structure, frontmatter, and section coverage |
-| `@effectorhq/audit` | Security analysis — permission mismatches, undeclared access, trust scores |
-| `@effectorhq/compose` | Static pipeline builder — verify type compatibility between tools |
+| `@effectorhq/cli` | **The product.** `init`, `check`, `compile`, `inspect`, `serve` — one install, one tool |
+| `@effectorhq/core` | Embeddable zero-dep kernel — TOML parser, type checker, schema validator, compiler |
+| `@effectorhq/serve` | Typed MCP server with preflight validation, permission enforcement |
 | `@effectorhq/graph` | Interactive dependency graph (D3 force layout, spectrum, dashboard) |
-| `@effectorhq/skill-eval` | Quality scoring (0-100) across 10 weighted dimensions |
 | `effector-studio` | Visual editor for building manifests with compile target preview |
 
 ## Architecture

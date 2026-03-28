@@ -31,7 +31,7 @@ network = false
 ```
 
 ```bash
-npx @effectorhq/core validate .
+effector check .
 ```
 
 ```
@@ -48,7 +48,7 @@ npx @effectorhq/core validate .
 Take a typed manifest and produce a valid MCP tool definition:
 
 ```bash
-npx @effectorhq/core compile . -t mcp
+effector compile . -t mcp
 ```
 
 Output (`mcp-output.json`):
@@ -78,7 +78,7 @@ The compiler maps `CodeSnippet` fields to JSON Schema properties automatically.
 Verify that your manifest uses valid types and the interface is consistent:
 
 ```bash
-npx @effectorhq/core check-types .
+effector check .
 ```
 
 ```
@@ -92,13 +92,13 @@ npx @effectorhq/core check-types .
 What happens with an invalid type:
 
 ```bash
-npx @effectorhq/core check-types .
+effector check .
 ```
 
 ```
 ✗ input "CodeReview" — unknown type
   Did you mean: CodeSnippet, CodeDiff?
-  Run `npx @effectorhq/core types` to see all 40 standard types.
+  Run `effector inspect .` to see all 40 standard types.
 ```
 
 ---
@@ -108,7 +108,7 @@ npx @effectorhq/core check-types .
 Compile to a runtime other than MCP — for example, CrewAI:
 
 ```bash
-npx @effectorhq/core compile . -t crewai
+effector compile . -t crewai
 ```
 
 Output (`crewai-output.py`):
@@ -132,7 +132,7 @@ Supported targets: `mcp`, `openai`, `langchain`, `crewai`, `json`.
 Start from zero with the interactive scaffolder:
 
 ```bash
-npx create-effector my-security-scanner
+npx @effectorhq/cli init my-security-scanner
 ```
 
 ```
@@ -167,7 +167,7 @@ my-security-scanner/
 Already have an MCP server? Generate `effector.toml` from it:
 
 ```bash
-npx @effectorhq/core init --from-mcp ./my-mcp-server
+effector init --from-mcp ./my-mcp-server
 ```
 
 The reverse compiler scans your source for `server.tool()` calls, infers types from the `inputSchema`, and generates a complete manifest with comments:
@@ -209,7 +209,7 @@ npx @effectorhq/audit check .
 Check that a multi-tool pipeline is type-safe:
 
 ```bash
-npx @effectorhq/core compose check ./git-fetch ./code-review ./slack-notify
+effector compose check ./git-fetch ./code-review ./slack-notify
 ```
 
 ```

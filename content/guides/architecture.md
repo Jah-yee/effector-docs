@@ -162,7 +162,7 @@ This IR is:
 
 Effector is a build-time / CI-time tool, not a runtime. The typical execution points are:
 
-1. **Development**: `effector-core validate .` after editing manifests
+1. **Development**: `effector check .` after editing manifests
 2. **Pre-commit**: Hook that validates before allowing commits
 3. **CI/CD**: GitHub Action validates on every PR
 4. **Deployment**: Compile step generates runtime-specific schemas

@@ -10,7 +10,7 @@ The `@effectorhq/core` CLI provides commands for validating, compiling, and mana
 ## Usage
 
 ```bash
-effector-core <command> [dir] [options]
+effector <command> [dir] [options]
 ```
 
 If `dir` is omitted, the current directory is used.
@@ -22,7 +22,7 @@ If `dir` is omitted, the current directory is used.
 Parse and validate `effector.toml` and `SKILL.md`.
 
 ```bash
-effector-core validate [dir]
+effector check [dir]
 ```
 
 Checks:
@@ -38,7 +38,7 @@ Checks:
 Compile `effector.toml` to a runtime target.
 
 ```bash
-effector-core compile [dir] -t <target>
+effector compile [dir] -t <target>
 ```
 
 **Targets**:
@@ -53,7 +53,7 @@ effector-core compile [dir] -t <target>
 **Example**:
 
 ```bash
-effector-core compile ./my-skill -t mcp
+effector compile ./my-skill -t mcp
 ```
 
 ### check-types
@@ -61,7 +61,7 @@ effector-core compile ./my-skill -t mcp
 Validate interface types against the 40-type catalog.
 
 ```bash
-effector-core check-types [dir]
+effector check [dir]
 ```
 
 Reports unknown types, suggests corrections, and shows type details.
@@ -71,7 +71,7 @@ Reports unknown types, suggests corrections, and shows type details.
 List all standard types in the catalog.
 
 ```bash
-effector-core types
+effector types
 ```
 
 Outputs all 40 types grouped by category (input, output, context).
@@ -81,7 +81,7 @@ Outputs all 40 types grouped by category (input, output, context).
 Scaffold a new `effector.toml` and `SKILL.md`.
 
 ```bash
-effector-core init
+effector init
 ```
 
 Creates a minimal valid manifest in the current directory.
@@ -91,7 +91,7 @@ Creates a minimal valid manifest in the current directory.
 Auto-generate `effector.toml` from an existing MCP server project.
 
 ```bash
-effector-core init --from-mcp [dir]
+effector init --from-mcp [dir]
 ```
 
 Scans source code to detect:
@@ -106,7 +106,7 @@ Produces a well-commented `effector.toml` with `# TODO` markers where manual rev
 Generate a shields.io badge URL for your capability.
 
 ```bash
-effector-core badge [dir]
+effector check [dir]
 ```
 
 Outputs a URL like:
@@ -136,22 +136,22 @@ Paste into your README to show interface types.
 
 ```bash
 # Validate a project
-effector-core validate ./my-skill
+effector check ./my-skill
 
 # Compile to MCP
-effector-core compile ./my-skill -t mcp
+effector compile ./my-skill -t mcp
 
 # List all types
-effector-core types
+effector types
 
 # Scaffold a new project
-effector-core init
+effector init
 
 # Auto-generate from MCP server
-effector-core init --from-mcp ./my-mcp-server
+effector init --from-mcp ./my-mcp-server
 
 # Get a badge URL
-effector-core badge ./my-skill
+effector check ./my-skill
 ```
 
 ## Programmatic API
