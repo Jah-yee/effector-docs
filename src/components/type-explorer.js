@@ -1,5 +1,5 @@
 /**
- * Type Explorer — D3 force-directed graph of the 40-type catalog.
+ * Type Explorer — D3 force-directed graph of the 42-type catalog.
  * Loaded on /types/index.html via CDN D3 + this module.
  */
 
@@ -33,7 +33,7 @@ const GROUP_COLORS = {
   mount.innerHTML = `
     <div class="type-explorer">
       <div class="type-explorer-toolbar">
-        <button class="type-filter active" data-group="all">All (40)</button>
+        <button class="type-filter active" data-group="all">All (42)</button>
         <button class="type-filter" data-group="input">Input (15)</button>
         <button class="type-filter" data-group="output">Output (14)</button>
         <button class="type-filter" data-group="context">Context (13)</button>

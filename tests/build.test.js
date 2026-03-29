@@ -43,7 +43,12 @@ describe('build output', () => {
   it('generates individual type pages', () => {
     const typeDir = join(DIST, 'types');
     const files = readdirSync(typeDir).filter(f => f !== 'index.html' && f.endsWith('.html'));
-    assert.ok(files.length >= 40, `should have ≥40 type pages, got ${files.length}`);
+    const catalog = JSON.parse(readFileSync(join(DIST, 'types-catalog.json'), 'utf-8'));
+    const allNames = [];
+    for (const group of Object.values(catalog.types)) allNames.push(...Object.keys(group));
+    const uniqueNames = new Set(allNames);
+    assert.equal(files.length, uniqueNames.size, 'one HTML page per unique type name');
+    assert.ok(allNames.length >= 40, 'catalog should enumerate types per group (≥40 entries)');
     // Spot check
     assert.ok(existsSync(join(typeDir, 'String.html')));
     assert.ok(existsSync(join(typeDir, 'Markdown.html')));

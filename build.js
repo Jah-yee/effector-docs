@@ -37,6 +37,7 @@ const DOCS = pickDir([
   join(PARENT, 'docs'),
 ]);
 const TYPES = pickFile([
+  join(PARENT, 'effectorhq/packages/types/types.json'),
   join(ROOT, 'node_modules/@effectorhq/types/types.json'),
   join(PARENT, 'effector-types/types.json'),
 ]);
@@ -375,7 +376,7 @@ function buildTypeCatalog() {
   }).join('\n');
 
   const indexHtml = `<h1>Type Catalog</h1>
-<p class="page-subtitle">40 standard types across input, output, and context — the building blocks of typed AI agent capabilities.</p>
+<p class="page-subtitle">42 standard types across input, output, and context — the building blocks of typed AI agent capabilities.</p>
 <div id="type-explorer-mount"></div>
 ${groupSections}`;
 
@@ -387,7 +388,7 @@ ${groupSections}`;
     ? `<script src="https://d3js.org/d3.v7.min.js"></script>\n<script type="module" src="/components/type-explorer.js"></script>`
     : '';
   writeFileSync(indexPath, renderShell('Type Catalog', indexHtml + explorerScript, { activeUrl: '/types/index.html' }));
-  pages.push({ title: 'Type Catalog', url: '/types/index.html', content: '40 standard types across input, output, and context.' });
+  pages.push({ title: 'Type Catalog', url: '/types/index.html', content: '42 standard types across input, output, and context.' });
 
   // Individual type pages
   for (const t of allTypes) {
