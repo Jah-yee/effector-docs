@@ -43,9 +43,9 @@ If it can be checked statically, it should be. Runtime surprises are expensive.
 effector is in active development with a stable core spec and a functional toolchain.
 
 **Where things stand today:**
-- 249+ tests passing across 9 repositories
+- 315+ tests passing across 9 repositories
 - Complete validation → compilation → composition pipeline
-- 40 standard types covering input, output, and context categories
+- 42 standard types covering input, output, and context categories
 - Reverse compiler for adopting existing MCP servers (`effector init --from-mcp`)
 - Interactive tools: Studio editor, Graph Explorer, TOML Playground
 

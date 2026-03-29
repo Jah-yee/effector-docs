@@ -80,7 +80,7 @@ output = "ReviewReport"
 context = ["Repository", "CodingStandards"]
 ```
 
-Choose types from the [40-type catalog](/types/index.html). Be as specific as possible — `CodeDiff` is better than `String` because it enables composition checking.
+Choose types from the [42-type catalog](/types/index.html). Be as specific as possible — `CodeDiff` is better than `String` because it enables composition checking.
 
 ### 3. Declare Permissions
 
@@ -168,7 +168,7 @@ effector compile . -t mcp
 
 ### Validation
 
-`@effectorhq/skill-lint` checks SKILL.md structure:
+`effector check` validates SKILL.md structure:
 
 ```bash
 effector check .
@@ -217,7 +217,7 @@ effector check .
 effector check .
 
 # Permission audit
-npx @effectorhq/audit check .
+effector check .
 
 # Quality score
 npx @effectorhq/skill-eval score .
@@ -246,7 +246,7 @@ Add to your GitHub Actions:
 
 ## Next Steps
 
-- [Type Catalog](/types/index.html) — browse all 40 standard types
+- [Type Catalog](/types/index.html) — browse all 42 standard types
 - [Composition Guide](/guides/composition.html) — connect tools into pipelines
 - [Security & Auditing](/guides/security.html) — permission verification
 - [Examples & Cookbook](/guides/examples.html) — practical patterns

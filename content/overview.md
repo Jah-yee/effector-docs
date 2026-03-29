@@ -5,7 +5,7 @@ subtitle: What effector is, why it exists, and how it fits into the AI agent lan
 
 # Overview
 
-**Effector** is the standard toolkit for typed AI agent tool interoperability. It adds a typed interface layer to AI agent tools — 40 standard capability types, static composition checking, and cross-runtime compilation from a single sidecar manifest.
+**Effector** is the standard toolkit for typed AI agent tool interoperability. It adds a typed interface layer to AI agent tools — 42 standard capability types, static composition checking, and cross-runtime compilation from a single sidecar manifest.
 
 AI agent capabilities are in the pre-TypeScript era. `effector-types` is the `lib.d.ts` for Effectors — the standard library of capability types grounded in real-world usage from 13,000+ analyzed tools.
 
@@ -24,7 +24,7 @@ Effector adds a typed interface layer to AI agent tools. It's a sidecar manifest
 
 Now your tool has:
 
-1. **Type-safe interfaces** — input/output/context from 40 standard capability types
+1. **Type-safe interfaces** — input/output/context from 42 standard capability types
 2. **Static composition checking** — verify tool chains before execution
 3. **Cross-runtime portability** — compile to MCP, OpenAI, LangChain, or JSON
 4. **Security auditing** — declared permissions vs actual behavior
@@ -33,7 +33,7 @@ Now your tool has:
 
 | Feature | Raw MCP | LangChain | CrewAI | **effector** |
 |---------|---------|-----------|--------|------------|
-| Type safety | None | None | None | **40 standard types** |
+| Type safety | None | None | None | **42 standard types** |
 | Composition | Manual | Runtime only | Rigid roles | **Static verification** |
 | Cross-runtime | MCP only | Python only | Python only | **MCP, OpenAI, LangChain, JSON IR** |
 | Discovery | By name | By name | By name | **By input/output type** |
@@ -79,5 +79,5 @@ All tools share `@effectorhq/core` as a kernel. Every module uses only Node.js b
 
 - [Installation](/installation.html) — get started in 30 seconds
 - [Your First Manifest](/first-manifest.html) — build an `effector.toml` from scratch
-- [Type System](/type-system.html) — understand the 40-type catalog
+- [Type System](/type-system.html) — understand the 42-type catalog
 - [Playground](/playground.html) — validate manifests live in your browser

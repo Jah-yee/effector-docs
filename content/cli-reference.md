@@ -28,7 +28,7 @@ effector check [dir]
 Checks:
 - TOML syntax is valid
 - Schema validation (required fields, correct types)
-- Type checking against the 40-type catalog
+- Type checking against the 42-type catalog
 - SKILL.md structure (if present)
 
 **Exit codes**: `0` = valid, `1` = errors found
@@ -58,7 +58,7 @@ effector compile ./my-skill -t mcp
 
 ### check-types
 
-Validate interface types against the 40-type catalog.
+Validate interface types against the 42-type catalog.
 
 ```bash
 effector check [dir]
@@ -74,7 +74,7 @@ List all standard types in the catalog.
 effector types
 ```
 
-Outputs all 40 types grouped by category (input, output, context).
+Outputs all 42 types grouped by category (input, output, context).
 
 ### init
 

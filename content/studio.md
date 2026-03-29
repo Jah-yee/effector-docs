@@ -18,7 +18,7 @@ If you only need a quick validation loop, use [Playground](/playground.html).
 ## Features
 
 - **Visual form** — name, version, type, description with instant preview
-- **Type picker** — select from all 40 standard types for input, output, and context
+- **Type picker** — select from all 42 standard types for input, output, and context
 - **Permission toggles** — network, subprocess, filesystem, env-read
 - **Compile targets** — preview MCP, OpenAI, LangChain, and JSON IR output
 - **SKILL.md editor** — write instructions with live preview

@@ -23,17 +23,17 @@ JSON Schema validates data shapes. Effector validates **semantic capability type
 
 MCP (Model Context Protocol) defines how LLMs communicate with tools at the *protocol* level. Effector defines how tools describe themselves at the *type* level. They're complementary — you can compile an `effector.toml` manifest directly to a valid MCP tool definition.
 
-### Do I have to use all 40 types?
+### Do I have to use all 42 types?
 
-No. Use the types that match your tool. If none of the 40 standard types fit, use `String` or `JSON` as generic fallbacks. The type system is designed for progressive adoption — start with basic types and refine as you see the value.
+No. Use the types that match your tool. If none of the 42 standard types fit, use `String` or `JSON` as generic fallbacks. The type system is designed for progressive adoption — start with basic types and refine as you see the value.
 
 ---
 
 ## Type System
 
-### Where do the 40 types come from?
+### Where do the 42 types come from?
 
-We analyzed 13,000+ tools across MCP servers, LangChain tools, and CrewAI integrations. The 40 types represent the canonical vocabulary that covers the vast majority of real-world AI agent capabilities. Each type has a frequency score reflecting how often it appears in the wild.
+We analyzed 13,000+ tools across MCP servers, LangChain tools, and CrewAI integrations. The 42 types represent the canonical vocabulary that covers the vast majority of real-world AI agent capabilities. Each type has a frequency score reflecting how often it appears in the wild.
 
 ### What is structural subtyping?
 
@@ -41,7 +41,7 @@ If Type A has all the required fields of Type B (plus possibly more), then A is 
 
 ### Can I define custom types?
 
-The current spec focuses on the 40 standard types for maximum interoperability. Custom type extensions are on the roadmap. In the meantime, you can use `JSON` with a description that explains your custom shape, or contribute a proposal for a new standard type.
+The current spec focuses on the 42 standard types for maximum interoperability. Custom type extensions are on the roadmap. In the meantime, you can use `JSON` with a description that explains your custom shape, or contribute a proposal for a new standard type.
 
 ### What are frequency scores?
 
@@ -100,7 +100,7 @@ TOML is readable, unambiguous, and has clear section semantics. Unlike YAML, the
 
 ### What Node.js version do I need?
 
-Node.js 22 or later. We use modern built-ins like `parseArgs` and `node:test` that aren't available in older versions.
+Node.js 18 or later. We use built-ins like `parseArgs` and `node:test`.
 
 ### Is there editor support?
 

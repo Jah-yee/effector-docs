@@ -19,14 +19,14 @@
     <a href="/playground.html" class="btn-secondary" style="padding:12px 28px;font-size:16px">Try the Playground</a>
   </div>
   <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:16px">
-    <div class="hero-install" onclick="navigator.clipboard.writeText('npm install @effectorhq/core')">
+    <div class="hero-install" onclick="navigator.clipboard.writeText('npm install -g @effectorhq/cli')">
       <span class="prompt">$</span>
-      <span class="cmd">npm install @effectorhq/core</span>
+      <span class="cmd">npm install -g @effectorhq/cli</span>
       <button class="copy-btn" title="Copy">
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="8" height="8" rx="1.5"/><path d="M3 11V3a1 1 0 011-1h8"/></svg>
       </button>
     </div>
-    <a href="https://github.com/effectorHQ" class="btn-ghost" target="_blank" style="padding:10px 16px;font-size:14px">
+    <a href="https://github.com/OpenClawHQ/effectorhq" class="btn-ghost" target="_blank" style="padding:10px 16px;font-size:14px">
       <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
       GitHub
     </a>
@@ -34,7 +34,7 @@
   <!-- Animated counter stats -->
   <div class="hero-stats" style="justify-content:center">
     <div class="hero-stat"><div class="num" data-count="40">0</div><div class="label">Capability Types</div></div>
-    <div class="hero-stat"><div class="num" data-count="249">0</div><div class="label">Tests Passing</div></div>
+    <div class="hero-stat"><div class="num" data-count="315">0</div><div class="label">Tests Passing</div></div>
     <div class="hero-stat"><div class="num" data-count="0">0</div><div class="label">Dependencies</div></div>
   </div>
 </div>
@@ -464,25 +464,25 @@
       <h3>@effectorhq/audit</h3>
       <p>Permission verification &amp; trust tracking</p>
     </a>
-    <a class="eco-card" href="https://github.com/effectorHQ/effector-compose" target="_blank" rel="noopener noreferrer" aria-label="Open effectorHQ/effector-compose on GitHub">
-      <div class="eco-card-tier"><span class="eco-badge eco-tool">Tool</span></div>
+    <a class="eco-card" href="https://github.com/OpenClawHQ/effectorhq/tree/main/packages/compose" target="_blank" rel="noopener noreferrer" aria-label="Open @effectorhq/compose on GitHub">
+      <div class="eco-card-tier"><span class="eco-badge eco-tool">Internal</span></div>
       <h3>@effectorhq/compose</h3>
       <p>Static composition &amp; type compatibility</p>
     </a>
-    <a class="eco-card" href="https://github.com/effectorHQ/skill-eval" target="_blank" rel="noopener noreferrer" aria-label="Open effectorHQ/skill-eval on GitHub">
-      <div class="eco-card-tier"><span class="eco-badge eco-tool">Tool</span></div>
-      <h3>@effectorhq/skill-eval</h3>
-      <p>Quality scoring &mdash; 10 metrics</p>
+    <a class="eco-card" href="https://github.com/OpenClawHQ/effectorhq/tree/main/packages/lint" target="_blank" rel="noopener noreferrer" aria-label="Open @effectorhq/lint on GitHub">
+      <div class="eco-card-tier"><span class="eco-badge eco-tool">Internal</span></div>
+      <h3>@effectorhq/lint</h3>
+      <p>SKILL.md structure validation (16 rules)</p>
     </a>
-    <a class="eco-card" href="https://github.com/effectorHQ/effector-graph" target="_blank" rel="noopener noreferrer" aria-label="Open effectorHQ/effector-graph on GitHub">
-      <div class="eco-card-tier"><span class="eco-badge eco-infra">Infra</span></div>
+    <a class="eco-card" href="https://github.com/OpenClawHQ/effector-graph" target="_blank" rel="noopener noreferrer" aria-label="Open effector-graph on GitHub">
+      <div class="eco-card-tier"><span class="eco-badge eco-infra">Phase 2</span></div>
       <h3>@effectorhq/graph</h3>
       <p>Interactive D3 visualization</p>
     </a>
-    <a class="eco-card" href="https://github.com/effectorHQ/openclaw-mcp" target="_blank" rel="noopener noreferrer" aria-label="Open effectorHQ/openclaw-mcp on GitHub">
-      <div class="eco-card-tier"><span class="eco-badge eco-infra">Infra</span></div>
-      <h3>openclaw-mcp</h3>
-      <p>MCP server for the full toolchain</p>
+    <a class="eco-card" href="https://github.com/OpenClawHQ/studio" target="_blank" rel="noopener noreferrer" aria-label="Open effector-studio on GitHub">
+      <div class="eco-card-tier"><span class="eco-badge eco-infra">Phase 2</span></div>
+      <h3>effector-studio</h3>
+      <p>Visual manifest editor with compile preview</p>
     </a>
   </div>
 </div>
@@ -540,9 +540,9 @@
     <a href="/overview.html" class="btn-secondary" style="padding:14px 32px;font-size:16px">Read the Docs</a>
   </div>
   <div style="margin-top:24px">
-    <div class="hero-install" onclick="navigator.clipboard.writeText('npm install @effectorhq/core')" style="display:inline-flex">
+    <div class="hero-install" onclick="navigator.clipboard.writeText('npm install -g @effectorhq/cli')" style="display:inline-flex">
       <span class="prompt">$</span>
-      <span class="cmd">npm install @effectorhq/core</span>
+      <span class="cmd">npm install -g @effectorhq/cli</span>
       <button class="copy-btn" title="Copy">
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="8" height="8" rx="1.5"/><path d="M3 11V3a1 1 0 011-1h8"/></svg>
       </button>

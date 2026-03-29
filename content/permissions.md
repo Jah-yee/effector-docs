@@ -67,7 +67,7 @@ Capabilities that read `process.env.X` must list exactly which variables they ac
 The `@effectorhq/audit` tool verifies that declared permissions match actual code behavior:
 
 ```bash
-npx @effectorhq/audit scan .
+effector check .
 ```
 
 It detects:

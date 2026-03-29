@@ -5,7 +5,7 @@ subtitle: Standard capability types for AI agent tools — the lib.d.ts for Effe
 
 # Type System
 
-`@effectorhq/types` provides a standard library of **capability types** — reusable type definitions for the inputs, outputs, and contexts that AI agent tools commonly work with. 40 types across three roles, grounded in real-world usage from 13,000+ analyzed tools.
+`@effectorhq/types` provides a standard library of **capability types** — reusable type definitions for the inputs, outputs, and contexts that AI agent tools commonly work with. 42 types across three roles, grounded in real-world usage from 13,000+ analyzed tools.
 
 ## Why Types for Agent Capabilities
 

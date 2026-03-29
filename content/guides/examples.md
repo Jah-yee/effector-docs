@@ -98,7 +98,7 @@ effector check .
 ```
 ✗ input "CodeReview" — unknown type
   Did you mean: CodeSnippet, CodeDiff?
-  Run `effector inspect .` to see all 40 standard types.
+  Run `effector inspect .` to see all 42 standard types.
 ```
 
 ---
@@ -192,7 +192,7 @@ output = "JSON"
 Verify that declared permissions match actual source code behavior:
 
 ```bash
-npx @effectorhq/audit check .
+effector check .
 ```
 
 ```
@@ -285,4 +285,4 @@ if (result.errors.length > 0) {
 - [Installation](/installation.html) — get started
 - [Your First Manifest](/first-manifest.html) — step-by-step guide
 - [CLI Reference](/cli-reference.html) — all commands and flags
-- [Type Catalog](/types/index.html) — browse the 40 standard types
+- [Type Catalog](/types/index.html) — browse the 42 standard types

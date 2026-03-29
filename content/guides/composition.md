@@ -85,7 +85,7 @@ effector compose check ./git-fetch ./code-review ./slack-notify
 # ✓ git-fetch(Repository → CodeSnippet) → code-review(CodeSnippet → ReviewReport) → slack-notify(ReviewReport → SlackMessage)
 ```
 
-## Using effector-compose Programmatically
+## Using effector compose Programmatically
 
 ```javascript
 import { checkComposition } from '@effectorhq/compose';
@@ -155,6 +155,6 @@ const bestMatch = tools
 
 ## Next Steps
 
-- [Type System](/type-system.html) — understand the 40 standard types and subtype relationships
+- [Type System](/type-system.html) — understand the 42 standard types and subtype relationships
 - [CLI Reference](/cli-reference.html) — all compose commands
 - [Security & Auditing](/guides/security.html) — verify permissions across composed pipelines

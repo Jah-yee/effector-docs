@@ -43,7 +43,7 @@ context = ["GitHubCredentials"]
 - **output** — what your capability produces. `Markdown` is the most common output type.
 - **context** — runtime context your capability needs. `GitHubCredentials` means it needs a GitHub token.
 
-All three reference types from the [40-type catalog](/types/index.html). The type checker validates these at build time.
+All three reference types from the [42-type catalog](/types/index.html). The type checker validates these at build time.
 
 ## Step 3: Permissions
 
@@ -152,7 +152,7 @@ effector compile . -t langchain
 
 ## What's Next
 
-- [Type System](/type-system.html) — understand the 40-type catalog in depth
+- [Type System](/type-system.html) — understand the 42-type catalog in depth
 - [Permissions Model](/permissions.html) — learn about security and trust
 - [CLI Reference](/cli-reference.html) — all commands and options
 - [Playground](/playground.html) — try editing manifests live in the browser

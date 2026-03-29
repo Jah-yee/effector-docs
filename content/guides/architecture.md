@@ -41,7 +41,7 @@ All packages share `@effectorhq/core` — the kernel containing:
 
 - **TOML parser** — section-aware, handles inline arrays and nested objects
 - **SKILL.md parser** — YAML frontmatter + markdown body
-- **Type checker** — resolves types against the 40-type catalog
+- **Type checker** — resolves types against the 42-type catalog
 - **Schema validator** — validates manifest structure
 - **Compiler** — transforms manifest to runtime targets
 
@@ -72,14 +72,14 @@ Every package uses only Node.js built-ins. No `node_modules` tree. No supply cha
 | Package | Purpose |
 |---------|---------|
 | `@effectorhq/core` | Shared kernel — parsing, validation, compilation |
-| `effector-types` | 40 standard types (JSON catalog) |
+| `effector-types` | 42 standard types (JSON catalog) |
 | `effector-spec` | JSON Schema for `effector.toml` |
 
 ### Tier 2: Tools
 
 | Package | Purpose |
 |---------|---------|
-| `@effectorhq/skill-lint` | SKILL.md structure validation |
+| `@effectorhq/lint` | SKILL.md structure validation (internal) |
 | `@effectorhq/audit` | Permission verification and trust tracking |
 | `@effectorhq/compose` | Type-based composition checking |
 | `@effectorhq/graph` | Interactive dependency visualization (D3) |
@@ -89,10 +89,10 @@ Every package uses only Node.js built-ins. No `node_modules` tree. No supply cha
 
 | Package | Purpose |
 |---------|---------|
-| `create-effector` | Project scaffolder |
+| `@effectorhq/cli` | Unified CLI (init, check, compile, inspect, serve) |
 | `effector-studio` | Visual manifest editor |
 | `effector-action` | GitHub Action for CI validation |
-| `openclaw-mcp` | MCP server for the effector toolchain |
+| `@effectorhq/serve` | Typed MCP server with preflight validation |
 
 ## Data Flow
 
@@ -177,7 +177,7 @@ TOML has unambiguous semantics. No indentation sensitivity. No type coercion sur
 
 ### Why a Type Catalog, not Arbitrary Types?
 
-A fixed catalog (40 types) maximizes interoperability. If every project defines its own types, composition checking becomes impossible. The 40 types cover the vast majority of real-world AI agent tools, grounded in analysis of 13,000+ tools.
+A fixed catalog (42 types) maximizes interoperability. If every project defines its own types, composition checking becomes impossible. The 42 types cover the vast majority of real-world AI agent tools, grounded in analysis of 13,000+ tools.
 
 ### Why Structural Subtyping?
 
@@ -185,7 +185,7 @@ It enables open extension without coordination. If you define a type with all th
 
 ## Next Steps
 
-- [Type System](/type-system.html) — the 40-type catalog in depth
+- [Type System](/type-system.html) — the 42-type catalog in depth
 - [Permissions Model](/permissions.html) — how permissions are declared and audited
 - [Composition](/guides/composition.html) — how tools compose through types
 - [CLI Reference](/cli-reference.html) — all commands and flags

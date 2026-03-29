@@ -161,7 +161,7 @@ export const rule = {
 Use it with `@effectorhq/audit`:
 
 ```bash
-npx @effectorhq/audit ./my-tool --rules ./src/rules/require-context.js
+effector check ./my-tool
 ```
 
 ## Built-in Compile Targets
@@ -265,5 +265,5 @@ effector compile ./my-tool -t compile-autogpt
 
 - [Architecture](/guides/architecture.html) — understand the effector toolchain pipeline
 - [CLI Reference](/cli-reference.html) — all compile flags and options
-- [Type System](/type-system.html) — the 40 standard types your extension can reference
+- [Type System](/type-system.html) — the 42 standard types your extension can reference
 - [Security & Auditing](/guides/security.html) — custom audit rules

@@ -19,12 +19,12 @@ network = true
 env_access = ["GITHUB_TOKEN"]
 ```
 
-This is not optional decoration. It's a **contract** — the tool declares exactly what it needs, and effector-audit verifies the source code matches.
+This is not optional decoration. It's a **contract** — the tool declares exactly what it needs, and `effector check` verifies the source code matches.
 
 ## Running an Audit
 
 ```bash
-npx @effectorhq/audit check .
+effector check .
 ```
 
 The auditor scans your source code and compares actual behavior against declared permissions:
@@ -43,7 +43,7 @@ Every effector capability has a trust state:
 | State | Meaning |
 |---|---|
 | `unsigned` | Default. Manifest exists but no verification |
-| `audited` | Passed effector-audit — permissions match source |
+| `audited` | Passed `effector check` — permissions match source |
 | `signed` | Cryptographically signed by a trusted party |
 
 Trust states are tracked in the manifest and visible to runtimes:
@@ -57,12 +57,12 @@ auditor = "effector-audit@1.0.0"
 
 ## Permission-Interface Mismatch Detection
 
-One of effector-audit's most valuable checks: does the **interface** match the **permissions**?
+One of `effector check`'s most valuable checks: does the **interface** match the **permissions**?
 
 Example: a tool declares `output = "SecurityReport"` but doesn't declare `network` permission. How can it produce a security report without network access to scan anything?
 
 ```bash
-npx @effectorhq/audit check --strict .
+effector check . --strict
 ```
 
 ```
@@ -98,17 +98,17 @@ Add audit checks to your CI pipeline:
 
 ```yaml
 - name: Effector Audit
-  run: npx @effectorhq/audit check --strict --format json .
+  run: npx @effectorhq/cli check . --json
 ```
 
-The `--format json` flag outputs machine-readable results for CI parsing.
+The `--json` flag outputs machine-readable results for CI parsing.
 
 ## Auditing Composed Pipelines
 
-When tools compose, permissions aggregate. effector-audit can check the *combined* permission surface of a pipeline:
+When tools compose, permissions aggregate. `effector check` can check the *combined* permission surface of a pipeline:
 
 ```bash
-npx @effectorhq/audit pipeline ./tool-a ./tool-b ./tool-c
+effector check ./tool-a ./tool-b ./tool-c
 ```
 
 This answers: "What's the total permission footprint of this pipeline?" — critical for security reviews.

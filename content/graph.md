@@ -21,7 +21,7 @@ If you are editing one manifest, use [Playground](/playground.html) or [Studio](
 D3 force-directed graph showing capabilities as nodes and type connections as edges. Click nodes to inspect, drag to rearrange, search to filter.
 
 ### Spectrum
-Interactive polar chart of all 40 types. Click any type to see which capabilities use it as input, output, or context.
+Interactive polar chart of all 42 types. Click any type to see which capabilities use it as input, output, or context.
 
 ### Dashboard
 Statistics overview: type coverage, composition density, trust distribution, permission breakdown across the registry.

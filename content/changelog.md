@@ -9,7 +9,7 @@ subtitle: Release history across the effector ecosystem.
 
 - **Reverse compiler** (`init --from-mcp`) — auto-generate effector.toml from MCP server source
 - **Badge command** — generate shields.io badge URLs
-- **40-type catalog** — expanded from 36 to 40 standard types
+- **42-type catalog** — expanded from 36 to 42 standard types
 - **Compiler targets** — MCP, OpenAI Agents, LangChain, JSON IR
 - **Cross-runtime compilation** pipeline
 - **Section-aware TOML parsing** — fields scoped to correct sections
@@ -17,7 +17,7 @@ subtitle: Release history across the effector ecosystem.
 
 ## effector-types v1.0.0
 
-- 40 standard types across input (15), output (14), context (13)
+- 42 standard types across input (15), output (14), context (13)
 - Structural subtype relations: SecurityReport < ReviewReport, SlackMessage < Notification, DiscordMessage < Notification
 - Category taxonomy: primitive, code, reference, document, data, media, analysis, communication, status, credentials, tools, config, agent
 - Frequency scores for discovery and ranking

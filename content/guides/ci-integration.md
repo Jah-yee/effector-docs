@@ -23,7 +23,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: '18'
 
       - uses: effectorHQ/effector-action@v1
         with:
@@ -33,7 +33,7 @@ jobs:
 
 The action runs:
 1. Schema validation (`effector.toml` structure)
-2. Type checking (all types resolve against the 40-type catalog)
+2. Type checking (all types resolve against the 42-type catalog)
 3. Permission verification (optional, with `audit: 'true'`)
 
 Errors appear as **inline PR annotations** — directly on the lines that need fixing.
@@ -54,19 +54,16 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: '18'
 
       - name: Install effector
-        run: npm install -g @effectorhq/core
+        run: npm install -g @effectorhq/cli
 
       - name: Validate manifest
         run: effector check .
 
-      - name: Check types
-        run: effector check .
-
-      - name: Audit permissions
-        run: npx @effectorhq/audit check --strict .
+      - name: Compile to MCP
+        run: effector compile . -t mcp
 
       - name: Compile MCP output
         run: effector compile . -t mcp
@@ -76,12 +73,12 @@ jobs:
 
 ```yaml
 effector-validate:
-  image: node:22
+  image: node:18
   stage: test
   script:
-    - npm install -g @effectorhq/core
+    - npm install -g @effectorhq/cli
     - effector check .
-    - effector check .
+    - effector compile . -t mcp
   rules:
     - changes:
         - effector.toml

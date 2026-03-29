@@ -94,7 +94,7 @@ Tools are discoverable by what they accept and produce, not just by name.
 |------------------------|-------------------|
 | `.js` files | Tool implementations |
 | `.d.ts` type definitions | `effector.toml` manifests |
-| `lib.d.ts` standard library | `effector-types` (40 types) |
+| `lib.d.ts` standard library | `effector-types` (42 types) |
 | `tsc` compiler | `@effectorhq/core compile` |
 | Type checking | `@effectorhq/core check-types` |
 | No runtime overhead | No runtime overhead (sidecar) |
@@ -119,4 +119,4 @@ TypeScript didn't replace JavaScript. It added a type layer that made the ecosys
 
 - [Installation](/installation.html) — get started
 - [Quick Start](/guides/getting-started.html) — build your first typed tool
-- [Type System](/type-system.html) — explore the 40-type catalog
+- [Type System](/type-system.html) — explore the 42-type catalog
