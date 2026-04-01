@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "animation-preview",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "8765", "-d", "/Users/dujiayi/Desktop/OpenClawHQ/effector-docs/src/assets"],
+      "port": 8765
+    }
+  ]
+}
