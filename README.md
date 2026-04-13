@@ -36,4 +36,4 @@ For a **local monorepo** (sibling `docs/`, `effector-types/`, etc.), paths under
 
 ## License
 
-This project is currently licensed under the [Apache License, Version 2.0](LICENSE.md) 。
+This project is currently licensed under the [Apache License, Version 2.0](LICENSE.md).
